@@ -6,6 +6,7 @@ use App\Modules\Financeiro\Models\LancamentoFinanceiro;
 use App\Modules\OrdensServico\Models\OrdemServico;
 use Illuminate\Support\Facades\DB;
 use App\Modules\Compras\Models\Compra;
+use App\Modules\Vendas\Models\Venda;
 
 class LancamentoFinanceiroService
 {
@@ -118,5 +119,22 @@ public function obterResumoDRE(int $empresaId, ?string $dataInicio = null, ?stri
             'situacao' => $lucroLiquido >= 0 ? 'LUCRO' : 'PREJUIZO',
         ]
     ];
+}
+/**
+ * Gera automaticamente o Contas a Receber quando uma Venda é efetuada.
+ */
+public function gerarReceitaOrigemVenda(Venda $venda): LancamentoFinanceiro
+{
+    return LancamentoFinanceiro::create([
+        'empresa_id' => $venda->empresa_id,
+        'pessoa_id' => $venda->cliente_id,
+        'tipo' => 'RECEITA',
+        'descricao' => "Faturamento relativo à Venda {$venda->numero_venda}",
+        'valor' => $venda->valor_total,
+        'data_vencimento' => now()->addDays(7),
+        'status' => 'PENDENTE',
+        'parcela_atual' => 1,
+        'total_parcelas' => 1,
+    ]);
 }
 }

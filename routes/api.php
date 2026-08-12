@@ -27,3 +27,7 @@ Route::middleware('auth:sanctum')
 Route::middleware('auth:sanctum')
      ->prefix('v1/compras')
      ->group(base_path('app/Modules/Compras/Routes/api.php'));
+// Rotas PROTEGIDAS do Módulo de Vendas Diretas
+Route::middleware('auth:sanctum')
+     ->prefix('v1/vendas')
+     ->group(base_path('app/Modules/Vendas/Routes/api.php'));

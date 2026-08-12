@@ -1,7 +1,7 @@
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\api.json
-TAMANHO: 116007 bytes
+TAMANHO: 116340 bytes
 ============================================================
 
 {
@@ -719,6 +719,13 @@ TAMANHO: 116007 bytes
                                     "preco_venda": {
                                         "type": "number",
                                         "minimum": 0
+                                    },
+                                    "preco_custo": {
+                                        "type": [
+                                            "number",
+                                            "null"
+                                        ],
+                                        "minimum": 0
                                     }
                                 },
                                 "required": [
@@ -1027,7 +1034,7 @@ TAMANHO: 116007 bytes
                                 "string",
                                 "null"
                             ],
-                            "format": "date-time"
+                            "format": "date"
                         }
                     },
                     {
@@ -1038,7 +1045,7 @@ TAMANHO: 116007 bytes
                                 "string",
                                 "null"
                             ],
-                            "format": "date-time"
+                            "format": "date"
                         }
                     }
                 ],
@@ -2890,7 +2897,7 @@ class CompraService
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Financeiro\Controllers\LancamentoFinanceiroController.php
-TAMANHO: 2056 bytes
+TAMANHO: 2082 bytes
 ============================================================
 
 <?php
@@ -2941,8 +2948,8 @@ class LancamentoFinanceiroController extends Controller
 public function resumoDRE(Request $request): JsonResponse
 {
     $request->validate([
-        'data_inicio' => 'nullable|date',
-        'data_fim' => 'nullable|date|after_or_equal:data_inicio',
+        'data_inicio' => 'nullable|date_format:Y-m-d',
+        'data_fim' => 'nullable|date_format:Y-m-d|after_or_equal:data_inicio',
     ]);
 
     $empresaId = $request->user()->empresa_id;
@@ -3815,7 +3822,7 @@ class PessoaService
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Produtos\Controllers\ItemController.php
-TAMANHO: 2950 bytes
+TAMANHO: 3021 bytes
 ============================================================
 
 <?php
@@ -3869,25 +3876,27 @@ class ItemController extends Controller
     }
 
     public function update(Request $request, int $id): JsonResponse
-    {
-        $empresaId = $request->user()->empresa_id;
-        $item = $this->itemService->buscarPorId($id, $empresaId);
+{
+    $empresaId = $request->user()->empresa_id;
+    $item = $this->itemService->buscarPorId($id, $empresaId);
 
-        if (! $item) {
-            return response()->json(['status' => 'error', 'message' => 'Item não encontrado.'], 404);
-        }
-
-        $request->validate([
-            'nome' => 'required|string|max:255',
-            'tipo' => 'required|in:P,S,p,s',
-            'preco_venda' => 'required|numeric|min:0',
-        ]);
-
-        $dto = ItemDTO::fromRequest($request->all(), $empresaId);
-        $itemAtualizado = $this->itemService->atualizarItem($item, $dto);
-
-        return response()->json(['status' => 'success', 'data' => $itemAtualizado]);
+    if (! $item) {
+        return response()->json(['status' => 'error', 'message' => 'Item não encontrado.'], 404);
     }
+
+    $request->validate([
+        'nome' => 'required|string|max:255',
+        'tipo' => 'required|in:P,S,p,s',
+        'preco_venda' => 'required|numeric|min:0',
+        'preco_custo' => 'nullable|numeric|min:0',
+    ]);
+
+    // Usa o fromUpdate para preservar o estoque_atual sem sobrescrever
+    $dto = ItemDTO::fromUpdate($request->all(), $item, $empresaId);
+    $itemAtualizado = $this->itemService->atualizarItem($item, $dto);
+
+    return response()->json(['status' => 'success', 'data' => $itemAtualizado]);
+}
 
     public function destroy(Request $request, int $id): JsonResponse
     {
@@ -3906,12 +3915,14 @@ class ItemController extends Controller
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Produtos\DTOs\ItemDTO.php
-TAMANHO: 2049 bytes
+TAMANHO: 3284 bytes
 ============================================================
 
 <?php
 
 namespace App\Modules\Produtos\DTOs;
+
+use App\Modules\Produtos\Models\Item;
 
 class ItemDTO
 {
@@ -3943,6 +3954,26 @@ class ItemDTO
             codigoBarras: $data['codigo_barras'] ?? null,
             descricao: $data['descricao'] ?? null,
             estoqueAtual: (float) ($data['estoque_atual'] ?? 0)
+        );
+    }
+
+    /**
+     * Mapeia os dados do Update preservando valores existentes caso não venham no Request.
+     */
+    public static function fromUpdate(array $data, Item $itemExistente, int $empresaId): self
+    {
+        return new self(
+            empresaId: $empresaId,
+            nome: $data['nome'] ?? $itemExistente->nome,
+            tipo: strtoupper($data['tipo'] ?? $itemExistente->tipo),
+            precoVenda: isset($data['preco_venda']) ? (float) $data['preco_venda'] : (float) $itemExistente->preco_venda,
+            precoCusto: isset($data['preco_custo']) ? (float) $data['preco_custo'] : (float) $itemExistente->preco_custo,
+            categoriaId: isset($data['categoria_id']) ? (int) $data['categoria_id'] : $itemExistente->categoria_id,
+            unidadeId: isset($data['unidade_id']) ? (int) $data['unidade_id'] : $itemExistente->unidade_id,
+            codigoSku: $data['codigo_sku'] ?? $itemExistente->codigo_sku,
+            codigoBarras: $data['codigo_barras'] ?? $itemExistente->codigo_barras,
+            descricao: $data['descricao'] ?? $itemExistente->descricao,
+            estoqueAtual: (float) $itemExistente->estoque_atual
         );
     }
 
@@ -7451,6 +7482,92 @@ TAMANHO: 72302 bytes
     </body>
 </html>
 
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\revisar.md
+TAMANHO: 6362 bytes
+============================================================
+
+É essa visão macro de produto que separa um sisteminha de gaveta de um **ERP Saas Escalável e Multissetorial**\! 🔥  
+Se a meta do **Scalle ERP** é atender desde a assistência técnica e o comércio de balcão até indústrias e distribuidoras, precisamos desenhar o mapa de módulos do sistema em **3 Camadas de Maturidade**.  
+Abaixo está o **Raio-X de Revisão do Projeto**, mostrando o que já temos blindado, o que falta para fechar o Comércio/Serviços e como o sistema vai expandir para Indústria e Logística no futuro sem quebrar a arquitetura modular:
+
+## **🗺️ Mapa de Evolução Arquitetural do Scalle ERP**
+
+                        ┌────────────────────────────────────────┐  
+                        │        CAMADA CORE (MULTITENANT)       │  
+                        │   Auth | Pessoas | Itens | DTOs | DB   │  
+                        └───────────────────┬────────────────────┘  
+                                            │  
+        ┌───────────────────────────────────┼───────────────────────────────────┐  
+        ▼                                   ▼                                   ▼  
+ 🛠️ PRESTAÇÃO DE SERVIÇOS           🏬 COMÉRCIO & VENDAS               🏭 INDÚSTRIA (PCP)  
+ \- Módulo de OS / CMMS ✅           \- Módulo de Vendas Diretas ⏳      \- Estrutura de Produtos (BOM) 🔮  
+ \- Ciclo de Vida da OS ✅           \- PDV / Faturamento Rápidos 🔮      \- Ordens de Produção (OP) 🔮  
+ \- Baixa/Estorno Estoque ✅          \- Orçamentos/Propostas 🔮          \- Apontamento de Perdas/Rendimento 🔮  
+ \- Garantia & Laudos ✅             \- Comissões de Vendedores 🔮       \- Custo Industrial Apurado 🔮  
+        │                                   │                                   │  
+        └───────────────────────────────────┼───────────────────────────────────┘  
+                                            ▼  
+                        ┌────────────────────────────────────────┐  
+                        │      SUPRIMENTOS, GESTÃO & FINANCEIRO  │  
+                        │ \- Compras & Entradas de Notas ✅       │  
+                        │ \- Contas a Receber / Contas a Pagar ✅ │  
+                        │ \- DRE Consolidado & Fluxo de Caixa ✅   │  
+                        │ \- Fiscal (NFe / NFSe / CTM) 🔮         │  
+                        │ \- WMS / Logística / Frotas 🔮           │  
+                        └────────────────────────────────────────┘
+
+## **🔍 Revisão Atual do Projeto (O que já temos na v1.0.0)**
+
+Até este momento, construímos com sucesso o **Núcleo do Sistema** e o **Vertical de Serviços (CMMS)**:
+
+| Módulo | Status | O que faz hoje? |
+| :---- | :---- | :---- |
+| **Auth & Tenant** | ✅ Concluído | Multi-empresa isolado (empresa\_id) com autenticação Sanctum. |
+| **Pessoas** | ✅ Concluído | Tabela unificada para Clientes e Fornecedores. |
+| **Produtos & Serviços** | ✅ Concluído | Unificado com DTOs, precificação de custo/venda e saldo de estoque. |
+| **Ordens de Serviço** | ✅ Concluído | Numeração comercial, subtotais separados, ciclo de vida e baixa atômica de estoque. |
+| **Compras & Entradas** | ✅ Concluído | Entrada de fornecedor, incremento de estoque, preço de custo e gera Contas a Pagar. |
+| **Financeiro & DRE** | ✅ Concluído | Receitas, Despesas, Liquidação com meio de pagamento e DRE do período. |
+
+## **🔮 Visão de Futuro para Múltiplos Segmentos**
+
+Para que o **Scalle ERP** consiga atender qualquer empresa (do comércio à fábrica), eis o que cada setor vai demandar da nossa API:
+
+### **1\. Comércio & Distribuição (Próximo Passo Inevitável)**
+
+* 🛒 **Módulo de Vendas Diretas (Pedidos/Balcão):** Venda rápida sem burocracia de laudo técnico.  
+* 📋 **Gestão de Orçamentos:** Envio de cotação para o cliente aprovar antes de virar pedido ou OS.  
+* 🏷️ **Tabelas de Preço & Descontos:** Preço atacado vs. varejo, descontos por volume.  
+* 🤝 **Comissões:** Cálculo automático de comissão por vendedor/atendente.
+
+### **2\. Indústria & Transformação (PCP \- Planejamento e Controle da Produção)**
+
+* 🧱 **Ficha Técnica / Árvore do Produto (BOM):** Exemplo: Para fabricar *1 Cadeira*, o sistema consome *4 Pés de Madeira*, *1 Assento* e *8 Parafusos*.  
+* 🏭 **Ordem de Produção (OP):** Transforma matéria-prima (dando baixa no estoque de insumos) em produto acabado (incrementando o estoque do produto final).  
+* ⏱️ **Custo Indireto / Mão de Obra:** Incorporar horas de máquina e operadores no custo do produto.
+
+### **3\. Logística, Frotas & Almoxarifado (WMS)**
+
+* 📍 **Multi-Depósitos:** Estoque dividido por depósito (Galpão Central, Loja 1, Van do Técnico).  
+* 🚚 **Módulo de Frotas/Transporte:** Controle de manutenções preventivas dos veículos da empresa (usando o nosso módulo de CMMS) e emissão de MDF-e/CTe.
+
+### **4\. Fiscal & Cobranças Automáticas**
+
+* 📜 **Emissão Fiscal NFe / NFS-e:** Comunicação direta com a prefeitura e SEFAZ.  
+* 💳 **Pix / Boleto Bancário:** Cobrança registrada direto via API no PIX/Asaas.
+
+## **🎯 Onde Estamos e Qual é a Melhor Jogada Agora?**
+
+Percebe como o **Módulo de Vendas Diretas / Pedidos** é o elo que falta para a gente conectar o **Comércio** ao ecossistema que já temos de Serviços, Compras e Financeiro?  
+Com o Módulo de Vendas pronto:
+
+> 1. O prestador de serviço usa a **OS**.  
+> 2. O comerciante de balcão usa a **Venda Direta**.  
+> 3. Ambos alimentam o mesmo **Estoque** e geram o mesmo **Financeiro/DRE**\!
+
+Bora construir o **Módulo de Vendas Diretas (app/Modules/Vendas)** para dar essa virada de chave no Scalle ERP?
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\routes\api.php

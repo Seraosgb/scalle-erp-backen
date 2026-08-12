@@ -713,6 +713,13 @@
                                     "preco_venda": {
                                         "type": "number",
                                         "minimum": 0
+                                    },
+                                    "preco_custo": {
+                                        "type": [
+                                            "number",
+                                            "null"
+                                        ],
+                                        "minimum": 0
                                     }
                                 },
                                 "required": [
@@ -1021,7 +1028,7 @@
                                 "string",
                                 "null"
                             ],
-                            "format": "date-time"
+                            "format": "date"
                         }
                     },
                     {
@@ -1032,7 +1039,7 @@
                                 "string",
                                 "null"
                             ],
-                            "format": "date-time"
+                            "format": "date"
                         }
                     }
                 ],
