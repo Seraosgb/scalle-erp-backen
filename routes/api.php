@@ -36,3 +36,7 @@ Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO,ATENDENTE'])
 Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO'])
      ->prefix('v1/financeiro/lancamentos')
      ->group(base_path('app/Modules/Financeiro/Routes/api.php'));
+     // 📋 Orçamentos: ADMIN, FINANCEIRO, TECNICO e ATENDENTE
+Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO,TECNICO,ATENDENTE'])
+     ->prefix('v1/orcamentos')
+     ->group(base_path('app/Modules/Orcamentos/Routes/api.php'));
