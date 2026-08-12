@@ -5,29 +5,34 @@ use Illuminate\Support\Facades\Route;
 // Rotas PÚBLICAS de Autenticação
 Route::prefix('v1/auth')->group(base_path('app/Modules/Auth/Routes/api.php'));
 
-// Rotas PROTEGIDAS do Módulo de Pessoas (Exige Token Sanctum)
-Route::middleware('auth:sanctum')
+// ROTAS PROTEGIDAS POR SANCTUM + PERFIS (ACL)
+
+// 👥 Pessoas: Todos os perfis podem visualizar e cadastrar
+Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO,TECNICO,ATENDENTE'])
      ->prefix('v1/pessoas')
      ->group(base_path('app/Modules/Pessoas/Routes/api.php'));
 
-// Rotas PROTEGIDAS do Módulo de Produtos e Serviços
-Route::middleware('auth:sanctum')
+// 📦 Produtos e Serviços: Todos os perfis podem visualizar
+Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO,TECNICO,ATENDENTE'])
      ->prefix('v1/produtos')
      ->group(base_path('app/Modules/Produtos/Routes/api.php'));
 
-// Rotas PROTEGIDAS do Módulo de Ordens de Serviço
-Route::middleware('auth:sanctum')
+// 🛠️ Ordens de Serviço: Apenas ADMIN, TECNICO e ATENDENTE
+Route::middleware(['auth:sanctum', 'role:ADMIN,TECNICO,ATENDENTE'])
      ->prefix('v1/ordens-servico')
      ->group(base_path('app/Modules/OrdensServico/Routes/api.php'));
-// Rotas PROTEGIDAS do Módulo Financeiro
-Route::middleware('auth:sanctum')
-     ->prefix('v1/financeiro/lancamentos')
-     ->group(base_path('app/Modules/Financeiro/Routes/api.php'));
-     // Rotas PROTEGIDAS do Módulo de Compras
-Route::middleware('auth:sanctum')
+
+// 🛒 Compras: Restrito a ADMIN e FINANCEIRO
+Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO'])
      ->prefix('v1/compras')
      ->group(base_path('app/Modules/Compras/Routes/api.php'));
-// Rotas PROTEGIDAS do Módulo de Vendas Diretas
-Route::middleware('auth:sanctum')
+
+// 🏬 Vendas Diretas: ADMIN, FINANCEIRO e ATENDENTE
+Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO,ATENDENTE'])
      ->prefix('v1/vendas')
      ->group(base_path('app/Modules/Vendas/Routes/api.php'));
+
+// 💰 Financeiro & DRE: Restrito a ADMIN e FINANCEIRO
+Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO'])
+     ->prefix('v1/financeiro/lancamentos')
+     ->group(base_path('app/Modules/Financeiro/Routes/api.php'));
