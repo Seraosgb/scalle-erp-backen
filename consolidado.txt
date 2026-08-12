@@ -1,7 +1,7 @@
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\api.json
-TAMANHO: 75140 bytes
+TAMANHO: 116007 bytes
 ============================================================
 
 {
@@ -144,6 +144,236 @@ TAMANHO: 75140 bytes
                     },
                     "422": {
                         "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        },
+        "/v1/compras": {
+            "get": {
+                "operationId": "compra.index",
+                "tags": [
+                    "Compra"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "minimum": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Compra"
+                                                    }
+                                                },
+                                                "first_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "from": {
+                                                    "type": [
+                                                        "integer",
+                                                        "null"
+                                                    ],
+                                                    "minimum": 1
+                                                },
+                                                "last_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "minimum": 1
+                                                },
+                                                "links": {
+                                                    "type": "array",
+                                                    "description": "Generated paginator links.",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "url": {
+                                                                "type": [
+                                                                    "string",
+                                                                    "null"
+                                                                ]
+                                                            },
+                                                            "label": {
+                                                                "type": "string"
+                                                            },
+                                                            "active": {
+                                                                "type": "boolean"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "url",
+                                                            "label",
+                                                            "active"
+                                                        ]
+                                                    }
+                                                },
+                                                "next_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "path": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ],
+                                                    "description": "Base path for paginator generated URLs."
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "description": "Number of items shown per page.",
+                                                    "minimum": 0
+                                                },
+                                                "prev_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "to": {
+                                                    "type": [
+                                                        "integer",
+                                                        "null"
+                                                    ],
+                                                    "description": "Number of the last item in the slice.",
+                                                    "minimum": 1
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "description": "Total number of items being paginated.",
+                                                    "minimum": 0
+                                                }
+                                            },
+                                            "required": [
+                                                "current_page",
+                                                "data",
+                                                "first_page_url",
+                                                "from",
+                                                "last_page_url",
+                                                "last_page",
+                                                "links",
+                                                "next_page_url",
+                                                "path",
+                                                "per_page",
+                                                "prev_page_url",
+                                                "to",
+                                                "total"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "compra.store",
+                "tags": [
+                    "Compra"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "fornecedor_id": {
+                                        "type": "integer"
+                                    },
+                                    "itens": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "item_id": {
+                                                    "type": "integer"
+                                                },
+                                                "quantidade": {
+                                                    "type": "number",
+                                                    "minimum": 0.01
+                                                },
+                                                "valor_unitario": {
+                                                    "type": "number",
+                                                    "minimum": 0
+                                                }
+                                            },
+                                            "required": [
+                                                "item_id",
+                                                "quantidade",
+                                                "valor_unitario"
+                                            ]
+                                        },
+                                        "minItems": 1
+                                    }
+                                },
+                                "required": [
+                                    "fornecedor_id",
+                                    "itens"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Compra"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
                     }
                 }
             }
@@ -633,6 +863,385 @@ TAMANHO: 75140 bytes
                 }
             }
         },
+        "/v1/financeiro/lancamentos": {
+            "get": {
+                "operationId": "lancamentoFinanceiro.index",
+                "tags": [
+                    "LancamentoFinanceiro"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "minimum": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/LancamentoFinanceiro"
+                                                    }
+                                                },
+                                                "first_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "from": {
+                                                    "type": [
+                                                        "integer",
+                                                        "null"
+                                                    ],
+                                                    "minimum": 1
+                                                },
+                                                "last_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "minimum": 1
+                                                },
+                                                "links": {
+                                                    "type": "array",
+                                                    "description": "Generated paginator links.",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "url": {
+                                                                "type": [
+                                                                    "string",
+                                                                    "null"
+                                                                ]
+                                                            },
+                                                            "label": {
+                                                                "type": "string"
+                                                            },
+                                                            "active": {
+                                                                "type": "boolean"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "url",
+                                                            "label",
+                                                            "active"
+                                                        ]
+                                                    }
+                                                },
+                                                "next_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "path": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ],
+                                                    "description": "Base path for paginator generated URLs."
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "description": "Number of items shown per page.",
+                                                    "minimum": 0
+                                                },
+                                                "prev_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "to": {
+                                                    "type": [
+                                                        "integer",
+                                                        "null"
+                                                    ],
+                                                    "description": "Number of the last item in the slice.",
+                                                    "minimum": 1
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "description": "Total number of items being paginated.",
+                                                    "minimum": 0
+                                                }
+                                            },
+                                            "required": [
+                                                "current_page",
+                                                "data",
+                                                "first_page_url",
+                                                "from",
+                                                "last_page_url",
+                                                "last_page",
+                                                "links",
+                                                "next_page_url",
+                                                "path",
+                                                "per_page",
+                                                "prev_page_url",
+                                                "to",
+                                                "total"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/financeiro/lancamentos/resumo-dre": {
+            "get": {
+                "operationId": "lancamentoFinanceiro.resumoDRE",
+                "tags": [
+                    "LancamentoFinanceiro"
+                ],
+                "parameters": [
+                    {
+                        "name": "data_inicio",
+                        "in": "query",
+                        "schema": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "data_fim",
+                        "in": "query",
+                        "schema": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "format": "date-time"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "periodo": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "inicio": {
+                                                            "type": "string"
+                                                        },
+                                                        "fim": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "inicio",
+                                                        "fim"
+                                                    ]
+                                                },
+                                                "receitas": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "pago": {
+                                                            "type": "string"
+                                                        },
+                                                        "pendente": {
+                                                            "type": "string"
+                                                        },
+                                                        "total": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "pago",
+                                                        "pendente",
+                                                        "total"
+                                                    ]
+                                                },
+                                                "despesas": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "pago": {
+                                                            "type": "string"
+                                                        },
+                                                        "pendente": {
+                                                            "type": "string"
+                                                        },
+                                                        "total": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "pago",
+                                                        "pendente",
+                                                        "total"
+                                                    ]
+                                                },
+                                                "resultado": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "lucro_liquido_realizado": {
+                                                            "type": "string"
+                                                        },
+                                                        "situacao": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "LUCRO",
+                                                                "PREJUIZO"
+                                                            ]
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "lucro_liquido_realizado",
+                                                        "situacao"
+                                                    ]
+                                                }
+                                            },
+                                            "required": [
+                                                "periodo",
+                                                "receitas",
+                                                "despesas",
+                                                "resultado"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/financeiro/lancamentos/{id}/baixar": {
+            "patch": {
+                "operationId": "lancamentoFinanceiro.baixar",
+                "tags": [
+                    "LancamentoFinanceiro"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "forma_pagamento": {
+                                        "type": "string",
+                                        "enum": [
+                                            "PIX",
+                                            "DINHEIRO",
+                                            "CARTAO_CREDITO",
+                                            "CARTAO_DEBITO",
+                                            "BOLETO",
+                                            "TRANSFERENCIA"
+                                        ]
+                                    },
+                                    "data_pagamento": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "format": "date-time"
+                                    }
+                                },
+                                "required": [
+                                    "forma_pagamento"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Lan\u00e7amento liquidado com sucesso."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/LancamentoFinanceiro"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
         "/v1/ordens-servico": {
             "get": {
                 "operationId": "ordemServico.index",
@@ -843,6 +1452,84 @@ TAMANHO: 75140 bytes
                                     },
                                     "required": [
                                         "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/ordens-servico/{id}/status": {
+            "patch": {
+                "operationId": "ordemServico.mudarStatus",
+                "tags": [
+                    "OrdemServico"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "ABERTO",
+                                            "EM_ANDAMENTO",
+                                            "AGUARDANDO_PECA",
+                                            "CONCLUIDO",
+                                            "CANCELADO"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "status"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/OrdemServico"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
                                         "data"
                                     ]
                                 }
@@ -1331,6 +2018,68 @@ TAMANHO: 75140 bytes
     },
     "components": {
         "schemas": {
+            "Compra": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "fornecedor_id": {
+                        "type": "integer"
+                    },
+                    "numero_nota": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "data_compra": {
+                        "type": "string"
+                    },
+                    "valor_total": {
+                        "type": "string"
+                    },
+                    "observacoes": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "fornecedor_id",
+                    "numero_nota",
+                    "status",
+                    "data_compra",
+                    "valor_total",
+                    "observacoes",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "Compra"
+            },
             "Item": {
                 "type": "object",
                 "properties": {
@@ -1421,6 +2170,108 @@ TAMANHO: 75140 bytes
                     "updated_at"
                 ],
                 "title": "Item"
+            },
+            "LancamentoFinanceiro": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "pessoa_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "categoria_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "ordem_servico_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "tipo": {
+                        "type": "string"
+                    },
+                    "descricao": {
+                        "type": "string"
+                    },
+                    "valor": {
+                        "type": "string"
+                    },
+                    "data_vencimento": {
+                        "type": "string"
+                    },
+                    "data_pagamento": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "forma_pagamento": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "parcela_atual": {
+                        "type": "integer"
+                    },
+                    "total_parcelas": {
+                        "type": "integer"
+                    },
+                    "observacoes": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "pessoa_id",
+                    "categoria_id",
+                    "ordem_servico_id",
+                    "tipo",
+                    "descricao",
+                    "valor",
+                    "data_vencimento",
+                    "data_pagamento",
+                    "status",
+                    "forma_pagamento",
+                    "parcela_atual",
+                    "total_parcelas",
+                    "observacoes",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "LancamentoFinanceiro"
             },
             "OrdemServico": {
                 "type": "object",
@@ -1825,8 +2676,505 @@ use App\Modules\Auth\Controllers\AuthController;
 Route::post('/login', [AuthController::class, 'login']);
 
 ============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Compras\Controllers\CompraController.php
+TAMANHO: 1267 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Compras\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Modules\Compras\Services\CompraService;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+
+class CompraController extends Controller
+{
+    public function __construct(private CompraService $compraService) {}
+
+    public function index(Request $request): JsonResponse
+    {
+        $empresaId = $request->user()->empresa_id;
+        $compras = $this->compraService->listarCompras($empresaId);
+
+        return response()->json(['status' => 'success', 'data' => $compras]);
+    }
+
+    public function store(Request $request): JsonResponse
+    {
+        $request->validate([
+            'fornecedor_id' => 'required|exists:pes_pessoas,id',
+            'itens' => 'required|array|min:1',
+            'itens.*.item_id' => 'required|exists:pro_itens,id',
+            'itens.*.quantidade' => 'required|numeric|min:0.01',
+            'itens.*.valor_unitario' => 'required|numeric|min:0.00',
+        ]);
+
+        $empresaId = $request->user()->empresa_id;
+        $compra = $this->compraService->registrarCompra($empresaId, $request->all());
+
+        return response()->json(['status' => 'success', 'data' => $compra], 201);
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Compras\Models\Compra.php
+TAMANHO: 760 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Compras\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Modules\Pessoas\Models\Pessoa;
+
+class Compra extends Model
+{
+    protected $table = 'com_compras';
+
+    protected $fillable = [
+        'empresa_id',
+        'fornecedor_id',
+        'numero_nota',
+        'status',
+        'data_compra',
+        'valor_total',
+        'observacoes',
+    ];
+
+    public function fornecedor(): BelongsTo
+    {
+        return $this->belongsTo(Pessoa::class, 'fornecedor_id');
+    }
+
+    public function itens(): HasMany
+    {
+        return $this->hasMany(CompraItem::class, 'compra_id');
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Compras\Models\CompraItem.php
+TAMANHO: 531 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Compras\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Modules\Produtos\Models\Item;
+
+class CompraItem extends Model
+{
+    protected $table = 'com_itens';
+
+    protected $fillable = [
+        'compra_id',
+        'item_id',
+        'quantidade',
+        'valor_unitario',
+        'valor_subtotal',
+    ];
+
+    public function item(): BelongsTo
+    {
+        return $this->belongsTo(Item::class, 'item_id');
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Compras\Routes\api.php
+TAMANHO: 212 bytes
+============================================================
+
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Modules\Compras\Controllers\CompraController;
+
+Route::get('/', [CompraController::class, 'index']);
+Route::post('/', [CompraController::class, 'store']);
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Compras\Services\CompraService.php
+TAMANHO: 2981 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Compras\Services;
+
+use App\Modules\Compras\Models\Compra;
+use App\Modules\Compras\Models\CompraItem;
+use App\Modules\Produtos\Models\Item;
+use App\Modules\Produtos\Services\ItemService;
+use App\Modules\Financeiro\Services\LancamentoFinanceiroService;
+use Illuminate\Support\Facades\DB;
+
+class CompraService
+{
+    public function __construct(
+        private ItemService $itemService,
+        private LancamentoFinanceiroService $financeiroService
+    ) {}
+
+    public function registrarCompra(int $empresaId, array $data): Compra
+    {
+        return DB::transaction(function () use ($empresaId, $data) {
+            $compra = Compra::create([
+                'empresa_id' => $empresaId,
+                'fornecedor_id' => $data['fornecedor_id'],
+                'numero_nota' => $data['numero_nota'] ?? null,
+                'status' => 'RECEBIDO',
+                'data_compra' => now(),
+                'observacoes' => $data['observacoes'] ?? null,
+                'valor_total' => 0.00,
+            ]);
+
+            $totalCompra = 0.00;
+
+            foreach ($data['itens'] as $itemCompra) {
+                $itemCadastrado = Item::where('id', $itemCompra['item_id'])
+                    ->where('empresa_id', $empresaId)
+                    ->firstOrFail();
+
+                $quantidade = (float) $itemCompra['quantidade'];
+                $valorUnitario = (float) $itemCompra['valor_unitario'];
+                $subtotal = $quantidade * $valorUnitario;
+                $totalCompra += $subtotal;
+
+                CompraItem::create([
+                    'compra_id' => $compra->id,
+                    'item_id' => $itemCadastrado->id,
+                    'quantidade' => $quantidade,
+                    'valor_unitario' => $valorUnitario,
+                    'valor_subtotal' => $subtotal,
+                ]);
+
+                // 📦 GATILHO 1: Incrementa o estoque e atualiza o preço de custo da peça
+                if ($itemCadastrado->tipo === 'P') {
+                    $this->itemService->movimentarEstoque(
+                        itemId: $itemCadastrado->id,
+                        empresaId: $empresaId,
+                        quantidade: $quantidade,
+                        operacao: 'SOMAR'
+                    );
+
+                    $itemCadastrado->update(['preco_custo' => $valorUnitario]);
+                }
+            }
+
+            $compra->update(['valor_total' => $totalCompra]);
+
+            // 💰 GATILHO 2: Gera o Contas a Pagar no Financeiro (DESPESA)
+            $this->financeiroService->gerarDespesaOrigemCompra($compra);
+
+            return $compra->load(['fornecedor', 'itens']);
+        });
+    }
+
+    public function listarCompras(int $empresaId)
+    {
+        return Compra::with(['fornecedor', 'itens'])
+            ->where('empresa_id', $empresaId)
+            ->orderBy('id', 'desc')
+            ->paginate(15);
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Financeiro\Controllers\LancamentoFinanceiroController.php
+TAMANHO: 2056 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Financeiro\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Modules\Financeiro\Services\LancamentoFinanceiroService;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+
+class LancamentoFinanceiroController extends Controller
+{
+    public function __construct(private LancamentoFinanceiroService $financeiroService) {}
+
+    public function index(Request $request): JsonResponse
+    {
+        $empresaId = $request->user()->empresa_id;
+        $filtros = $request->only(['tipo', 'status']);
+        $lancamentos = $this->financeiroService->listarLancamentos($empresaId, $filtros);
+
+        return response()->json(['status' => 'success', 'data' => $lancamentos]);
+    }
+    public function baixar(Request $request, int $id): JsonResponse
+{
+    $request->validate([
+        'forma_pagamento' => 'required|in:PIX,DINHEIRO,CARTAO_CREDITO,CARTAO_DEBITO,BOLETO,TRANSFERENCIA',
+        'data_pagamento' => 'nullable|date',
+    ]);
+
+    $empresaId = $request->user()->empresa_id;
+    $formaPagamento = $request->forma_pagamento;
+    $dataPagamento = $request->data_pagamento;
+
+    $lancamentoAtualizado = $this->financeiroService->baixarLancamento(
+        id: $id,
+        empresaId: $empresaId,
+        formaPagamento: $formaPagamento,
+        dataPagamento: $dataPagamento
+    );
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Lançamento liquidado com sucesso.',
+        'data' => $lancamentoAtualizado
+    ]);
+}
+public function resumoDRE(Request $request): JsonResponse
+{
+    $request->validate([
+        'data_inicio' => 'nullable|date',
+        'data_fim' => 'nullable|date|after_or_equal:data_inicio',
+    ]);
+
+    $empresaId = $request->user()->empresa_id;
+    $resumo = $this->financeiroService->obterResumoDRE(
+        empresaId: $empresaId,
+        dataInicio: $request->data_inicio,
+        dataFim: $request->data_fim
+    );
+
+    return response()->json(['status' => 'success', 'data' => $resumo]);
+}
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Financeiro\Models\CategoriaFinanceira.php
+TAMANHO: 297 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Financeiro\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class CategoriaFinanceira extends Model
+{
+    protected $table = 'fin_categorias';
+
+    protected $fillable = [
+        'empresa_id',
+        'nome',
+        'tipo',
+        'ativo',
+    ];
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Financeiro\Models\LancamentoFinanceiro.php
+TAMANHO: 1101 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Financeiro\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Modules\Pessoas\Models\Pessoa;
+use App\Modules\OrdensServico\Models\OrdemServico;
+
+class LancamentoFinanceiro extends Model
+{
+    protected $table = 'fin_lancamentos';
+
+    protected $fillable = [
+        'empresa_id',
+        'pessoa_id',
+        'categoria_id',
+        'ordem_servico_id',
+        'tipo',
+        'descricao',
+        'valor',
+        'data_vencimento',
+        'data_pagamento',
+        'status',
+        'forma_pagamento',
+        'parcela_atual',
+        'total_parcelas',
+        'observacoes',
+    ];
+
+    public function pessoa(): BelongsTo
+    {
+        return $this->belongsTo(Pessoa::class, 'pessoa_id');
+    }
+
+    public function categoria(): BelongsTo
+    {
+        return $this->belongsTo(CategoriaFinanceira::class, 'categoria_id');
+    }
+
+    public function ordemServico(): BelongsTo
+    {
+        return $this->belongsTo(OrdemServico::class, 'ordem_servico_id');
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Financeiro\Routes\api.php
+TAMANHO: 352 bytes
+============================================================
+
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Modules\Financeiro\Controllers\LancamentoFinanceiroController;
+
+Route::get('/', [LancamentoFinanceiroController::class, 'index']);
+Route::get('/resumo-dre', [LancamentoFinanceiroController::class, 'resumoDRE']);
+Route::patch('/{id}/baixar', [LancamentoFinanceiroController::class, 'baixar']);
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Financeiro\Services\LancamentoFinanceiroService.php
+TAMANHO: 4774 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Financeiro\Services;
+
+use App\Modules\Financeiro\Models\LancamentoFinanceiro;
+use App\Modules\OrdensServico\Models\OrdemServico;
+use Illuminate\Support\Facades\DB;
+use App\Modules\Compras\Models\Compra;
+
+class LancamentoFinanceiroService
+{
+    /**
+     * Gera automaticamente o Contas a Receber quando uma OS é Concluída.
+     */
+    public function gerarReceitaOrigemOS(OrdemServico $os): LancamentoFinanceiro
+    {
+        return LancamentoFinanceiro::create([
+            'empresa_id' => $os->empresa_id,
+            'pessoa_id' => $os->cliente_id,
+            'ordem_servico_id' => $os->id,
+            'tipo' => 'RECEITA',
+            'descricao' => "Faturamento relativo à {$os->numero_os}",
+            'valor' => $os->valor_total,
+            'data_vencimento' => now()->addDays(7), // Vencimento padrão em 7 dias
+            'status' => 'PENDENTE',
+            'parcela_atual' => 1,
+            'total_parcelas' => 1,
+        ]);
+    }
+
+    public function listarLancamentos(int $empresaId, array $filtros = [])
+    {
+        $query = LancamentoFinanceiro::with(['pessoa', 'categoria', 'ordemServico'])
+            ->where('empresa_id', $empresaId);
+
+        if (!empty($filtros['tipo'])) {
+            $query->where('tipo', strtoupper($filtros['tipo']));
+        }
+
+        if (!empty($filtros['status'])) {
+            $query->where('status', strtoupper($filtros['status']));
+        }
+
+        return $query->orderBy('data_vencimento', 'asc')->paginate(15);
+    }
+    public function baixarLancamento(int $id, int $empresaId, string $formaPagamento, ?string $dataPagamento = null): LancamentoFinanceiro
+{
+    $lancamento = LancamentoFinanceiro::where('id', $id)
+        ->where('empresa_id', $empresaId)
+        ->firstOrFail();
+
+    $lancamento->update([
+        'status' => 'PAGO',
+        'forma_pagamento' => strtoupper($formaPagamento),
+        'data_pagamento' => $dataPagamento ?? now()->format('Y-m-d'),
+    ]);
+
+    return $lancamento->load(['pessoa', 'categoria', 'ordemServico']);
+}
+/**
+ * Gera automaticamente o Contas a Pagar quando uma Compra/Nota é Recebida.
+ */
+public function gerarDespesaOrigemCompra(Compra $compra): LancamentoFinanceiro
+{
+    return LancamentoFinanceiro::create([
+        'empresa_id' => $compra->empresa_id,
+        'pessoa_id' => $compra->fornecedor_id,
+        'tipo' => 'DESPESA',
+        'descricao' => "Pagamento de Fornecedor - Compra/Nota nº " . ($compra->numero_nota ?? $compra->id),
+        'valor' => $compra->valor_total,
+        'data_vencimento' => now()->addDays(15), // Vencimento padrão em 15 dias
+        'status' => 'PENDENTE',
+        'parcela_atual' => 1,
+        'total_parcelas' => 1,
+    ]);
+}
+public function obterResumoDRE(int $empresaId, ?string $dataInicio = null, ?string $dataFim = null): array
+{
+    $query = LancamentoFinanceiro::where('empresa_id', $empresaId);
+
+    if ($dataInicio && $dataFim) {
+        $query->whereBetween('data_vencimento', [$dataInicio, $dataFim]);
+    } else {
+        // Padrão: Mês Atual
+        $query->whereMonth('data_vencimento', now()->month)
+              ->whereYear('data_vencimento', now()->year);
+    }
+
+    $lancamentos = $query->get();
+
+    $receitasPagas = $lancamentos->where('tipo', 'RECEITA')->where('status', 'PAGO')->sum('valor');
+    $receitasPendentes = $lancamentos->where('tipo', 'RECEITA')->where('status', 'PENDENTE')->sum('valor');
+
+    $despesasPagas = $lancamentos->where('tipo', 'DESPESA')->where('status', 'PAGO')->sum('valor');
+    $despesasPendentes = $lancamentos->where('tipo', 'DESPESA')->where('status', 'PENDENTE')->sum('valor');
+
+    $totalReceitas = $receitasPagas + $receitasPendentes;
+    $totalDespesas = $despesasPagas + $despesasPendentes;
+    $lucroLiquido = $receitasPagas - $despesasPagas;
+
+    return [
+        'periodo' => [
+            'inicio' => $dataInicio ?? now()->startOfMonth()->toDateString(),
+            'fim' => $dataFim ?? now()->endOfMonth()->toDateString(),
+        ],
+        'receitas' => [
+            'pago' => number_format($receitasPagas, 2, '.', ''),
+            'pendente' => number_format($receitasPendentes, 2, '.', ''),
+            'total' => number_format($totalReceitas, 2, '.', ''),
+        ],
+        'despesas' => [
+            'pago' => number_format($despesasPagas, 2, '.', ''),
+            'pendente' => number_format($despesasPendentes, 2, '.', ''),
+            'total' => number_format($totalDespesas, 2, '.', ''),
+        ],
+        'resultado' => [
+            'lucro_liquido_realizado' => number_format($lucroLiquido, 2, '.', ''),
+            'situacao' => $lucroLiquido >= 0 ? 'LUCRO' : 'PREJUIZO',
+        ]
+    ];
+}
+}
+
+============================================================
 ARQUIVO: C:\Projetos\scalle-erp\app\Modules\OrdensServico\Controllers\OrdemServicoController.php
-TAMANHO: 1314 bytes
+TAMANHO: 1882 bytes
 ============================================================
 
 <?php
@@ -1866,6 +3214,23 @@ class OrdemServicoController extends Controller
 
         return response()->json(['status' => 'success', 'data' => $ordemServico], 201);
     }
+    public function mudarStatus(Request $request, int $id): JsonResponse
+{
+    $request->validate([
+        'status' => 'required|in:ABERTO,EM_ANDAMENTO,AGUARDANDO_PECA,CONCLUIDO,CANCELADO',
+    ]);
+
+    $empresaId = $request->user()->empresa_id;
+    $status = strtoupper($request->status);
+
+    $osAtualizada = $this->osService->atualizarStatus($id, $empresaId, $status);
+
+    return response()->json([
+        'status' => 'success',
+        'message' => "Status da OS alterado para {$status} com sucesso.",
+        'data' => $osAtualizada
+    ]);
+}
 }
 
 ============================================================
@@ -1999,7 +3364,7 @@ class OrdemServicoItem extends Model
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\app\Modules\OrdensServico\Routes\api.php
-TAMANHO: 236 bytes
+TAMANHO: 315 bytes
 ============================================================
 
 <?php
@@ -2009,10 +3374,11 @@ use App\Modules\OrdensServico\Controllers\OrdemServicoController;
 
 Route::get('/', [OrdemServicoController::class, 'index']);
 Route::post('/', [OrdemServicoController::class, 'store']);
+Route::patch('/{id}/status', [OrdemServicoController::class, 'mudarStatus']);
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\app\Modules\OrdensServico\Services\OrdemServicoService.php
-TAMANHO: 3037 bytes
+TAMANHO: 5151 bytes
 ============================================================
 
 <?php
@@ -2023,11 +3389,18 @@ use App\Modules\OrdensServico\Models\OrdemServico;
 use App\Modules\OrdensServico\Models\OrdemServicoItem;
 use App\Modules\OrdensServico\DTOs\OrdemServicoDTO;
 use App\Modules\Produtos\Models\Item;
+use App\Modules\Produtos\Services\ItemService;
 use Illuminate\Support\Facades\DB;
-use Exception;
+use App\Modules\Financeiro\Services\LancamentoFinanceiroService;
 
 class OrdemServicoService
 {
+    // Atualizar o construtor:
+public function __construct(
+    private ItemService $itemService,
+    private LancamentoFinanceiroService $financeiroService
+) {}
+
     public function criarOS(OrdemServicoDTO $dto): OrdemServico
     {
         return DB::transaction(function () use ($dto) {
@@ -2094,6 +3467,56 @@ class OrdemServicoService
             ->where('empresa_id', $empresaId)
             ->orderBy('id', 'desc')
             ->paginate(15);
+    }
+
+    public function atualizarStatus(int $osId, int $empresaId, string $novoStatus): OrdemServico
+    {
+        return DB::transaction(function () use ($osId, $empresaId, $novoStatus) {
+            $os = OrdemServico::with('itens')
+                ->where('id', $osId)
+                ->where('empresa_id', $empresaId)
+                ->firstOrFail();
+
+            $statusAntigo = $os->status;
+
+            if ($statusAntigo === $novoStatus) {
+                return $os;
+            }
+
+            // Dentro do método atualizarStatus(), no GATILHO 1 (Concluindo a OS):
+if ($novoStatus === 'CONCLUIDO' && $statusAntigo !== 'CONCLUIDO') {
+    foreach ($os->itens as $itemOs) {
+        $this->itemService->movimentarEstoque(
+            itemId: $itemOs->item_id,
+            empresaId: $empresaId,
+            quantidade: (float) $itemOs->quantidade,
+            operacao: 'SUBTRAIR'
+        );
+    }
+    $os->data_conclusao = now();
+
+    // 💰 GATILHO AUTOMÁTICO: Gera o Contas a Receber
+    $this->financeiroService->gerarReceitaOrigemOS($os);
+}
+
+            // GATILHO 2: Estorno de estoque (Caso a OS estava concluída e seja alterada para outro status)
+            if ($statusAntigo === 'CONCLUIDO' && $novoStatus !== 'CONCLUIDO') {
+                foreach ($os->itens as $itemOs) {
+                    $this->itemService->movimentarEstoque(
+                        itemId: $itemOs->item_id,
+                        empresaId: $empresaId,
+                        quantidade: (float) $itemOs->quantidade,
+                        operacao: 'SOMAR'
+                    );
+                }
+                $os->data_conclusao = null;
+            }
+
+            $os->status = $novoStatus;
+            $os->save();
+
+            return $os->load(['cliente', 'tecnico', 'itens']);
+        });
     }
 }
 
@@ -2646,7 +4069,7 @@ Route::delete('/{id}', [ItemController::class, 'destroy']);
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Produtos\Services\ItemService.php
-TAMANHO: 1587 bytes
+TAMANHO: 2213 bytes
 ============================================================
 
 <?php
@@ -2701,6 +4124,24 @@ class ItemService
     public function inativarItem(Item $item): bool
     {
         return $item->update(['ativo' => false]);
+    }
+
+    public function movimentarEstoque(int $itemId, int $empresaId, float $quantidade, string $operacao): void
+    {
+        $item = Item::where('id', $itemId)
+            ->where('empresa_id', $empresaId)
+            ->first();
+
+        // Se o item não existir ou for um Serviço ('S'), não movimenta estoque
+        if (!$item || $item->tipo === 'S') {
+            return;
+        }
+
+        if ($operacao === 'SUBTRAIR') {
+            $item->decrement('estoque_atual', $quantidade);
+        } elseif ($operacao === 'SOMAR') {
+            $item->increment('estoque_atual', $quantidade);
+        }
     }
 }
 
@@ -5344,6 +6785,115 @@ return new class extends Migration
 };
 
 ============================================================
+ARQUIVO: C:\Projetos\scalle-erp\database\migrations\2026_08_12_033116_create_fin_modulo_financeiro_tables.php
+TAMANHO: 2250 bytes
+============================================================
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        // 1. Tabela de Categorias Financeiras (Plano de Contas)
+        Schema::create('fin_categorias', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('empresa_id')->constrained('sis_empresas')->onDelete('cascade');
+            $table->string('nome'); // Ex: Receita de Serviços, Venda de Peças, Aluguel
+            $table->enum('tipo', ['RECEITA', 'DESPESA']);
+            $table->boolean('ativo')->default(true);
+            $table->timestamps();
+        });
+
+        // 2. Tabela Principal de Lançamentos (Contas a Receber e A Pagar)
+        Schema::create('fin_lancamentos', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('empresa_id')->constrained('sis_empresas')->onDelete('cascade');
+            $table->foreignId('pessoa_id')->nullable()->constrained('pes_pessoas')->onDelete('set null'); // Cliente ou Fornecedor
+            $table->foreignId('categoria_id')->nullable()->constrained('fin_categorias')->onDelete('set null');
+            $table->foreignId('ordem_servico_id')->nullable()->constrained('os_ordens_servico')->onDelete('set null');
+
+            $table->enum('tipo', ['RECEITA', 'DESPESA']); // RECEITA = Contas a Receber | DESPESA = Contas a Pagar
+            $table->string('descricao');
+            $table->decimal('valor', 12, 2);
+            $table->date('data_vencimento');
+            $table->date('data_pagamento')->nullable();
+
+            $table->enum('status', ['PENDENTE', 'PAGO', 'CANCELADO'])->default('PENDENTE');
+            $table->enum('forma_pagamento', ['PIX', 'DINHEIRO', 'CARTAO_CREDITO', 'CARTAO_DEBITO', 'BOLETO', 'TRANSFERENCIA'])->nullable();
+
+            $table->integer('parcela_atual')->default(1);
+            $table->integer('total_parcelas')->default(1);
+            $table->text('observacoes')->nullable();
+
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('fin_lancamentos');
+        Schema::dropIfExists('fin_categorias');
+    }
+};
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\database\migrations\2026_08_12_134115_create_com_modulo_compras_tables.php
+TAMANHO: 1644 bytes
+============================================================
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        // 1. Tabela Principal de Compras / Entrada de Nota
+        Schema::create('com_compras', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('empresa_id')->constrained('sis_empresas')->onDelete('cascade');
+            $table->foreignId('fornecedor_id')->constrained('pes_pessoas')->onDelete('restrict');
+
+            $table->string('numero_nota', 50)->nullable(); // Número da NF ou Pedido de Compra
+            $table->enum('status', ['RASCUNHO', 'RECEBIDO', 'CANCELADO'])->default('RASCUNHO');
+            $table->dateTime('data_compra');
+
+            $table->decimal('valor_total', 12, 2)->default(0.00);
+            $table->text('observacoes')->nullable();
+
+            $table->timestamps();
+        });
+
+        // 2. Itens da Compra
+        Schema::create('com_itens', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('compra_id')->constrained('com_compras')->onDelete('cascade');
+            $table->foreignId('item_id')->constrained('pro_itens')->onDelete('restrict');
+
+            $table->decimal('quantidade', 12, 3);
+            $table->decimal('valor_unitario', 12, 2); // Preço de Custo na compra
+            $table->decimal('valor_subtotal', 12, 2);
+
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('com_itens');
+        Schema::dropIfExists('com_compras');
+    }
+};
+
+============================================================
 ARQUIVO: C:\Projetos\scalle-erp\database\seeders\DatabaseSeeder.php
 TAMANHO: 703 bytes
 ============================================================
@@ -5904,7 +7454,7 @@ TAMANHO: 72302 bytes
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\routes\api.php
-TAMANHO: 746 bytes
+TAMANHO: 1111 bytes
 ============================================================
 
 <?php
@@ -5928,6 +7478,14 @@ Route::middleware('auth:sanctum')
 Route::middleware('auth:sanctum')
      ->prefix('v1/ordens-servico')
      ->group(base_path('app/Modules/OrdensServico/Routes/api.php'));
+// Rotas PROTEGIDAS do Módulo Financeiro
+Route::middleware('auth:sanctum')
+     ->prefix('v1/financeiro/lancamentos')
+     ->group(base_path('app/Modules/Financeiro/Routes/api.php'));
+     // Rotas PROTEGIDAS do Módulo de Compras
+Route::middleware('auth:sanctum')
+     ->prefix('v1/compras')
+     ->group(base_path('app/Modules/Compras/Routes/api.php'));
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\routes\console.php

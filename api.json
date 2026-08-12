@@ -142,6 +142,236 @@
                 }
             }
         },
+        "/v1/compras": {
+            "get": {
+                "operationId": "compra.index",
+                "tags": [
+                    "Compra"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "minimum": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Compra"
+                                                    }
+                                                },
+                                                "first_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "from": {
+                                                    "type": [
+                                                        "integer",
+                                                        "null"
+                                                    ],
+                                                    "minimum": 1
+                                                },
+                                                "last_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "minimum": 1
+                                                },
+                                                "links": {
+                                                    "type": "array",
+                                                    "description": "Generated paginator links.",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "url": {
+                                                                "type": [
+                                                                    "string",
+                                                                    "null"
+                                                                ]
+                                                            },
+                                                            "label": {
+                                                                "type": "string"
+                                                            },
+                                                            "active": {
+                                                                "type": "boolean"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "url",
+                                                            "label",
+                                                            "active"
+                                                        ]
+                                                    }
+                                                },
+                                                "next_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "path": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ],
+                                                    "description": "Base path for paginator generated URLs."
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "description": "Number of items shown per page.",
+                                                    "minimum": 0
+                                                },
+                                                "prev_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "to": {
+                                                    "type": [
+                                                        "integer",
+                                                        "null"
+                                                    ],
+                                                    "description": "Number of the last item in the slice.",
+                                                    "minimum": 1
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "description": "Total number of items being paginated.",
+                                                    "minimum": 0
+                                                }
+                                            },
+                                            "required": [
+                                                "current_page",
+                                                "data",
+                                                "first_page_url",
+                                                "from",
+                                                "last_page_url",
+                                                "last_page",
+                                                "links",
+                                                "next_page_url",
+                                                "path",
+                                                "per_page",
+                                                "prev_page_url",
+                                                "to",
+                                                "total"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "compra.store",
+                "tags": [
+                    "Compra"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "fornecedor_id": {
+                                        "type": "integer"
+                                    },
+                                    "itens": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "item_id": {
+                                                    "type": "integer"
+                                                },
+                                                "quantidade": {
+                                                    "type": "number",
+                                                    "minimum": 0.01
+                                                },
+                                                "valor_unitario": {
+                                                    "type": "number",
+                                                    "minimum": 0
+                                                }
+                                            },
+                                            "required": [
+                                                "item_id",
+                                                "quantidade",
+                                                "valor_unitario"
+                                            ]
+                                        },
+                                        "minItems": 1
+                                    }
+                                },
+                                "required": [
+                                    "fornecedor_id",
+                                    "itens"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Compra"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
         "/v1/produtos": {
             "get": {
                 "operationId": "item.index",
@@ -627,6 +857,385 @@
                 }
             }
         },
+        "/v1/financeiro/lancamentos": {
+            "get": {
+                "operationId": "lancamentoFinanceiro.index",
+                "tags": [
+                    "LancamentoFinanceiro"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "minimum": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/LancamentoFinanceiro"
+                                                    }
+                                                },
+                                                "first_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "from": {
+                                                    "type": [
+                                                        "integer",
+                                                        "null"
+                                                    ],
+                                                    "minimum": 1
+                                                },
+                                                "last_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "minimum": 1
+                                                },
+                                                "links": {
+                                                    "type": "array",
+                                                    "description": "Generated paginator links.",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "url": {
+                                                                "type": [
+                                                                    "string",
+                                                                    "null"
+                                                                ]
+                                                            },
+                                                            "label": {
+                                                                "type": "string"
+                                                            },
+                                                            "active": {
+                                                                "type": "boolean"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "url",
+                                                            "label",
+                                                            "active"
+                                                        ]
+                                                    }
+                                                },
+                                                "next_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "path": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ],
+                                                    "description": "Base path for paginator generated URLs."
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "description": "Number of items shown per page.",
+                                                    "minimum": 0
+                                                },
+                                                "prev_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "to": {
+                                                    "type": [
+                                                        "integer",
+                                                        "null"
+                                                    ],
+                                                    "description": "Number of the last item in the slice.",
+                                                    "minimum": 1
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "description": "Total number of items being paginated.",
+                                                    "minimum": 0
+                                                }
+                                            },
+                                            "required": [
+                                                "current_page",
+                                                "data",
+                                                "first_page_url",
+                                                "from",
+                                                "last_page_url",
+                                                "last_page",
+                                                "links",
+                                                "next_page_url",
+                                                "path",
+                                                "per_page",
+                                                "prev_page_url",
+                                                "to",
+                                                "total"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/financeiro/lancamentos/resumo-dre": {
+            "get": {
+                "operationId": "lancamentoFinanceiro.resumoDRE",
+                "tags": [
+                    "LancamentoFinanceiro"
+                ],
+                "parameters": [
+                    {
+                        "name": "data_inicio",
+                        "in": "query",
+                        "schema": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "data_fim",
+                        "in": "query",
+                        "schema": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "format": "date-time"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "periodo": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "inicio": {
+                                                            "type": "string"
+                                                        },
+                                                        "fim": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "inicio",
+                                                        "fim"
+                                                    ]
+                                                },
+                                                "receitas": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "pago": {
+                                                            "type": "string"
+                                                        },
+                                                        "pendente": {
+                                                            "type": "string"
+                                                        },
+                                                        "total": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "pago",
+                                                        "pendente",
+                                                        "total"
+                                                    ]
+                                                },
+                                                "despesas": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "pago": {
+                                                            "type": "string"
+                                                        },
+                                                        "pendente": {
+                                                            "type": "string"
+                                                        },
+                                                        "total": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "pago",
+                                                        "pendente",
+                                                        "total"
+                                                    ]
+                                                },
+                                                "resultado": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "lucro_liquido_realizado": {
+                                                            "type": "string"
+                                                        },
+                                                        "situacao": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "LUCRO",
+                                                                "PREJUIZO"
+                                                            ]
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "lucro_liquido_realizado",
+                                                        "situacao"
+                                                    ]
+                                                }
+                                            },
+                                            "required": [
+                                                "periodo",
+                                                "receitas",
+                                                "despesas",
+                                                "resultado"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/financeiro/lancamentos/{id}/baixar": {
+            "patch": {
+                "operationId": "lancamentoFinanceiro.baixar",
+                "tags": [
+                    "LancamentoFinanceiro"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "forma_pagamento": {
+                                        "type": "string",
+                                        "enum": [
+                                            "PIX",
+                                            "DINHEIRO",
+                                            "CARTAO_CREDITO",
+                                            "CARTAO_DEBITO",
+                                            "BOLETO",
+                                            "TRANSFERENCIA"
+                                        ]
+                                    },
+                                    "data_pagamento": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "format": "date-time"
+                                    }
+                                },
+                                "required": [
+                                    "forma_pagamento"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Lan\u00e7amento liquidado com sucesso."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/LancamentoFinanceiro"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
         "/v1/ordens-servico": {
             "get": {
                 "operationId": "ordemServico.index",
@@ -837,6 +1446,84 @@
                                     },
                                     "required": [
                                         "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/ordens-servico/{id}/status": {
+            "patch": {
+                "operationId": "ordemServico.mudarStatus",
+                "tags": [
+                    "OrdemServico"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "ABERTO",
+                                            "EM_ANDAMENTO",
+                                            "AGUARDANDO_PECA",
+                                            "CONCLUIDO",
+                                            "CANCELADO"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "status"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/OrdemServico"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
                                         "data"
                                     ]
                                 }
@@ -1325,6 +2012,68 @@
     },
     "components": {
         "schemas": {
+            "Compra": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "fornecedor_id": {
+                        "type": "integer"
+                    },
+                    "numero_nota": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "data_compra": {
+                        "type": "string"
+                    },
+                    "valor_total": {
+                        "type": "string"
+                    },
+                    "observacoes": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "fornecedor_id",
+                    "numero_nota",
+                    "status",
+                    "data_compra",
+                    "valor_total",
+                    "observacoes",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "Compra"
+            },
             "Item": {
                 "type": "object",
                 "properties": {
@@ -1415,6 +2164,108 @@
                     "updated_at"
                 ],
                 "title": "Item"
+            },
+            "LancamentoFinanceiro": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "pessoa_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "categoria_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "ordem_servico_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "tipo": {
+                        "type": "string"
+                    },
+                    "descricao": {
+                        "type": "string"
+                    },
+                    "valor": {
+                        "type": "string"
+                    },
+                    "data_vencimento": {
+                        "type": "string"
+                    },
+                    "data_pagamento": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "forma_pagamento": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "parcela_atual": {
+                        "type": "integer"
+                    },
+                    "total_parcelas": {
+                        "type": "integer"
+                    },
+                    "observacoes": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "pessoa_id",
+                    "categoria_id",
+                    "ordem_servico_id",
+                    "tipo",
+                    "descricao",
+                    "valor",
+                    "data_vencimento",
+                    "data_pagamento",
+                    "status",
+                    "forma_pagamento",
+                    "parcela_atual",
+                    "total_parcelas",
+                    "observacoes",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "LancamentoFinanceiro"
             },
             "OrdemServico": {
                 "type": "object",

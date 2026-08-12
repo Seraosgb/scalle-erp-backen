@@ -46,8 +46,8 @@ class LancamentoFinanceiroController extends Controller
 public function resumoDRE(Request $request): JsonResponse
 {
     $request->validate([
-        'data_inicio' => 'nullable|date',
-        'data_fim' => 'nullable|date|after_or_equal:data_inicio',
+        'data_inicio' => 'nullable|date_format:Y-m-d',
+        'data_fim' => 'nullable|date_format:Y-m-d|after_or_equal:data_inicio',
     ]);
 
     $empresaId = $request->user()->empresa_id;

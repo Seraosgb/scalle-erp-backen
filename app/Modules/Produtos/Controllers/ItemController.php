@@ -49,25 +49,27 @@ class ItemController extends Controller
     }
 
     public function update(Request $request, int $id): JsonResponse
-    {
-        $empresaId = $request->user()->empresa_id;
-        $item = $this->itemService->buscarPorId($id, $empresaId);
+{
+    $empresaId = $request->user()->empresa_id;
+    $item = $this->itemService->buscarPorId($id, $empresaId);
 
-        if (! $item) {
-            return response()->json(['status' => 'error', 'message' => 'Item não encontrado.'], 404);
-        }
-
-        $request->validate([
-            'nome' => 'required|string|max:255',
-            'tipo' => 'required|in:P,S,p,s',
-            'preco_venda' => 'required|numeric|min:0',
-        ]);
-
-        $dto = ItemDTO::fromRequest($request->all(), $empresaId);
-        $itemAtualizado = $this->itemService->atualizarItem($item, $dto);
-
-        return response()->json(['status' => 'success', 'data' => $itemAtualizado]);
+    if (! $item) {
+        return response()->json(['status' => 'error', 'message' => 'Item não encontrado.'], 404);
     }
+
+    $request->validate([
+        'nome' => 'required|string|max:255',
+        'tipo' => 'required|in:P,S,p,s',
+        'preco_venda' => 'required|numeric|min:0',
+        'preco_custo' => 'nullable|numeric|min:0',
+    ]);
+
+    // Usa o fromUpdate para preservar o estoque_atual sem sobrescrever
+    $dto = ItemDTO::fromUpdate($request->all(), $item, $empresaId);
+    $itemAtualizado = $this->itemService->atualizarItem($item, $dto);
+
+    return response()->json(['status' => 'success', 'data' => $itemAtualizado]);
+}
 
     public function destroy(Request $request, int $id): JsonResponse
     {

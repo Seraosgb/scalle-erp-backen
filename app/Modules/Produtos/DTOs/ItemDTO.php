@@ -2,6 +2,8 @@
 
 namespace App\Modules\Produtos\DTOs;
 
+use App\Modules\Produtos\Models\Item;
+
 class ItemDTO
 {
     public function __construct(
@@ -32,6 +34,26 @@ class ItemDTO
             codigoBarras: $data['codigo_barras'] ?? null,
             descricao: $data['descricao'] ?? null,
             estoqueAtual: (float) ($data['estoque_atual'] ?? 0)
+        );
+    }
+
+    /**
+     * Mapeia os dados do Update preservando valores existentes caso não venham no Request.
+     */
+    public static function fromUpdate(array $data, Item $itemExistente, int $empresaId): self
+    {
+        return new self(
+            empresaId: $empresaId,
+            nome: $data['nome'] ?? $itemExistente->nome,
+            tipo: strtoupper($data['tipo'] ?? $itemExistente->tipo),
+            precoVenda: isset($data['preco_venda']) ? (float) $data['preco_venda'] : (float) $itemExistente->preco_venda,
+            precoCusto: isset($data['preco_custo']) ? (float) $data['preco_custo'] : (float) $itemExistente->preco_custo,
+            categoriaId: isset($data['categoria_id']) ? (int) $data['categoria_id'] : $itemExistente->categoria_id,
+            unidadeId: isset($data['unidade_id']) ? (int) $data['unidade_id'] : $itemExistente->unidade_id,
+            codigoSku: $data['codigo_sku'] ?? $itemExistente->codigo_sku,
+            codigoBarras: $data['codigo_barras'] ?? $itemExistente->codigo_barras,
+            descricao: $data['descricao'] ?? $itemExistente->descricao,
+            estoqueAtual: (float) $itemExistente->estoque_atual
         );
     }
 
