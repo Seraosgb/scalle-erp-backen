@@ -1,7 +1,7 @@
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\api.json
-TAMANHO: 116340 bytes
+TAMANHO: 172024 bytes
 ============================================================
 
 {
@@ -79,6 +79,9 @@ TAMANHO: 116340 bytes
                                                         "email": {
                                                             "type": "string"
                                                         },
+                                                        "role": {
+                                                            "type": "string"
+                                                        },
                                                         "empresa": {
                                                             "type": "object",
                                                             "properties": {
@@ -99,6 +102,7 @@ TAMANHO: 116340 bytes
                                                         "id",
                                                         "name",
                                                         "email",
+                                                        "role",
                                                         "empresa"
                                                     ]
                                                 }
@@ -144,6 +148,309 @@ TAMANHO: 116340 bytes
                     },
                     "422": {
                         "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        },
+        "/v1/produtos/categorias": {
+            "get": {
+                "operationId": "categoria.index",
+                "tags": [
+                    "Categoria"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Categoria"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "categoria.store",
+                "tags": [
+                    "Categoria"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nome": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    }
+                                },
+                                "required": [
+                                    "nome"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Categoria"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/produtos/categorias/{id}": {
+            "delete": {
+                "operationId": "categoria.destroy",
+                "tags": [
+                    "Categoria"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Categoria inativada com sucesso."
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/orcamentos/categorias": {
+            "get": {
+                "operationId": "categoriaFinanceira.index",
+                "tags": [
+                    "CategoriaFinanceira"
+                ],
+                "parameters": [
+                    {
+                        "name": "tipo",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/CategoriaFinanceira"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "categoriaFinanceira.store",
+                "tags": [
+                    "CategoriaFinanceira"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nome": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "tipo": {
+                                        "type": "string",
+                                        "enum": [
+                                            "RECEITA",
+                                            "DESPESA",
+                                            "receita",
+                                            "despesa"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "nome",
+                                    "tipo"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/CategoriaFinanceira"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/orcamentos/categorias/{id}": {
+            "delete": {
+                "operationId": "categoriaFinanceira.destroy",
+                "tags": [
+                    "CategoriaFinanceira"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Categoria financeira inativada com sucesso."
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
                     }
                 }
             }
@@ -1249,6 +1556,328 @@ TAMANHO: 116340 bytes
                 }
             }
         },
+        "/v1/orcamentos": {
+            "get": {
+                "operationId": "orcamento.index",
+                "tags": [
+                    "Orcamento"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "minimum": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Orcamento"
+                                                    }
+                                                },
+                                                "first_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "from": {
+                                                    "type": [
+                                                        "integer",
+                                                        "null"
+                                                    ],
+                                                    "minimum": 1
+                                                },
+                                                "last_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "minimum": 1
+                                                },
+                                                "links": {
+                                                    "type": "array",
+                                                    "description": "Generated paginator links.",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "url": {
+                                                                "type": [
+                                                                    "string",
+                                                                    "null"
+                                                                ]
+                                                            },
+                                                            "label": {
+                                                                "type": "string"
+                                                            },
+                                                            "active": {
+                                                                "type": "boolean"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "url",
+                                                            "label",
+                                                            "active"
+                                                        ]
+                                                    }
+                                                },
+                                                "next_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "path": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ],
+                                                    "description": "Base path for paginator generated URLs."
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "description": "Number of items shown per page.",
+                                                    "minimum": 0
+                                                },
+                                                "prev_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "to": {
+                                                    "type": [
+                                                        "integer",
+                                                        "null"
+                                                    ],
+                                                    "description": "Number of the last item in the slice.",
+                                                    "minimum": 1
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "description": "Total number of items being paginated.",
+                                                    "minimum": 0
+                                                }
+                                            },
+                                            "required": [
+                                                "current_page",
+                                                "data",
+                                                "first_page_url",
+                                                "from",
+                                                "last_page_url",
+                                                "last_page",
+                                                "links",
+                                                "next_page_url",
+                                                "path",
+                                                "per_page",
+                                                "prev_page_url",
+                                                "to",
+                                                "total"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "orcamento.store",
+                "tags": [
+                    "Orcamento"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "cliente_id": {
+                                        "type": "integer"
+                                    },
+                                    "data_validade": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "format": "date-time"
+                                    },
+                                    "itens": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "item_id": {
+                                                    "type": "integer"
+                                                },
+                                                "quantidade": {
+                                                    "type": "number",
+                                                    "minimum": 0.01
+                                                }
+                                            },
+                                            "required": [
+                                                "item_id",
+                                                "quantidade"
+                                            ]
+                                        },
+                                        "minItems": 1
+                                    }
+                                },
+                                "required": [
+                                    "cliente_id",
+                                    "itens"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Orcamento"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/orcamentos/{id}/converter": {
+            "post": {
+                "operationId": "orcamento.converter",
+                "tags": [
+                    "Orcamento"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "destino": {
+                                        "type": "string",
+                                        "enum": [
+                                            "VENDA",
+                                            "OS",
+                                            "venda",
+                                            "os"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "destino"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "tipo": {
+                                                    "type": "string",
+                                                    "const": "OS"
+                                                },
+                                                "objeto": {
+                                                    "$ref": "#/components/schemas/OrdemServico"
+                                                }
+                                            },
+                                            "required": [
+                                                "tipo",
+                                                "objeto"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
         "/v1/ordens-servico": {
             "get": {
                 "operationId": "ordemServico.index",
@@ -2021,10 +2650,466 @@ TAMANHO: 116340 bytes
                     }
                 }
             }
+        },
+        "/v1/produtos/unidades": {
+            "get": {
+                "operationId": "unidade.index",
+                "tags": [
+                    "Unidade"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Unidade"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "unidade.store",
+                "tags": [
+                    "Unidade"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "sigla": {
+                                        "type": "string",
+                                        "maxLength": 10
+                                    },
+                                    "nome": {
+                                        "type": "string",
+                                        "maxLength": 50
+                                    }
+                                },
+                                "required": [
+                                    "sigla",
+                                    "nome"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Unidade"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/produtos/unidades/{id}": {
+            "delete": {
+                "operationId": "unidade.destroy",
+                "tags": [
+                    "Unidade"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Unidade inativada com sucesso."
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/vendas": {
+            "get": {
+                "operationId": "venda.index",
+                "tags": [
+                    "Venda"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "minimum": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Venda"
+                                                    }
+                                                },
+                                                "first_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "from": {
+                                                    "type": [
+                                                        "integer",
+                                                        "null"
+                                                    ],
+                                                    "minimum": 1
+                                                },
+                                                "last_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "minimum": 1
+                                                },
+                                                "links": {
+                                                    "type": "array",
+                                                    "description": "Generated paginator links.",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "url": {
+                                                                "type": [
+                                                                    "string",
+                                                                    "null"
+                                                                ]
+                                                            },
+                                                            "label": {
+                                                                "type": "string"
+                                                            },
+                                                            "active": {
+                                                                "type": "boolean"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "url",
+                                                            "label",
+                                                            "active"
+                                                        ]
+                                                    }
+                                                },
+                                                "next_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "path": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ],
+                                                    "description": "Base path for paginator generated URLs."
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "description": "Number of items shown per page.",
+                                                    "minimum": 0
+                                                },
+                                                "prev_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "to": {
+                                                    "type": [
+                                                        "integer",
+                                                        "null"
+                                                    ],
+                                                    "description": "Number of the last item in the slice.",
+                                                    "minimum": 1
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "description": "Total number of items being paginated.",
+                                                    "minimum": 0
+                                                }
+                                            },
+                                            "required": [
+                                                "current_page",
+                                                "data",
+                                                "first_page_url",
+                                                "from",
+                                                "last_page_url",
+                                                "last_page",
+                                                "links",
+                                                "next_page_url",
+                                                "path",
+                                                "per_page",
+                                                "prev_page_url",
+                                                "to",
+                                                "total"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "venda.store",
+                "tags": [
+                    "Venda"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "cliente_id": {
+                                        "type": "integer"
+                                    },
+                                    "itens": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "item_id": {
+                                                    "type": "integer"
+                                                },
+                                                "quantidade": {
+                                                    "type": "number",
+                                                    "minimum": 0.01
+                                                }
+                                            },
+                                            "required": [
+                                                "item_id",
+                                                "quantidade"
+                                            ]
+                                        },
+                                        "minItems": 1
+                                    }
+                                },
+                                "required": [
+                                    "cliente_id",
+                                    "itens"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Venda"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
         }
     },
     "components": {
         "schemas": {
+            "Categoria": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "nome": {
+                        "type": "string"
+                    },
+                    "ativo": {
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "nome",
+                    "ativo",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "Categoria"
+            },
+            "CategoriaFinanceira": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "nome": {
+                        "type": "string"
+                    },
+                    "tipo": {
+                        "type": "string"
+                    },
+                    "ativo": {
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "nome",
+                    "tipo",
+                    "ativo",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "CategoriaFinanceira"
+            },
             "Compra": {
                 "type": "object",
                 "properties": {
@@ -2280,6 +3365,84 @@ TAMANHO: 116340 bytes
                 ],
                 "title": "LancamentoFinanceiro"
             },
+            "Orcamento": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "cliente_id": {
+                        "type": "integer"
+                    },
+                    "vendedor_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "numero_orcamento": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "data_emissao": {
+                        "type": "string"
+                    },
+                    "data_validade": {
+                        "type": "string"
+                    },
+                    "valor_subtotal": {
+                        "type": "string"
+                    },
+                    "valor_desconto": {
+                        "type": "string"
+                    },
+                    "valor_total": {
+                        "type": "string"
+                    },
+                    "observacoes": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "cliente_id",
+                    "vendedor_id",
+                    "numero_orcamento",
+                    "status",
+                    "data_emissao",
+                    "data_validade",
+                    "valor_subtotal",
+                    "valor_desconto",
+                    "valor_total",
+                    "observacoes",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "Orcamento"
+            },
             "OrdemServico": {
                 "type": "object",
                 "properties": {
@@ -2469,6 +3632,124 @@ TAMANHO: 116340 bytes
                     "updated_at"
                 ],
                 "title": "Pessoa"
+            },
+            "Unidade": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "sigla": {
+                        "type": "string"
+                    },
+                    "nome": {
+                        "type": "string"
+                    },
+                    "ativo": {
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "sigla",
+                    "nome",
+                    "ativo",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "Unidade"
+            },
+            "Venda": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "cliente_id": {
+                        "type": "integer"
+                    },
+                    "vendedor_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "numero_venda": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "data_venda": {
+                        "type": "string"
+                    },
+                    "valor_subtotal": {
+                        "type": "string"
+                    },
+                    "valor_desconto": {
+                        "type": "string"
+                    },
+                    "valor_total": {
+                        "type": "string"
+                    },
+                    "observacoes": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "cliente_id",
+                    "vendedor_id",
+                    "numero_venda",
+                    "status",
+                    "data_venda",
+                    "valor_subtotal",
+                    "valor_desconto",
+                    "valor_total",
+                    "observacoes",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "Venda"
             }
         },
         "responses": {
@@ -2548,6 +3829,36 @@ abstract class Controller
 
 
 ============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Http\Middleware\CheckRole.php
+TAMANHO: 623 bytes
+============================================================
+
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+class CheckRole
+{
+    public function handle(Request $request, Closure $next, string ...$roles): Response
+    {
+        $user = $request->user();
+
+        if (! $user || ! in_array($user->role, $roles)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Acesso negado. Seu perfil de usuário (' . ($user->role ?? 'NENHUM') . ') não tem permissão para esta ação.'
+            ], 403);
+        }
+
+        return $next($request);
+    }
+}
+
+============================================================
 ARQUIVO: C:\Projetos\scalle-erp\app\Models\Empresa.php
 TAMANHO: 279 bytes
 ============================================================
@@ -2572,7 +3883,7 @@ class Empresa extends Model
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\app\Models\User.php
-TAMANHO: 613 bytes
+TAMANHO: 629 bytes
 ============================================================
 
 <?php
@@ -2593,6 +3904,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
         'ativo',
     ];
 
@@ -2609,7 +3921,7 @@ class User extends Authenticatable
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Auth\Controllers\AuthController.php
-TAMANHO: 1856 bytes
+TAMANHO: 1900 bytes
 ============================================================
 
 <?php
@@ -2660,6 +3972,7 @@ class AuthController extends Controller
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
+                    'role' => $user->role,
                     'empresa' => [
                         'id' => $user->empresa->id,
                         'nome_fantasia' => $user->empresa->nome_fantasia ?? $user->empresa->razao_social,
@@ -2896,6 +4209,47 @@ class CompraService
 }
 
 ============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Financeiro\Controllers\CategoriaFinanceiraController.php
+TAMANHO: 1307 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Financeiro\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Modules\Financeiro\Services\CategoriaFinanceiraService;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+
+class CategoriaFinanceiraController extends Controller
+{
+    public function __construct(private CategoriaFinanceiraService $service) {}
+
+    public function index(Request $request): JsonResponse
+    {
+        $data = $this->service->listar($request->user()->empresa_id, $request->query('tipo'));
+        return response()->json(['status' => 'success', 'data' => $data]);
+    }
+
+    public function store(Request $request): JsonResponse
+    {
+        $request->validate([
+            'nome' => 'required|string|max:255',
+            'tipo' => 'required|in:RECEITA,DESPESA,receita,despesa',
+        ]);
+        $categoria = $this->service->criar($request->user()->empresa_id, $request->all());
+        return response()->json(['status' => 'success', 'data' => $categoria], 201);
+    }
+
+    public function destroy(Request $request, int $id): JsonResponse
+    {
+        $this->service->inativar($id, $request->user()->empresa_id);
+        return response()->json(['status' => 'success', 'message' => 'Categoria financeira inativada com sucesso.']);
+    }
+}
+
+============================================================
 ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Financeiro\Controllers\LancamentoFinanceiroController.php
 TAMANHO: 2082 bytes
 ============================================================
@@ -3052,8 +4406,49 @@ Route::get('/resumo-dre', [LancamentoFinanceiroController::class, 'resumoDRE']);
 Route::patch('/{id}/baixar', [LancamentoFinanceiroController::class, 'baixar']);
 
 ============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Financeiro\Services\CategoriaFinanceiraService.php
+TAMANHO: 1006 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Financeiro\Services;
+
+use App\Modules\Financeiro\Models\CategoriaFinanceira;
+
+class CategoriaFinanceiraService
+{
+    public function listar(int $empresaId, ?string $tipo = null)
+    {
+        $query = CategoriaFinanceira::where('empresa_id', $empresaId)->where('ativo', true);
+
+        if ($tipo) {
+            $query->where('tipo', strtoupper($tipo));
+        }
+
+        return $query->orderBy('nome')->get();
+    }
+
+    public function criar(int $empresaId, array $data): CategoriaFinanceira
+    {
+        return CategoriaFinanceira::create([
+            'empresa_id' => $empresaId,
+            'nome' => $data['nome'],
+            'tipo' => strtoupper($data['tipo']),
+            'ativo' => true,
+        ]);
+    }
+
+    public function inativar(int $id, int $empresaId): bool
+    {
+        $cat = CategoriaFinanceira::where('id', $id)->where('empresa_id', $empresaId)->firstOrFail();
+        return $cat->update(['ativo' => false]);
+    }
+}
+
+============================================================
 ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Financeiro\Services\LancamentoFinanceiroService.php
-TAMANHO: 4774 bytes
+TAMANHO: 5277 bytes
 ============================================================
 
 <?php
@@ -3064,6 +4459,7 @@ use App\Modules\Financeiro\Models\LancamentoFinanceiro;
 use App\Modules\OrdensServico\Models\OrdemServico;
 use Illuminate\Support\Facades\DB;
 use App\Modules\Compras\Models\Compra;
+use App\Modules\Vendas\Models\Venda;
 
 class LancamentoFinanceiroService
 {
@@ -3177,6 +4573,360 @@ public function obterResumoDRE(int $empresaId, ?string $dataInicio = null, ?stri
         ]
     ];
 }
+/**
+ * Gera automaticamente o Contas a Receber quando uma Venda é efetuada.
+ */
+public function gerarReceitaOrigemVenda(Venda $venda): LancamentoFinanceiro
+{
+    return LancamentoFinanceiro::create([
+        'empresa_id' => $venda->empresa_id,
+        'pessoa_id' => $venda->cliente_id,
+        'tipo' => 'RECEITA',
+        'descricao' => "Faturamento relativo à Venda {$venda->numero_venda}",
+        'valor' => $venda->valor_total,
+        'data_vencimento' => now()->addDays(7),
+        'status' => 'PENDENTE',
+        'parcela_atual' => 1,
+        'total_parcelas' => 1,
+    ]);
+}
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Orcamentos\Controllers\OrcamentoController.php
+TAMANHO: 2112 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Orcamentos\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Modules\Orcamentos\Services\OrcamentoService;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+
+class OrcamentoController extends Controller
+{
+    public function __construct(private OrcamentoService $orcamentoService) {}
+
+    public function index(Request $request): JsonResponse
+    {
+        $empresaId = $request->user()->empresa_id;
+        $orcamentos = $this->orcamentoService->listarOrcamentos($empresaId);
+
+        return response()->json(['status' => 'success', 'data' => $orcamentos]);
+    }
+
+    public function store(Request $request): JsonResponse
+    {
+        $request->validate([
+            'cliente_id' => 'required|exists:pes_pessoas,id',
+            'data_validade' => 'nullable|date',
+            'itens' => 'required|array|min:1',
+            'itens.*.item_id' => 'required|exists:pro_itens,id',
+            'itens.*.quantidade' => 'required|numeric|min:0.01',
+        ]);
+
+        $empresaId = $request->user()->empresa_id;
+        $vendedorId = $request->user()->id;
+
+        $orcamento = $this->orcamentoService->criarOrcamento($empresaId, $vendedorId, $request->all());
+
+        return response()->json(['status' => 'success', 'data' => $orcamento], 201);
+    }
+
+    public function converter(Request $request, int $id): JsonResponse
+    {
+        $request->validate([
+            'destino' => 'required|in:VENDA,OS,venda,os',
+        ]);
+
+        $empresaId = $request->user()->empresa_id;
+        $destino = strtoupper($request->destino);
+
+        try {
+            $resultado = $this->orcamentoService->converterOrcamento($id, $empresaId, $destino);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => "Orçamento convertido em {$destino} com sucesso!",
+                'data' => $resultado
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 422);
+        }
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Orcamentos\Models\Orcamento.php
+TAMANHO: 1019 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Orcamentos\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Modules\Pessoas\Models\Pessoa;
+use App\Models\User;
+
+class Orcamento extends Model
+{
+    protected $table = 'orc_orcamentos';
+
+    protected $fillable = [
+        'empresa_id',
+        'cliente_id',
+        'vendedor_id',
+        'numero_orcamento',
+        'status',
+        'data_emissao',
+        'data_validade',
+        'valor_subtotal',
+        'valor_desconto',
+        'valor_total',
+        'observacoes',
+    ];
+
+    public function cliente(): BelongsTo
+    {
+        return $this->belongsTo(Pessoa::class, 'cliente_id');
+    }
+
+    public function vendedor(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'vendedor_id');
+    }
+
+    public function itens(): HasMany
+    {
+        return $this->hasMany(OrcamentoItem::class, 'orcamento_id');
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Orcamentos\Models\OrcamentoItem.php
+TAMANHO: 567 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Orcamentos\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Modules\Produtos\Models\Item;
+
+class OrcamentoItem extends Model
+{
+    protected $table = 'orc_itens';
+
+    protected $fillable = [
+        'orcamento_id',
+        'item_id',
+        'descricao_item',
+        'quantidade',
+        'valor_unitario',
+        'valor_subtotal',
+    ];
+
+    public function item(): BelongsTo
+    {
+        return $this->belongsTo(Item::class, 'item_id');
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Orcamentos\Routes\api.php
+TAMANHO: 640 bytes
+============================================================
+
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Modules\Orcamentos\Controllers\OrcamentoController;
+use App\Modules\Financeiro\Controllers\CategoriaFinanceiraController;
+
+Route::get('/', [OrcamentoController::class, 'index']);
+Route::post('/', [OrcamentoController::class, 'store']);
+Route::post('/{id}/converter', [OrcamentoController::class, 'converter']);
+// Categorias Financeiras
+Route::get('/categorias', [CategoriaFinanceiraController::class, 'index']);
+Route::post('/categorias', [CategoriaFinanceiraController::class, 'store']);
+Route::delete('/categorias/{id}', [CategoriaFinanceiraController::class, 'destroy']);
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Orcamentos\Services\OrcamentoNumeroService.php
+TAMANHO: 824 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Orcamentos\Services;
+
+use App\Modules\Orcamentos\Models\Orcamento;
+
+class OrcamentoNumeroService
+{
+    public static function gerarProximoNumero(int $empresaId): string
+    {
+        $anoAtual = date('Y');
+        $prefixo = "ORC-{$anoAtual}-";
+
+        $ultimoOrcamento = Orcamento::where('empresa_id', $empresaId)
+            ->where('numero_orcamento', 'like', "{$prefixo}%")
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if (! $ultimoOrcamento) {
+            return "{$prefixo}000001";
+        }
+
+        $partes = explode('-', $ultimoOrcamento->numero_orcamento);
+        $sequencial = (int) end($partes);
+        $proximoSequencial = str_pad($sequencial + 1, 6, '0', STR_PAD_LEFT);
+
+        return "{$prefixo}{$proximoSequencial}";
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Orcamentos\Services\OrcamentoService.php
+TAMANHO: 5179 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Orcamentos\Services;
+
+use App\Modules\Orcamentos\Models\Orcamento;
+use App\Modules\Orcamentos\Models\OrcamentoItem;
+use App\Modules\Produtos\Models\Item;
+use App\Modules\Vendas\Services\VendaService;
+use App\Modules\OrdensServico\Services\OrdemServicoService;
+use App\Modules\OrdensServico\DTOs\OrdemServicoDTO;
+use Illuminate\Support\Facades\DB;
+
+class OrcamentoService
+{
+    public function __construct(
+        private VendaService $vendaService,
+        private OrdemServicoService $osService
+    ) {}
+
+    public function criarOrcamento(int $empresaId, int $vendedorId, array $data): Orcamento
+    {
+        return DB::transaction(function () use ($empresaId, $vendedorId, $data) {
+            $numero = OrcamentoNumeroService::gerarProximoNumero($empresaId);
+
+            $orcamento = Orcamento::create([
+                'empresa_id' => $empresaId,
+                'cliente_id' => $data['cliente_id'],
+                'vendedor_id' => $vendedorId,
+                'numero_orcamento' => $numero,
+                'status' => 'EM_ABERTO',
+                'data_emissao' => now(),
+                'data_validade' => $data['data_validade'] ?? now()->addDays(7)->toDateString(),
+                'valor_desconto' => (float) ($data['valor_desconto'] ?? 0),
+                'observacoes' => $data['observacoes'] ?? null,
+                'valor_subtotal' => 0.00,
+                'valor_total' => 0.00,
+            ]);
+
+            $subtotal = 0.00;
+
+            foreach ($data['itens'] as $itemRequest) {
+                $itemCadastrado = Item::where('id', $itemRequest['item_id'])
+                    ->where('empresa_id', $empresaId)
+                    ->firstOrFail();
+
+                $qtd = (float) $itemRequest['quantidade'];
+                $unitario = (float) ($itemRequest['valor_unitario'] ?? $itemCadastrado->preco_venda);
+                $sub = $qtd * $unitario;
+                $subtotal += $sub;
+
+                OrcamentoItem::create([
+                    'orcamento_id' => $orcamento->id,
+                    'item_id' => $itemCadastrado->id,
+                    'descricao_item' => $itemCadastrado->nome,
+                    'quantidade' => $qtd,
+                    'valor_unitario' => $unitario,
+                    'valor_subtotal' => $sub,
+                ]);
+            }
+
+            $orcamento->update([
+                'valor_subtotal' => $subtotal,
+                'valor_total' => max(0, $subtotal - $orcamento->valor_desconto),
+            ]);
+
+            return $orcamento->load(['cliente', 'vendedor', 'itens.item']);
+        });
+    }
+
+    public function listarOrcamentos(int $empresaId)
+    {
+        return Orcamento::with(['cliente', 'vendedor', 'itens.item'])
+            ->where('empresa_id', $empresaId)
+            ->orderBy('id', 'desc')
+            ->paginate(15);
+    }
+
+    /**
+     * Converte o Orçamento Aprovado em Venda Direta ou Ordem de Serviço
+     */
+    public function converterOrcamento(int $orcamentoId, int $empresaId, string $destino): array
+    {
+        return DB::transaction(function () use ($orcamentoId, $empresaId, $destino) {
+            $orcamento = Orcamento::with('itens')
+                ->where('id', $orcamentoId)
+                ->where('empresa_id', $empresaId)
+                ->firstOrFail();
+
+            if ($orcamento->status === 'CONVERTIDO') {
+                throw new \Exception('Este orçamento já foi convertido anteriormente.');
+            }
+
+            $itensFormatados = $orcamento->itens->map(function ($item) {
+                return [
+                    'item_id' => $item->item_id,
+                    'quantidade' => (float) $item->quantidade,
+                    'valor_unitario' => (float) $item->valor_unitario,
+                ];
+            })->toArray();
+
+            $resultado = [];
+
+            if ($destino === 'VENDA') {
+                $venda = $this->vendaService->registrarVenda($empresaId, $orcamento->vendedor_id, [
+                    'cliente_id' => $orcamento->cliente_id,
+                    'valor_desconto' => $orcamento->valor_desconto,
+                    'observacoes' => "Gerado a partir do Orçamento {$orcamento->numero_orcamento}",
+                    'itens' => $itensFormatados,
+                ]);
+                $resultado = ['tipo' => 'VENDA', 'objeto' => $venda];
+            } else if ($destino === 'OS') {
+                $dto = OrdemServicoDTO::fromRequest([
+                    'cliente_id' => $orcamento->cliente_id,
+                    'tecnico_id' => $orcamento->vendedor_id,
+                    'valor_desconto' => $orcamento->valor_desconto,
+                    'observacoes_internas' => "Gerado a partir do Orçamento {$orcamento->numero_orcamento}",
+                    'itens' => $itensFormatados,
+                ], $empresaId);
+
+                $os = $this->osService->criarOS($dto);
+                $resultado = ['tipo' => 'OS', 'objeto' => $os];
+            }
+
+            $orcamento->update(['status' => 'CONVERTIDO']);
+
+            return $resultado;
+        });
+    }
 }
 
 ============================================================
@@ -3821,6 +5571,44 @@ class PessoaService
 }
 
 ============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Produtos\Controllers\CategoriaController.php
+TAMANHO: 1178 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Produtos\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Modules\Produtos\Services\CategoriaService;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+
+class CategoriaController extends Controller
+{
+    public function __construct(private CategoriaService $categoriaService) {}
+
+    public function index(Request $request): JsonResponse
+    {
+        $data = $this->categoriaService->listar($request->user()->empresa_id);
+        return response()->json(['status' => 'success', 'data' => $data]);
+    }
+
+    public function store(Request $request): JsonResponse
+    {
+        $request->validate(['nome' => 'required|string|max:100']);
+        $categoria = $this->categoriaService->criar($request->user()->empresa_id, $request->all());
+        return response()->json(['status' => 'success', 'data' => $categoria], 201);
+    }
+
+    public function destroy(Request $request, int $id): JsonResponse
+    {
+        $this->categoriaService->inativar($id, $request->user()->empresa_id);
+        return response()->json(['status' => 'success', 'message' => 'Categoria inativada com sucesso.']);
+    }
+}
+
+============================================================
 ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Produtos\Controllers\ItemController.php
 TAMANHO: 3021 bytes
 ============================================================
@@ -3910,6 +5698,47 @@ class ItemController extends Controller
         $this->itemService->inativarItem($item);
 
         return response()->json(['status' => 'success', 'message' => 'Item inativado com sucesso.']);
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Produtos\Controllers\UnidadeController.php
+TAMANHO: 1232 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Produtos\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Modules\Produtos\Services\UnidadeService;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+
+class UnidadeController extends Controller
+{
+    public function __construct(private UnidadeService $unidadeService) {}
+
+    public function index(Request $request): JsonResponse
+    {
+        $data = $this->unidadeService->listar($request->user()->empresa_id);
+        return response()->json(['status' => 'success', 'data' => $data]);
+    }
+
+    public function store(Request $request): JsonResponse
+    {
+        $request->validate([
+            'sigla' => 'required|string|max:10',
+            'nome' => 'required|string|max:50',
+        ]);
+        $unidade = $this->unidadeService->criar($request->user()->empresa_id, $request->all());
+        return response()->json(['status' => 'success', 'data' => $unidade], 201);
+    }
+
+    public function destroy(Request $request, int $id): JsonResponse
+    {
+        $this->unidadeService->inativar($id, $request->user()->empresa_id);
+        return response()->json(['status' => 'success', 'message' => 'Unidade inativada com sucesso.']);
     }
 }
 
@@ -4084,19 +5913,67 @@ class Unidade extends Model
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Produtos\Routes\api.php
-TAMANHO: 380 bytes
+TAMANHO: 938 bytes
 ============================================================
 
 <?php
 
 use Illuminate\Support\Facades\Route;
 use App\Modules\Produtos\Controllers\ItemController;
+use App\Modules\Produtos\Controllers\CategoriaController;
+use App\Modules\Produtos\Controllers\UnidadeController;
 
 Route::get('/', [ItemController::class, 'index']);
 Route::post('/', [ItemController::class, 'store']);
 Route::get('/{id}', [ItemController::class, 'show']);
 Route::put('/{id}', [ItemController::class, 'update']);
 Route::delete('/{id}', [ItemController::class, 'destroy']);
+// Categorias
+Route::get('/categorias', [CategoriaController::class, 'index']);
+Route::post('/categorias', [CategoriaController::class, 'store']);
+Route::delete('/categorias/{id}', [CategoriaController::class, 'destroy']);
+
+// Unidades
+Route::get('/unidades', [UnidadeController::class, 'index']);
+Route::post('/unidades', [UnidadeController::class, 'store']);
+Route::delete('/unidades/{id}', [UnidadeController::class, 'destroy']);
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Produtos\Services\CategoriaService.php
+TAMANHO: 806 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Produtos\Services;
+
+use App\Modules\Produtos\Models\Categoria;
+
+class CategoriaService
+{
+    public function listar(int $empresaId)
+    {
+        return Categoria::where('empresa_id', $empresaId)
+            ->where('ativo', true)
+            ->orderBy('nome')
+            ->get();
+    }
+
+    public function criar(int $empresaId, array $data): Categoria
+    {
+        return Categoria::create([
+            'empresa_id' => $empresaId,
+            'nome' => $data['nome'],
+            'ativo' => true,
+        ]);
+    }
+
+    public function inativar(int $id, int $empresaId): bool
+    {
+        $categoria = Categoria::where('id', $id)->where('empresa_id', $empresaId)->firstOrFail();
+        return $categoria->update(['ativo' => false]);
+    }
+}
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Produtos\Services\ItemService.php
@@ -4177,6 +6054,312 @@ class ItemService
 }
 
 ============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Produtos\Services\UnidadeService.php
+TAMANHO: 843 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Produtos\Services;
+
+use App\Modules\Produtos\Models\Unidade;
+
+class UnidadeService
+{
+    public function listar(int $empresaId)
+    {
+        return Unidade::where('empresa_id', $empresaId)
+            ->where('ativo', true)
+            ->orderBy('sigla')
+            ->get();
+    }
+
+    public function criar(int $empresaId, array $data): Unidade
+    {
+        return Unidade::create([
+            'empresa_id' => $empresaId,
+            'sigla' => strtoupper($data['sigla']),
+            'nome' => $data['nome'],
+            'ativo' => true,
+        ]);
+    }
+
+    public function inativar(int $id, int $empresaId): bool
+    {
+        $unidade = Unidade::where('id', $id)->where('empresa_id', $empresaId)->firstOrFail();
+        return $unidade->update(['ativo' => false]);
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Vendas\Controllers\VendaController.php
+TAMANHO: 1203 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Vendas\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Modules\Vendas\Services\VendaService;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+
+class VendaController extends Controller
+{
+    public function __construct(private VendaService $vendaService) {}
+
+    public function index(Request $request): JsonResponse
+    {
+        $empresaId = $request->user()->empresa_id;
+        $vendas = $this->vendaService->listarVendas($empresaId);
+
+        return response()->json(['status' => 'success', 'data' => $vendas]);
+    }
+
+    public function store(Request $request): JsonResponse
+    {
+        $request->validate([
+            'cliente_id' => 'required|exists:pes_pessoas,id',
+            'itens' => 'required|array|min:1',
+            'itens.*.item_id' => 'required|exists:pro_itens,id',
+            'itens.*.quantidade' => 'required|numeric|min:0.01',
+        ]);
+
+        $empresaId = $request->user()->empresa_id;
+        $vendedorId = $request->user()->id;
+
+        $venda = $this->vendaService->registrarVenda($empresaId, $vendedorId, $request->all());
+
+        return response()->json(['status' => 'success', 'data' => $venda], 201);
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Vendas\Models\Venda.php
+TAMANHO: 926 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Vendas\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Modules\Pessoas\Models\Pessoa;
+use App\Models\User;
+
+class Venda extends Model
+{
+    protected $table = 'ven_vendas';
+
+    protected $fillable = [
+        'empresa_id',
+        'cliente_id',
+        'vendedor_id',
+        'numero_venda',
+        'status',
+        'data_venda',
+        'valor_subtotal',
+        'valor_desconto',
+        'valor_total',
+        'observacoes',
+    ];
+
+    public function cliente(): BelongsTo
+    {
+        return $this->belongsTo(Pessoa::class, 'cliente_id');
+    }
+
+    public function vendedor(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'vendedor_id');
+    }
+
+    public function itens(): HasMany
+    {
+        return $this->hasMany(VendaItem::class, 'venda_id');
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Vendas\Models\VendaItem.php
+TAMANHO: 530 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Vendas\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Modules\Produtos\Models\Item;
+
+class VendaItem extends Model
+{
+    protected $table = 'ven_itens';
+
+    protected $fillable = [
+        'venda_id',
+        'item_id',
+        'descricao_item',
+        'quantidade',
+        'valor_unitario',
+        'valor_subtotal',
+    ];
+
+    public function item(): BelongsTo
+    {
+        return $this->belongsTo(Item::class, 'item_id');
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Vendas\Routes\api.php
+TAMANHO: 202 bytes
+============================================================
+
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Modules\Vendas\Controllers\VendaController;
+
+Route::get('/', [VendaController::class, 'index']);
+Route::post('/', [VendaController::class, 'store']);
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Vendas\Services\VendaNumeroService.php
+TAMANHO: 756 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Vendas\Services;
+
+use App\Modules\Vendas\Models\Venda;
+
+class VendaNumeroService
+{
+    public static function gerarProximoNumero(int $empresaId): string
+    {
+        $anoAtual = date('Y');
+        $prefixo = "VEN-{$anoAtual}-";
+
+        $ultimaVenda = Venda::where('empresa_id', $empresaId)
+            ->where('numero_venda', 'like', "{$prefixo}%")
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if (! $ultimaVenda) {
+            return "{$prefixo}000001";
+        }
+
+        $partes = explode('-', $ultimaVenda->numero_venda);
+        $sequencial = (int) end($partes);
+        $proximoSequencial = str_pad($sequencial + 1, 6, '0', STR_PAD_LEFT);
+
+        return "{$prefixo}{$proximoSequencial}";
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\Vendas\Services\VendaService.php
+TAMANHO: 3298 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\Vendas\Services;
+
+use App\Modules\Vendas\Models\Venda;
+use App\Modules\Vendas\Models\VendaItem;
+use App\Modules\Produtos\Models\Item;
+use App\Modules\Produtos\Services\ItemService;
+use App\Modules\Financeiro\Services\LancamentoFinanceiroService;
+use Illuminate\Support\Facades\DB;
+
+class VendaService
+{
+    public function __construct(
+        private ItemService $itemService,
+        private LancamentoFinanceiroService $financeiroService
+    ) {}
+
+    public function registrarVenda(int $empresaId, int $vendedorId, array $data): Venda
+    {
+        return DB::transaction(function () use ($empresaId, $vendedorId, $data) {
+            $numeroVenda = VendaNumeroService::gerarProximoNumero($empresaId);
+
+            $venda = Venda::create([
+                'empresa_id' => $empresaId,
+                'cliente_id' => $data['cliente_id'],
+                'vendedor_id' => $vendedorId,
+                'numero_venda' => $numeroVenda,
+                'status' => 'CONCLUIDO',
+                'data_venda' => now(),
+                'valor_desconto' => (float) ($data['valor_desconto'] ?? 0),
+                'observacoes' => $data['observacoes'] ?? null,
+                'valor_subtotal' => 0.00,
+                'valor_total' => 0.00,
+            ]);
+
+            $subtotalVenda = 0.00;
+
+            foreach ($data['itens'] as $itemVenda) {
+                $itemCadastrado = Item::where('id', $itemVenda['item_id'])
+                    ->where('empresa_id', $empresaId)
+                    ->firstOrFail();
+
+                $quantidade = (float) $itemVenda['quantidade'];
+                $valorUnitario = (float) ($itemVenda['valor_unitario'] ?? $itemCadastrado->preco_venda);
+                $subtotal = $quantidade * $valorUnitario;
+                $subtotalVenda += $subtotal;
+
+                VendaItem::create([
+                    'venda_id' => $venda->id,
+                    'item_id' => $itemCadastrado->id,
+                    'descricao_item' => $itemCadastrado->nome,
+                    'quantidade' => $quantidade,
+                    'valor_unitario' => $valorUnitario,
+                    'valor_subtotal' => $subtotal,
+                ]);
+
+                // 📦 GATILHO 1: Subtrai o estoque das peças vendidas
+                if ($itemCadastrado->tipo === 'P') {
+                    $this->itemService->movimentarEstoque(
+                        itemId: $itemCadastrado->id,
+                        empresaId: $empresaId,
+                        quantidade: $quantidade,
+                        operacao: 'SUBTRAIR'
+                    );
+                }
+            }
+
+            $valorTotal = max(0, $subtotalVenda - $venda->valor_desconto);
+
+            $venda->update([
+                'valor_subtotal' => $subtotalVenda,
+                'valor_total' => $valorTotal,
+            ]);
+
+            // 💰 GATILHO 2: Gera a Receita no Contas a Receber
+            $this->financeiroService->gerarReceitaOrigemVenda($venda);
+
+            return $venda->load(['cliente', 'vendedor', 'itens']);
+        });
+    }
+
+    public function listarVendas(int $empresaId)
+    {
+        return Venda::with(['cliente', 'vendedor', 'itens'])
+            ->where('empresa_id', $empresaId)
+            ->orderBy('id', 'desc')
+            ->paginate(15);
+    }
+}
+
+============================================================
 ARQUIVO: C:\Projetos\scalle-erp\app\Providers\AppServiceProvider.php
 TAMANHO: 361 bytes
 ============================================================
@@ -4209,7 +6392,7 @@ class AppServiceProvider extends ServiceProvider
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\bootstrap\app.php
-TAMANHO: 734 bytes
+TAMANHO: 809 bytes
 ============================================================
 
 <?php
@@ -4227,8 +6410,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
-    })
+    $middleware->alias([
+        'role' => \App\Http\Middleware\CheckRole::class,
+    ]);
+})
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*'),
@@ -6925,6 +9110,154 @@ return new class extends Migration
 };
 
 ============================================================
+ARQUIVO: C:\Projetos\scalle-erp\database\migrations\2026_08_12_181650_create_ven_modulo_vendas_tables.php
+TAMANHO: 1922 bytes
+============================================================
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        // 1. Tabela Principal de Vendas / Pedidos
+        Schema::create('ven_vendas', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('empresa_id')->constrained('sis_empresas')->onDelete('cascade');
+            $table->foreignId('cliente_id')->constrained('pes_pessoas')->onDelete('restrict');
+            $table->foreignId('vendedor_id')->nullable()->constrained('users')->onDelete('set null');
+
+            $table->string('numero_venda', 30); // Ex: VEN-2026-000001
+            $table->enum('status', ['ORCAMENTO', 'CONCLUIDO', 'CANCELADO'])->default('CONCLUIDO');
+            $table->dateTime('data_venda');
+
+            $table->decimal('valor_subtotal', 12, 2)->default(0.00);
+            $table->decimal('valor_desconto', 12, 2)->default(0.00);
+            $table->decimal('valor_total', 12, 2)->default(0.00);
+
+            $table->text('observacoes')->nullable();
+            $table->timestamps();
+
+            $table->unique(['empresa_id', 'numero_venda']);
+        });
+
+        // 2. Itens da Venda
+        Schema::create('ven_itens', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('venda_id')->constrained('ven_vendas')->onDelete('cascade');
+            $table->foreignId('item_id')->constrained('pro_itens')->onDelete('restrict');
+
+            $table->string('descricao_item');
+            $table->decimal('quantidade', 12, 3);
+            $table->decimal('valor_unitario', 12, 2);
+            $table->decimal('valor_subtotal', 12, 2);
+
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('ven_itens');
+        Schema::dropIfExists('ven_vendas');
+    }
+};
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\database\migrations\2026_08_12_184245_add_role_to_users_table.php
+TAMANHO: 604 bytes
+============================================================
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->enum('role', ['ADMIN', 'FINANCEIRO', 'TECNICO', 'ATENDENTE'])
+                  ->default('ADMIN')
+                  ->after('email');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('role');
+        });
+    }
+};
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\database\migrations\2026_08_12_191136_create_orc_modulo_orcamentos_tables.php
+TAMANHO: 2029 bytes
+============================================================
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        // 1. Tabela Principal de Orçamentos (Cabeçalho)
+        Schema::create('orc_orcamentos', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('empresa_id')->constrained('sis_empresas')->onDelete('cascade');
+            $table->foreignId('cliente_id')->constrained('pes_pessoas')->onDelete('restrict');
+            $table->foreignId('vendedor_id')->nullable()->constrained('users')->onDelete('set null');
+
+            $table->string('numero_orcamento', 30); // Ex: ORC-2026-000001
+            $table->enum('status', ['EM_ABERTO', 'APROVADO', 'RECUSADO', 'CONVERTIDO'])->default('EM_ABERTO');
+            
+            $table->dateTime('data_emissao');
+            $table->date('data_validade');
+
+            $table->decimal('valor_subtotal', 12, 2)->default(0.00);
+            $table->decimal('valor_desconto', 12, 2)->default(0.00);
+            $table->decimal('valor_total', 12, 2)->default(0.00);
+
+            $table->text('observacoes')->nullable();
+            $table->timestamps();
+
+            $table->unique(['empresa_id', 'numero_orcamento']);
+        });
+
+        // 2. Itens do Orçamento
+        Schema::create('orc_itens', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('orcamento_id')->constrained('orc_orcamentos')->onDelete('cascade');
+            $table->foreignId('item_id')->constrained('pro_itens')->onDelete('restrict');
+
+            $table->string('descricao_item');
+            $table->decimal('quantidade', 12, 3);
+            $table->decimal('valor_unitario', 12, 2);
+            $table->decimal('valor_subtotal', 12, 2);
+
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('orc_itens');
+        Schema::dropIfExists('orc_orcamentos');
+    }
+};
+
+============================================================
 ARQUIVO: C:\Projetos\scalle-erp\database\seeders\DatabaseSeeder.php
 TAMANHO: 703 bytes
 ============================================================
@@ -7485,93 +9818,91 @@ TAMANHO: 72302 bytes
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\revisar.md
-TAMANHO: 6362 bytes
+TAMANHO: 6257 bytes
 ============================================================
 
 É essa visão macro de produto que separa um sisteminha de gaveta de um **ERP Saas Escalável e Multissetorial**\! 🔥  
 Se a meta do **Scalle ERP** é atender desde a assistência técnica e o comércio de balcão até indústrias e distribuidoras, precisamos desenhar o mapa de módulos do sistema em **3 Camadas de Maturidade**.  
 Abaixo está o **Raio-X de Revisão do Projeto**, mostrando o que já temos blindado, o que falta para fechar o Comércio/Serviços e como o sistema vai expandir para Indústria e Logística no futuro sem quebrar a arquitetura modular:
 
-## **🗺️ Mapa de Evolução Arquitetural do Scalle ERP**
+## 🗺️ Mapa de Evolução Arquitetural do Scalle ERP
 
-                        ┌────────────────────────────────────────┐  
-                        │        CAMADA CORE (MULTITENANT)       │  
-                        │   Auth | Pessoas | Itens | DTOs | DB   │  
-                        └───────────────────┬────────────────────┘  
-                                            │  
-        ┌───────────────────────────────────┼───────────────────────────────────┐  
-        ▼                                   ▼                                   ▼  
- 🛠️ PRESTAÇÃO DE SERVIÇOS           🏬 COMÉRCIO & VENDAS               🏭 INDÚSTRIA (PCP)  
- \- Módulo de OS / CMMS ✅           \- Módulo de Vendas Diretas ⏳      \- Estrutura de Produtos (BOM) 🔮  
- \- Ciclo de Vida da OS ✅           \- PDV / Faturamento Rápidos 🔮      \- Ordens de Produção (OP) 🔮  
- \- Baixa/Estorno Estoque ✅          \- Orçamentos/Propostas 🔮          \- Apontamento de Perdas/Rendimento 🔮  
- \- Garantia & Laudos ✅             \- Comissões de Vendedores 🔮       \- Custo Industrial Apurado 🔮  
-        │                                   │                                   │  
-        └───────────────────────────────────┼───────────────────────────────────┘  
-                                            ▼  
-                        ┌────────────────────────────────────────┐  
-                        │      SUPRIMENTOS, GESTÃO & FINANCEIRO  │  
-                        │ \- Compras & Entradas de Notas ✅       │  
-                        │ \- Contas a Receber / Contas a Pagar ✅ │  
-                        │ \- DRE Consolidado & Fluxo de Caixa ✅   │  
-                        │ \- Fiscal (NFe / NFSe / CTM) 🔮         │  
-                        │ \- WMS / Logística / Frotas 🔮           │  
-                        └────────────────────────────────────────┘
+                            ┌────────────────────────────────────────┐  
+                            │        CAMADA CORE (MULTITENANT)       │  
+                            │   Auth | Pessoas | Itens | DTOs | DB   │  
+                            └───────────────────┬────────────────────┘  
+                                                │  
+            ┌───────────────────────────────────┼───────────────────────────────────┐  
+            ▼                                   ▼                                   ▼  
+     🛠️ PRESTAÇÃO DE SERVIÇOS           🏬 COMÉRCIO & VENDAS               🏭 INDÚSTRIA (PCP)  
+     - Módulo de OS / CMMS ✅           - Módulo de Vendas Diretas ✅      - Estrutura de Produtos (BOM) 🔮  
+     - Ciclo de Vida da OS ✅           - PDV / Pedidos de Balcão ✅        - Ordens de Produção (OP) 🔮  
+     - Baixa/Estorno Estoque ✅          - Orçamentos/Propostas ⏳          - Apontamento de Perdas 🔮  
+     - Garantia & Laudos ✅             - Comissões de Vendedores 🔮       - Custo Industrial Apurado 🔮  
+            │                                   │                                   │  
+            └───────────────────────────────────┼───────────────────────────────────┘  
+                                                ▼  
+                            ┌────────────────────────────────────────┐  
+                            │      SUPRIMENTOS, GESTÃO & FINANCEIRO  │  
+                            │ - Compras & Entradas de Notas ✅       │  
+                            │ - Contas a Receber / Contas a Pagar ✅ │  
+                            │ - DRE Consolidado & Fluxo de Caixa ✅   │  
+                            │ - ACL / Perfis de Acesso (CheckRole) ⏳│  
+                            │ - Fiscal (NFe / NFSe / CTM) 🔮         │  
+                            │ - WMS / Logística / Frotas 🔮           │  
+                            └────────────────────────────────────────┘
 
-## **🔍 Revisão Atual do Projeto (O que já temos na v1.0.0)**
+🔍 Revisão Atual do Projeto (O que já temos ativo)
+--------------------------------------------------
 
-Até este momento, construímos com sucesso o **Núcleo do Sistema** e o **Vertical de Serviços (CMMS)**:
+| **Módulo**              | **Status**  | **O que faz hoje?**                                                                                     |
+| ----------------------- | ----------- | ------------------------------------------------------------------------------------------------------- |
+| **Auth & Tenant**       | ✅ Concluído | Multi-empresa isolado (`empresa_id`) com autenticação Sanctum.                                          |
+| **Pessoas**             | ✅ Concluído | Tabela unificada para Clientes e Fornecedores.                                                          |
+| **Produtos & Serviços** | ✅ Concluído | Unificado com DTOs, precificação de custo/venda, DTO de update preservando saldo e controle de estoque. |
+| **Ordens de Serviço**   | ✅ Concluído | Numeração comercial, subtotais separados, ciclo de vida e baixa atômica de estoque na conclusão.        |
+| **Compras & Entradas**  | ✅ Concluído | Entrada de fornecedor, incremento de estoque, atualização de preço de custo e gera Contas a Pagar.      |
+| **Financeiro & DRE**    | ✅ Concluído | Receitas, Despesas, Liquidação com meio de pagamento e DRE do período (`Y-m-d`).                        |
+| **Vendas Diretas**      | ✅ Concluído | Pedidos de balcão (`VEN-2026-000001`), baixa atômica no estoque e geração de Contas a Receber.          |
 
-| Módulo | Status | O que faz hoje? |
-| :---- | :---- | :---- |
-| **Auth & Tenant** | ✅ Concluído | Multi-empresa isolado (empresa\_id) com autenticação Sanctum. |
-| **Pessoas** | ✅ Concluído | Tabela unificada para Clientes e Fornecedores. |
-| **Produtos & Serviços** | ✅ Concluído | Unificado com DTOs, precificação de custo/venda e saldo de estoque. |
-| **Ordens de Serviço** | ✅ Concluído | Numeração comercial, subtotais separados, ciclo de vida e baixa atômica de estoque. |
-| **Compras & Entradas** | ✅ Concluído | Entrada de fornecedor, incremento de estoque, preço de custo e gera Contas a Pagar. |
-| **Financeiro & DRE** | ✅ Concluído | Receitas, Despesas, Liquidação com meio de pagamento e DRE do período. |
+📌 Planejamento de Releases (Semantic Versioning)
+-------------------------------------------------
 
-## **🔮 Visão de Futuro para Múltiplos Segmentos**
+### 🟢 Versão 1.x.x — Core Comercial, Operacional & Segurança (Atual)
 
-Para que o **Scalle ERP** consiga atender qualquer empresa (do comércio à fábrica), eis o que cada setor vai demandar da nossa API:
+* **v1.0.0 (Concluída):** Multi-tenant, Pessoas, Produtos/Serviços, OS/CMMS, Compras e Financeiro/DRE.
 
-### **1\. Comércio & Distribuição (Próximo Passo Inevitável)**
+* **v1.1.0 (Fase Atual):** Módulo de Vendas Diretas + ACL / Perfis de Acesso (`ADMIN`, `FINANCEIRO`, `TECNICO`, `ATENDENTE`).
 
-* 🛒 **Módulo de Vendas Diretas (Pedidos/Balcão):** Venda rápida sem burocracia de laudo técnico.  
-* 📋 **Gestão de Orçamentos:** Envio de cotação para o cliente aprovar antes de virar pedido ou OS.  
-* 🏷️ **Tabelas de Preço & Descontos:** Preço atacado vs. varejo, descontos por volume.  
-* 🤝 **Comissões:** Cálculo automático de comissão por vendedor/atendente.
+* **v1.2.0 (Próxima):** Gestão de Orçamentos/Propostas + Cadastros Auxiliares (Categorias e Unidades de Medida).
 
-### **2\. Indústria & Transformação (PCP \- Planejamento e Controle da Produção)**
+* **v1.3.0:** Emissão Fiscal (NFe / NFS-e) + Gateway de Cobrança PIX/Boleto.
 
-* 🧱 **Ficha Técnica / Árvore do Produto (BOM):** Exemplo: Para fabricar *1 Cadeira*, o sistema consome *4 Pés de Madeira*, *1 Assento* e *8 Parafusos*.  
-* 🏭 **Ordem de Produção (OP):** Transforma matéria-prima (dando baixa no estoque de insumos) em produto acabado (incrementando o estoque do produto final).  
-* ⏱️ **Custo Indireto / Mão de Obra:** Incorporar horas de máquina e operadores no custo do produto.
+### 🏭 Versão 2.0.0 — Módulo Industrial (PCP & Custo Industrial)
 
-### **3\. Logística, Frotas & Almoxarifado (WMS)**
+* **Ficha Técnica / Árvore do Produto (BOM):** Composição de insumos por produto final.
 
-* 📍 **Multi-Depósitos:** Estoque dividido por depósito (Galpão Central, Loja 1, Van do Técnico).  
-* 🚚 **Módulo de Frotas/Transporte:** Controle de manutenções preventivas dos veículos da empresa (usando o nosso módulo de CMMS) e emissão de MDF-e/CTe.
+* **Ordens de Produção (OP):** Baixa atômica de insumos/matéria-prima e entrada do produto acabado no estoque.
 
-### **4\. Fiscal & Cobranças Automáticas**
+* **Apontamento de Horas e CIF:** Custo Indireto de Fabricação e horas de máquina.
 
-* 📜 **Emissão Fiscal NFe / NFS-e:** Comunicação direta com a prefeitura e SEFAZ.  
-* 💳 **Pix / Boleto Bancário:** Cobrança registrada direto via API no PIX/Asaas.
+### 🚚 Versão 3.0.0 — Logística, WMS & Multi-Depósitos
 
-## **🎯 Onde Estamos e Qual é a Melhor Jogada Agora?**
+* **Multi-Depósitos:** Estoque fracionado por galpão, loja física e van do técnico.
 
-Percebe como o **Módulo de Vendas Diretas / Pedidos** é o elo que falta para a gente conectar o **Comércio** ao ecossistema que já temos de Serviços, Compras e Financeiro?  
-Com o Módulo de Vendas pronto:
+* **Gestão de Frotas:** Manutenções preventivas dos veículos (utilizando o módulo CMMS).
 
-> 1. O prestador de serviço usa a **OS**.  
-> 2. O comerciante de balcão usa a **Venda Direta**.  
-> 3. Ambos alimentam o mesmo **Estoque** e geram o mesmo **Financeiro/DRE**\!
+* **Emissão de CTe e MDF-e:** Documentos fiscais de transporte.
 
-Bora construir o **Módulo de Vendas Diretas (app/Modules/Vendas)** para dar essa virada de chave no Scalle ERP?
+🎯 Próxima Ação Imediata
+------------------------
+
+Efetivar a aplicação do **Middleware `CheckRole`** para fechar o ciclo de **Segurança e Perfis de Acesso (v1.1.0)** nas rotas ativas.
+
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\routes\api.php
-TAMANHO: 1111 bytes
+TAMANHO: 1799 bytes
 ============================================================
 
 <?php
@@ -7581,28 +9912,41 @@ use Illuminate\Support\Facades\Route;
 // Rotas PÚBLICAS de Autenticação
 Route::prefix('v1/auth')->group(base_path('app/Modules/Auth/Routes/api.php'));
 
-// Rotas PROTEGIDAS do Módulo de Pessoas (Exige Token Sanctum)
-Route::middleware('auth:sanctum')
+// ROTAS PROTEGIDAS POR SANCTUM + PERFIS (ACL)
+
+// 👥 Pessoas: Todos os perfis podem visualizar e cadastrar
+Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO,TECNICO,ATENDENTE'])
      ->prefix('v1/pessoas')
      ->group(base_path('app/Modules/Pessoas/Routes/api.php'));
 
-// Rotas PROTEGIDAS do Módulo de Produtos e Serviços
-Route::middleware('auth:sanctum')
+// 📦 Produtos e Serviços: Todos os perfis podem visualizar
+Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO,TECNICO,ATENDENTE'])
      ->prefix('v1/produtos')
      ->group(base_path('app/Modules/Produtos/Routes/api.php'));
 
-// Rotas PROTEGIDAS do Módulo de Ordens de Serviço
-Route::middleware('auth:sanctum')
+// 🛠️ Ordens de Serviço: Apenas ADMIN, TECNICO e ATENDENTE
+Route::middleware(['auth:sanctum', 'role:ADMIN,TECNICO,ATENDENTE'])
      ->prefix('v1/ordens-servico')
      ->group(base_path('app/Modules/OrdensServico/Routes/api.php'));
-// Rotas PROTEGIDAS do Módulo Financeiro
-Route::middleware('auth:sanctum')
-     ->prefix('v1/financeiro/lancamentos')
-     ->group(base_path('app/Modules/Financeiro/Routes/api.php'));
-     // Rotas PROTEGIDAS do Módulo de Compras
-Route::middleware('auth:sanctum')
+
+// 🛒 Compras: Restrito a ADMIN e FINANCEIRO
+Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO'])
      ->prefix('v1/compras')
      ->group(base_path('app/Modules/Compras/Routes/api.php'));
+
+// 🏬 Vendas Diretas: ADMIN, FINANCEIRO e ATENDENTE
+Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO,ATENDENTE'])
+     ->prefix('v1/vendas')
+     ->group(base_path('app/Modules/Vendas/Routes/api.php'));
+
+// 💰 Financeiro & DRE: Restrito a ADMIN e FINANCEIRO
+Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO'])
+     ->prefix('v1/financeiro/lancamentos')
+     ->group(base_path('app/Modules/Financeiro/Routes/api.php'));
+     // 📋 Orçamentos: ADMIN, FINANCEIRO, TECNICO e ATENDENTE
+Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO,TECNICO,ATENDENTE'])
+     ->prefix('v1/orcamentos')
+     ->group(base_path('app/Modules/Orcamentos/Routes/api.php'));
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\routes\console.php

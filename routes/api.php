@@ -40,3 +40,10 @@ Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO'])
 Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO,TECNICO,ATENDENTE'])
      ->prefix('v1/orcamentos')
      ->group(base_path('app/Modules/Orcamentos/Routes/api.php'));
+     // 💰 Financeiro, DRE & Dashboard: Somente ADMIN e FINANCEIRO
+Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO'])
+     ->prefix('v1/financeiro')
+     ->group(function () {
+         Route::get('/dashboard/resumo', [\App\Modules\Financeiro\Controllers\DashboardController::class, 'resumo']);
+         Route::prefix('lancamentos')->group(base_path('app/Modules/Financeiro/Routes/api.php'));
+     });

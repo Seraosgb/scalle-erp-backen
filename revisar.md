@@ -1,12 +1,14 @@
-É essa visão macro de produto que separa um sisteminha de gaveta de um **ERP Saas Escalável e Multissetorial**\! 🔥  
-Se a meta do **Scalle ERP** é atender desde a assistência técnica e o comércio de balcão até indústrias e distribuidoras, precisamos desenhar o mapa de módulos do sistema em **3 Camadas de Maturidade**.  
-Abaixo está o **Raio-X de Revisão do Projeto**, mostrando o que já temos blindado, o que falta para fechar o Comércio/Serviços e como o sistema vai expandir para Indústria e Logística no futuro sem quebrar a arquitetura modular:
+Visão macro de produto de um **ERP SaaS Escalável e Multissetorial**! 🔥
 
-## 🗺️ Mapa de Evolução Arquitetural do Scalle ERP
+Com o fechamento da **v1.2.0**, consolidamos a camada comercial (Orçamentos com Conversão) e a camada de Parametrização/Segurança (ACL e Cadastros Auxiliares) no **Scalle ERP**.
+
+Abaixo está o **Raio-X de Revisão do Projeto**, refletindo os módulos ativos no código e no contrato da API (`document.json`), além do roadmap alinhado por versão.
+🗺️ Mapa de Evolução Arquitetural do Scalle ERP
+-----------------------------------------------
 
                             ┌────────────────────────────────────────┐  
                             │        CAMADA CORE (MULTITENANT)       │  
-                            │   Auth | Pessoas | Itens | DTOs | DB   │  
+                            │ Auth | Pessoas | Itens | DTOs | ACL DB │  
                             └───────────────────┬────────────────────┘  
                                                 │  
             ┌───────────────────────────────────┼───────────────────────────────────┐  
@@ -14,8 +16,8 @@ Abaixo está o **Raio-X de Revisão do Projeto**, mostrando o que já temos blin
      🛠️ PRESTAÇÃO DE SERVIÇOS           🏬 COMÉRCIO & VENDAS               🏭 INDÚSTRIA (PCP)  
      - Módulo de OS / CMMS ✅           - Módulo de Vendas Diretas ✅      - Estrutura de Produtos (BOM) 🔮  
      - Ciclo de Vida da OS ✅           - PDV / Pedidos de Balcão ✅        - Ordens de Produção (OP) 🔮  
-     - Baixa/Estorno Estoque ✅          - Orçamentos/Propostas ⏳          - Apontamento de Perdas 🔮  
-     - Garantia & Laudos ✅             - Comissões de Vendedores 🔮       - Custo Industrial Apurado 🔮  
+     - Baixa/Estorno Estoque ✅          - Orçamentos/Propostas ✅          - Apontamento de Perdas 🔮  
+     - Garantia & Laudos ✅             - Conversão em Venda/OS ✅         - Custo Industrial Apurado 🔮  
             │                                   │                                   │  
             └───────────────────────────────────┼───────────────────────────────────┘  
                                                 ▼  
@@ -24,36 +26,39 @@ Abaixo está o **Raio-X de Revisão do Projeto**, mostrando o que já temos blin
                             │ - Compras & Entradas de Notas ✅       │  
                             │ - Contas a Receber / Contas a Pagar ✅ │  
                             │ - DRE Consolidado & Fluxo de Caixa ✅   │  
-                            │ - ACL / Perfis de Acesso (CheckRole) ⏳│  
+                            │ - ACL / Perfis de Acesso (CheckRole) ✅│  
+                            │ - Categorias & Unidades (Auxiliares) ✅│  
                             │ - Fiscal (NFe / NFSe / CTM) 🔮         │  
                             │ - WMS / Logística / Frotas 🔮           │  
                             └────────────────────────────────────────┘
 
-🔍 Revisão Atual do Projeto (O que já temos ativo)
---------------------------------------------------
+🔍 Revisão Atual do Projeto (Status Real do Código)
+---------------------------------------------------
 
-| **Módulo**              | **Status**  | **O que faz hoje?**                                                                                     |
-| ----------------------- | ----------- | ------------------------------------------------------------------------------------------------------- |
-| **Auth & Tenant**       | ✅ Concluído | Multi-empresa isolado (`empresa_id`) com autenticação Sanctum.                                          |
-| **Pessoas**             | ✅ Concluído | Tabela unificada para Clientes e Fornecedores.                                                          |
-| **Produtos & Serviços** | ✅ Concluído | Unificado com DTOs, precificação de custo/venda, DTO de update preservando saldo e controle de estoque. |
-| **Ordens de Serviço**   | ✅ Concluído | Numeração comercial, subtotais separados, ciclo de vida e baixa atômica de estoque na conclusão.        |
-| **Compras & Entradas**  | ✅ Concluído | Entrada de fornecedor, incremento de estoque, atualização de preço de custo e gera Contas a Pagar.      |
-| **Financeiro & DRE**    | ✅ Concluído | Receitas, Despesas, Liquidação com meio de pagamento e DRE do período (`Y-m-d`).                        |
-| **Vendas Diretas**      | ✅ Concluído | Pedidos de balcão (`VEN-2026-000001`), baixa atômica no estoque e geração de Contas a Receber.          |
+| **Módulo**              | **Status**  | **O que faz hoje?**                                                                                                                 |
+| ----------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| **Auth & Tenant**       | ✅ Concluído | Multi-empresa isolado (`empresa_id`), token Sanctum e retorno do perfil (`role`).                                                   |
+| **ACL & Segurança**     | ✅ Concluído | Middleware `CheckRole` bloqueando perfis não autorizados com `403 Forbidden` (`ADMIN`, `FINANCEIRO`, `TECNICO`, `ATENDENTE`).       |
+| **Pessoas**             | ✅ Concluído | Tabela unificada para Clientes e Fornecedores (`pes_pessoas`).                                                                      |
+| **Produtos & Serviços** | ✅ Concluído | Itens (`pro_itens`), Categorias (`pro_categorias`) e Unidades de Medida (`pro_unidades`). DTOs blindados mantendo saldo de estoque. |
+| **Ordens de Serviço**   | ✅ Concluído | Numeração comercial (`OS-2026-000001`), ciclo de vida, baixa atômica de estoque na conclusão e lançamento no Contas a Receber.      |
+| **Compras & Entradas**  | ✅ Concluído | Registro de notas, incremento atômico de estoque, atualização do preço de custo e lançamento no Contas a Pagar.                     |
+| **Vendas Diretas**      | ✅ Concluído | Pedidos de balcão (`VEN-2026-000001`), baixa atômica de peças e geração de Contas a Receber.                                        |
+| **Orçamentos**          | ✅ Concluído | Cotações (`ORC-2026-000001`), controle de validade e conversão em 1 clique para Venda ou OS.                                        |
+| **Financeiro & DRE**    | ✅ Concluído | Contas a Receber/Pagar, liquidação/baixa com meio de pagamento, Plano de Contas (`fin_categorias`) e DRE do período (`Y-m-d`).      |
 
 📌 Planejamento de Releases (Semantic Versioning)
 -------------------------------------------------
 
-### 🟢 Versão 1.x.x — Core Comercial, Operacional & Segurança (Atual)
+### 🟢 Versão 1.x.x — Core Comercial, Operacional & Segurança (Concluídas v1.0 a v1.2)
 
 * **v1.0.0 (Concluída):** Multi-tenant, Pessoas, Produtos/Serviços, OS/CMMS, Compras e Financeiro/DRE.
 
-* **v1.1.0 (Fase Atual):** Módulo de Vendas Diretas + ACL / Perfis de Acesso (`ADMIN`, `FINANCEIRO`, `TECNICO`, `ATENDENTE`).
+* **v1.1.0 (Concluída):** Módulo de Vendas Diretas + ACL / Perfis de Acesso (`CheckRole`).
 
-* **v1.2.0 (Próxima):** Gestão de Orçamentos/Propostas + Cadastros Auxiliares (Categorias e Unidades de Medida).
+* **v1.2.0 (Concluída):** Gestão de Orçamentos com conversão + Cadastros Auxiliares (Categorias e Unidades de Medida).
 
-* **v1.3.0:** Emissão Fiscal (NFe / NFS-e) + Gateway de Cobrança PIX/Boleto.
+* **v1.3.0 (Próxima Release):** Módulo Fiscal (NFe / NFS-e) + Cobranças Automáticas (PIX / Boleto Asaas/Mercado Pago) + Dashboard de Indicadores.
 
 ### 🏭 Versão 2.0.0 — Módulo Industrial (PCP & Custo Industrial)
 
@@ -70,8 +75,3 @@ Abaixo está o **Raio-X de Revisão do Projeto**, mostrando o que já temos blin
 * **Gestão de Frotas:** Manutenções preventivas dos veículos (utilizando o módulo CMMS).
 
 * **Emissão de CTe e MDF-e:** Documentos fiscais de transporte.
-
-🎯 Próxima Ação Imediata
-------------------------
-
-Efetivar a aplicação do **Middleware `CheckRole`** para fechar o ciclo de **Segurança e Perfis de Acesso (v1.1.0)** nas rotas ativas.
