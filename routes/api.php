@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImpressaoController;
 use App\Http\Controllers\EmpresaConfigController;
+use App\Modules\Fiscal\Controllers\FiscalController;
 
 // Rotas PÚBLICAS de Autenticação
 Route::prefix('v1/auth')->group(base_path('app/Modules/Auth/Routes/api.php'));
@@ -58,4 +59,9 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware(['auth:sanctum', 'role:ADMIN'])->prefix('v1/empresa')->group(function () {
     Route::get('/configuracao-fiscal', [EmpresaConfigController::class, 'show']);
     Route::put('/configuracao-fiscal', [EmpresaConfigController::class, 'update']);
+});
+// 📄 Módulo Fiscal
+Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO'])->prefix('v1/fiscal')->group(function () {
+    Route::post('/vendas/{vendaId}/emitir-nfe', [FiscalController::class, 'emitirNFe']);
+    Route::post('/ordens-servico/{osId}/emitir-nfse', [FiscalController::class, 'emitirNFSe']);
 });

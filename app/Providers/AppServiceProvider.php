@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Modules\Fiscal\Contracts\FiscalDriverInterface;
+use App\Modules\Fiscal\Drivers\MockFiscalDriver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,7 +13,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Associa a Interface à implementação concreta
+        $this->app->bind(FiscalDriverInterface::class, MockFiscalDriver::class);
     }
 
     /**
