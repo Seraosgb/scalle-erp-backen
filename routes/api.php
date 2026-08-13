@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ImpressaoController;
 
 // Rotas PÚBLICAS de Autenticação
 Route::prefix('v1/auth')->group(base_path('app/Modules/Auth/Routes/api.php'));
@@ -47,3 +48,8 @@ Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO'])
          Route::get('/dashboard/resumo', [\App\Modules\Financeiro\Controllers\DashboardController::class, 'resumo']);
          Route::prefix('lancamentos')->group(base_path('app/Modules/Financeiro/Routes/api.php'));
      });
+     // 🖨️ Rotas de Impressão de Orçamento e OS
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('v1/orcamentos/{id}/imprimir', [ImpressaoController::class, 'orcamento']);
+    Route::get('v1/ordens-servico/{id}/imprimir', [ImpressaoController::class, 'ordemServico']);
+});
