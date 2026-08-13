@@ -137,4 +137,57 @@ public function gerarReceitaOrigemVenda(Venda $venda): LancamentoFinanceiro
         'total_parcelas' => 1,
     ]);
 }
+/**
+     * Gera o Extrato Financeiro Detalhado com totais e relatórios por período
+     */
+    public function obterExtrato(int $empresaId, array $filtros = []): array
+    {
+        $query = LancamentoFinanceiro::with(['pessoa', 'categoria', 'ordemServico'])
+            ->where('empresa_id', $empresaId);
+
+        $dataInicio = $filtros['data_inicio'] ?? now()->startOfMonth()->toDateString();
+        $dataFim = $filtros['data_fim'] ?? now()->endOfMonth()->toDateString();
+
+        $query->whereBetween('data_vencimento', [$dataInicio, $dataFim]);
+
+        if (!empty($filtros['tipo'])) {
+            $query->where('tipo', strtoupper($filtros['tipo']));
+        }
+
+        if (!empty($filtros['status'])) {
+            $query->where('status', strtoupper($filtros['status']));
+        }
+
+        if (!empty($filtros['categoria_id'])) {
+            $query->where('categoria_id', $filtros['categoria_id']);
+        }
+
+        if (!empty($filtros['pessoa_id'])) {
+            $query->where('pessoa_id', $filtros['pessoa_id']);
+        }
+
+        $lancamentos = $query->orderBy('data_vencimento', 'asc')->get();
+
+        $receitasRealizadas = $lancamentos->where('tipo', 'RECEITA')->where('status', 'PAGO')->sum('valor');
+        $receitasA_Receber = $lancamentos->where('tipo', 'RECEITA')->where('status', 'PENDENTE')->sum('valor');
+
+        $despesasRealizadas = $lancamentos->where('tipo', 'DESPESA')->where('status', 'PAGO')->sum('valor');
+        $despesasA_Pagar = $lancamentos->where('tipo', 'DESPESA')->where('status', 'PENDENTE')->sum('valor');
+
+        return [
+            'periodo' => [
+                'data_inicio' => $dataInicio,
+                'data_fim' => $dataFim,
+            ],
+            'totais' => [
+                'receitas_pagas' => number_format($receitasRealizadas, 2, '.', ''),
+                'receitas_pendentes' => number_format($receitasA_Receber, 2, '.', ''),
+                'despesas_pagas' => number_format($despesasRealizadas, 2, '.', ''),
+                'despesas_pendentes' => number_format($despesasA_Pagar, 2, '.', ''),
+                'saldo_realizado' => number_format($receitasRealizadas - $despesasRealizadas, 2, '.', ''),
+                'saldo_projetado' => number_format(($receitasRealizadas + $receitasA_Receber) - ($despesasRealizadas + $despesasA_Pagar), 2, '.', ''),
+            ],
+            'lancamentos' => $lancamentos
+        ];
+    }
 }

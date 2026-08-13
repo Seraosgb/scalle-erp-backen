@@ -99,4 +99,23 @@ class LancamentoFinanceiroController extends Controller
             ]
         ]);
     }
+    public function extrato(Request $request): JsonResponse
+    {
+        $request->validate([
+            'data_inicio' => 'nullable|date_format:Y-m-d',
+            'data_fim' => 'nullable|date_format:Y-m-d|after_or_equal:data_inicio',
+            'tipo' => 'nullable|in:RECEITA,DESPESA,receita,despesa',
+            'status' => 'nullable|in:PENDENTE,PAGO,CANCELADO,pendente,pago,cancelado',
+            'categoria_id' => 'nullable|exists:fin_categorias,id',
+            'pessoa_id' => 'nullable|exists:pes_pessoas,id',
+        ]);
+
+        $empresaId = $request->user()->empresa_id;
+        $extrato = $this->financeiroService->obterExtrato($empresaId, $request->all());
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $extrato
+        ]);
+    }
 }
