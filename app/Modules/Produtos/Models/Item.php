@@ -10,20 +10,23 @@ class Item extends Model
     protected $table = 'pro_itens';
 
     protected $fillable = [
-        'empresa_id',
-        'categoria_id',
-        'unidade_id',
-        'tipo',
-        'codigo_sku',
-        'codigo_barras',
-        'nome',
-        'descricao',
-        'preco_custo',
-        'preco_venda',
-        'estoque_atual',
-        'ativo',
-    ];
-
+    'empresa_id',
+    'categoria_id',
+    'unidade_id',
+    'tipo',
+    'codigo_sku',
+    'codigo_barras',
+    'nome',
+    'descricao',
+    'ncm',
+    'cest',
+    'cfop',
+    'origem_mercadoria',
+    'preco_custo',
+    'preco_venda',
+    'estoque_atual',
+    'ativo',
+];
     public function categoria(): BelongsTo
     {
         return $this->belongsTo(Categoria::class, 'categoria_id');

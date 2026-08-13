@@ -27,6 +27,10 @@ class ItemController extends Controller
             'tipo' => 'required|in:P,S,p,s',
             'preco_venda' => 'required|numeric|min:0',
             'preco_custo' => 'nullable|numeric|min:0',
+            'ncm' => 'nullable|string|max:10',
+    'cest' => 'nullable|string|max:10',
+    'cfop' => 'nullable|string|max:5',
+    'origem_mercadoria' => 'nullable|integer|between:0,8',
         ]);
 
         $empresaId = $request->user()->empresa_id;
@@ -62,6 +66,10 @@ class ItemController extends Controller
         'tipo' => 'required|in:P,S,p,s',
         'preco_venda' => 'required|numeric|min:0',
         'preco_custo' => 'nullable|numeric|min:0',
+        'ncm' => 'nullable|string|max:10',
+    'cest' => 'nullable|string|max:10',
+    'cfop' => 'nullable|string|max:5',
+    'origem_mercadoria' => 'nullable|integer|between:0,8',
     ]);
 
     // Usa o fromUpdate para preservar o estoque_atual sem sobrescrever

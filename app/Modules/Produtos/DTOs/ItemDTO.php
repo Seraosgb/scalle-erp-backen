@@ -17,6 +17,10 @@ class ItemDTO
         public readonly ?string $codigoSku = null,
         public readonly ?string $codigoBarras = null,
         public readonly ?string $descricao = null,
+        public readonly ?string $ncm = null,
+        public readonly ?string $cest = null,
+        public readonly ?string $cfop = null,
+        public readonly int $origemMercadoria = 0,
         public readonly float $estoqueAtual = 0.00
     ) {}
 
@@ -33,13 +37,14 @@ class ItemDTO
             codigoSku: $data['codigo_sku'] ?? null,
             codigoBarras: $data['codigo_barras'] ?? null,
             descricao: $data['descricao'] ?? null,
+            ncm: $data['ncm'] ?? null,
+            cest: $data['cest'] ?? null,
+            cfop: $data['cfop'] ?? null,
+            origemMercadoria: isset($data['origem_mercadoria']) ? (int) $data['origem_mercadoria'] : 0,
             estoqueAtual: (float) ($data['estoque_atual'] ?? 0)
         );
     }
 
-    /**
-     * Mapeia os dados do Update preservando valores existentes caso não venham no Request.
-     */
     public static function fromUpdate(array $data, Item $itemExistente, int $empresaId): self
     {
         return new self(
@@ -53,6 +58,10 @@ class ItemDTO
             codigoSku: $data['codigo_sku'] ?? $itemExistente->codigo_sku,
             codigoBarras: $data['codigo_barras'] ?? $itemExistente->codigo_barras,
             descricao: $data['descricao'] ?? $itemExistente->descricao,
+            ncm: $data['ncm'] ?? $itemExistente->ncm,
+            cest: $data['cest'] ?? $itemExistente->cest,
+            cfop: $data['cfop'] ?? $itemExistente->cfop,
+            origemMercadoria: isset($data['origem_mercadoria']) ? (int) $data['origem_mercadoria'] : (int) $itemExistente->origem_mercadoria,
             estoqueAtual: (float) $itemExistente->estoque_atual
         );
     }
@@ -68,6 +77,10 @@ class ItemDTO
             'codigo_barras' => $this->codigoBarras,
             'nome' => $this->nome,
             'descricao' => $this->descricao,
+            'ncm' => $this->ncm,
+            'cest' => $this->cest,
+            'cfop' => $this->cfop,
+            'origem_mercadoria' => $this->origemMercadoria,
             'preco_custo' => $this->precoCusto,
             'preco_venda' => $this->precoVenda,
             'estoque_atual' => $this->tipo === 'S' ? 0.00 : $this->estoqueAtual,
