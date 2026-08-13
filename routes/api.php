@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImpressaoController;
+use App\Http\Controllers\EmpresaConfigController;
 
 // Rotas PÚBLICAS de Autenticação
 Route::prefix('v1/auth')->group(base_path('app/Modules/Auth/Routes/api.php'));
@@ -52,4 +53,9 @@ Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO'])
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('v1/orcamentos/{id}/imprimir', [ImpressaoController::class, 'orcamento']);
     Route::get('v1/ordens-servico/{id}/imprimir', [ImpressaoController::class, 'ordemServico']);
+});
+// 🏢 Configurações da Empresa Emitente (Somente ADMIN)
+Route::middleware(['auth:sanctum', 'role:ADMIN'])->prefix('v1/empresa')->group(function () {
+    Route::get('/configuracao-fiscal', [EmpresaConfigController::class, 'show']);
+    Route::put('/configuracao-fiscal', [EmpresaConfigController::class, 'update']);
 });

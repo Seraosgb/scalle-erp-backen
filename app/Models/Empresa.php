@@ -12,6 +12,17 @@ class Empresa extends Model
         'razao_social',
         'nome_fantasia',
         'cpf_cnpj',
+        'inscricao_estadual',
+        'inscricao_municipal',
+        'crt',
+        'cep',
+        'logradouro',
+        'numero',
+        'complemento',
+        'bairro',
+        'cidade',
+        'uf',
+        'codigo_ibge',
         'ativo',
     ];
 }
