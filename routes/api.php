@@ -65,3 +65,12 @@ Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO'])->prefix('v1/fiscal'
     Route::post('/vendas/{vendaId}/emitir-nfe', [FiscalController::class, 'emitirNFe']);
     Route::post('/ordens-servico/{osId}/emitir-nfse', [FiscalController::class, 'emitirNFSe']);
 });
+
+// 🏢 Gestão de Empresas e Contexto Multi-Tenant (Somente ADMIN)
+Route::middleware(['auth:sanctum', 'role:ADMIN'])->prefix('v1/empresa')->group(function () {
+    Route::get('/', [EmpresaConfigController::class, 'index']);
+    Route::post('/', [EmpresaConfigController::class, 'store']);
+    Route::get('/configuracao-fiscal', [EmpresaConfigController::class, 'show']);
+    Route::put('/configuracao-fiscal', [EmpresaConfigController::class, 'update']);
+    Route::post('/trocar-contexto/{empresaId}', [EmpresaConfigController::class, 'trocarContexto']);
+});

@@ -679,6 +679,533 @@
                 }
             }
         },
+        "/v1/financeiro/dashboard/resumo": {
+            "get": {
+                "operationId": "dashboard.resumo",
+                "tags": [
+                    "Dashboard"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "operacional": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "os_em_andamento": {
+                                                            "type": "integer",
+                                                            "minimum": 0
+                                                        },
+                                                        "os_concluidas_mes": {
+                                                            "type": "integer",
+                                                            "minimum": 0
+                                                        },
+                                                        "orcamentos_pendentes": {
+                                                            "type": "integer",
+                                                            "minimum": 0
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "os_em_andamento",
+                                                        "os_concluidas_mes",
+                                                        "orcamentos_pendentes"
+                                                    ]
+                                                },
+                                                "comercial": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "vendas_hoje": {
+                                                            "type": "string"
+                                                        },
+                                                        "faturamento_vendas_mes": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "vendas_hoje",
+                                                        "faturamento_vendas_mes"
+                                                    ]
+                                                },
+                                                "financeiro": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "contas_receber": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "vencido": {
+                                                                    "type": "string"
+                                                                },
+                                                                "a_vencer_mes": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "vencido",
+                                                                "a_vencer_mes"
+                                                            ]
+                                                        },
+                                                        "contas_pagar": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "vencido": {
+                                                                    "type": "string"
+                                                                },
+                                                                "a_vencer_mes": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "vencido",
+                                                                "a_vencer_mes"
+                                                            ]
+                                                        },
+                                                        "saldo_realizado_mes": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "contas_receber",
+                                                        "contas_pagar",
+                                                        "saldo_realizado_mes"
+                                                    ]
+                                                }
+                                            },
+                                            "required": [
+                                                "operacional",
+                                                "comercial",
+                                                "financeiro"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/empresa/configuracao-fiscal": {
+            "get": {
+                "operationId": "empresaConfig.show",
+                "tags": [
+                    "EmpresaConfig"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Empresa"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "put": {
+                "operationId": "empresaConfig.update",
+                "tags": [
+                    "EmpresaConfig"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "razao_social": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "nome_fantasia": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 255
+                                    },
+                                    "cpf_cnpj": {
+                                        "type": "string",
+                                        "maxLength": 18
+                                    },
+                                    "inscricao_estadual": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 20
+                                    },
+                                    "inscricao_municipal": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 20
+                                    },
+                                    "crt": {
+                                        "type": "integer",
+                                        "enum": [
+                                            "1",
+                                            "2",
+                                            "3"
+                                        ]
+                                    },
+                                    "cep": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 10
+                                    },
+                                    "logradouro": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 255
+                                    },
+                                    "numero": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 20
+                                    },
+                                    "complemento": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 100
+                                    },
+                                    "bairro": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 100
+                                    },
+                                    "cidade": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 100
+                                    },
+                                    "uf": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "minLength": 2,
+                                        "maxLength": 2
+                                    },
+                                    "codigo_ibge": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "minLength": 7,
+                                        "maxLength": 7
+                                    }
+                                },
+                                "required": [
+                                    "razao_social",
+                                    "cpf_cnpj",
+                                    "crt"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Configura\u00e7\u00f5es fiscais da empresa atualizadas com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Empresa"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/fiscal/vendas/{vendaId}/emitir-nfe": {
+            "post": {
+                "operationId": "fiscal.emitirNFe",
+                "tags": [
+                    "Fiscal"
+                ],
+                "parameters": [
+                    {
+                        "name": "vendaId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "422": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "error"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "NFe emitida e autorizada com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/DocumentoFiscal"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/fiscal/ordens-servico/{osId}/emitir-nfse": {
+            "post": {
+                "operationId": "fiscal.emitirNFSe",
+                "tags": [
+                    "Fiscal"
+                ],
+                "parameters": [
+                    {
+                        "name": "osId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "422": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "error"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "NFS-e emitida e autorizada com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/DocumentoFiscal"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/orcamentos/{id}/imprimir": {
+            "get": {
+                "operationId": "impressao.orcamento",
+                "tags": [
+                    "Impressao"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/ordens-servico/{id}/imprimir": {
+            "get": {
+                "operationId": "impressao.ordemServico",
+                "tags": [
+                    "Impressao"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
         "/v1/produtos": {
             "get": {
                 "operationId": "item.index",
@@ -862,6 +1389,35 @@
                                             "null"
                                         ],
                                         "minimum": 0
+                                    },
+                                    "ncm": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 10
+                                    },
+                                    "cest": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 10
+                                    },
+                                    "cfop": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 5
+                                    },
+                                    "origem_mercadoria": {
+                                        "type": [
+                                            "integer",
+                                            "null"
+                                        ],
+                                        "minimum": 0,
+                                        "maximum": 8
                                     }
                                 },
                                 "required": [
@@ -1027,6 +1583,35 @@
                                             "null"
                                         ],
                                         "minimum": 0
+                                    },
+                                    "ncm": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 10
+                                    },
+                                    "cest": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 10
+                                    },
+                                    "cfop": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 5
+                                    },
+                                    "origem_mercadoria": {
+                                        "type": [
+                                            "integer",
+                                            "null"
+                                        ],
+                                        "minimum": 0,
+                                        "maximum": 8
                                     }
                                 },
                                 "required": [
@@ -1535,6 +2120,272 @@
                                     "required": [
                                         "status",
                                         "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/financeiro/lancamentos/{id}/pix": {
+            "get": {
+                "operationId": "lancamentoFinanceiro.gerarPix",
+                "tags": [
+                    "LancamentoFinanceiro"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "lancamento_id": {
+                                                    "type": "integer"
+                                                },
+                                                "valor": {
+                                                    "type": "string"
+                                                },
+                                                "chave_pix": {},
+                                                "pix_copia_e_cola": {
+                                                    "type": "string"
+                                                },
+                                                "qr_code_url": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "lancamento_id",
+                                                "valor",
+                                                "chave_pix",
+                                                "pix_copia_e_cola",
+                                                "qr_code_url"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Este lan\u00e7amento j\u00e1 foi liquidado."
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/financeiro/lancamentos/extrato": {
+            "get": {
+                "operationId": "lancamentoFinanceiro.extrato",
+                "tags": [
+                    "LancamentoFinanceiro"
+                ],
+                "parameters": [
+                    {
+                        "name": "data_inicio",
+                        "in": "query",
+                        "schema": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "data_fim",
+                        "in": "query",
+                        "schema": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "tipo",
+                        "in": "query",
+                        "schema": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "enum": [
+                                "RECEITA",
+                                "DESPESA",
+                                "receita",
+                                "despesa",
+                                null
+                            ]
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "schema": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "enum": [
+                                "PENDENTE",
+                                "PAGO",
+                                "CANCELADO",
+                                "pendente",
+                                "pago",
+                                "cancelado",
+                                null
+                            ]
+                        }
+                    },
+                    {
+                        "name": "categoria_id",
+                        "in": "query",
+                        "schema": {
+                            "type": [
+                                "integer",
+                                "null"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "pessoa_id",
+                        "in": "query",
+                        "schema": {
+                            "type": [
+                                "integer",
+                                "null"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "periodo": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "data_inicio": {},
+                                                        "data_fim": {}
+                                                    },
+                                                    "required": [
+                                                        "data_inicio",
+                                                        "data_fim"
+                                                    ]
+                                                },
+                                                "totais": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "receitas_pagas": {
+                                                            "type": "string"
+                                                        },
+                                                        "receitas_pendentes": {
+                                                            "type": "string"
+                                                        },
+                                                        "despesas_pagas": {
+                                                            "type": "string"
+                                                        },
+                                                        "despesas_pendentes": {
+                                                            "type": "string"
+                                                        },
+                                                        "saldo_realizado": {
+                                                            "type": "string"
+                                                        },
+                                                        "saldo_projetado": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "receitas_pagas",
+                                                        "receitas_pendentes",
+                                                        "despesas_pagas",
+                                                        "despesas_pendentes",
+                                                        "saldo_realizado",
+                                                        "saldo_projetado"
+                                                    ]
+                                                },
+                                                "lancamentos": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/LancamentoFinanceiro"
+                                                    }
+                                                }
+                                            },
+                                            "required": [
+                                                "periodo",
+                                                "totais",
+                                                "lancamentos"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
                                         "data"
                                     ]
                                 }
@@ -3166,6 +4017,238 @@
                 ],
                 "title": "Compra"
             },
+            "DocumentoFiscal": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "venda_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "ordem_servico_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "tipo_doc": {
+                        "type": "string"
+                    },
+                    "numero_nota": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "serie": {
+                        "type": "string"
+                    },
+                    "chave_acesso": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "protocolo": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "mensagem_sefaz": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "url_pdf": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "url_xml": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "valor_total": {
+                        "type": "string"
+                    },
+                    "data_emissao": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "venda_id",
+                    "ordem_servico_id",
+                    "tipo_doc",
+                    "numero_nota",
+                    "serie",
+                    "chave_acesso",
+                    "protocolo",
+                    "status",
+                    "mensagem_sefaz",
+                    "url_pdf",
+                    "url_xml",
+                    "valor_total",
+                    "data_emissao",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "DocumentoFiscal"
+            },
+            "Empresa": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "razao_social": {
+                        "type": "string"
+                    },
+                    "nome_fantasia": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "cpf_cnpj": {
+                        "type": "string"
+                    },
+                    "inscricao_estadual": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "inscricao_municipal": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "crt": {
+                        "type": "integer"
+                    },
+                    "cep": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "logradouro": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "numero": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "complemento": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "bairro": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "cidade": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "uf": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "codigo_ibge": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "ativo": {
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "razao_social",
+                    "nome_fantasia",
+                    "cpf_cnpj",
+                    "inscricao_estadual",
+                    "inscricao_municipal",
+                    "crt",
+                    "cep",
+                    "logradouro",
+                    "numero",
+                    "complemento",
+                    "bairro",
+                    "cidade",
+                    "uf",
+                    "codigo_ibge",
+                    "ativo",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "Empresa"
+            },
             "Item": {
                 "type": "object",
                 "properties": {
@@ -3211,6 +4294,27 @@
                             "null"
                         ]
                     },
+                    "ncm": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "cest": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "cfop": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "origem_mercadoria": {
+                        "type": "integer"
+                    },
                     "preco_custo": {
                         "type": "string"
                     },
@@ -3248,6 +4352,10 @@
                     "codigo_barras",
                     "nome",
                     "descricao",
+                    "ncm",
+                    "cest",
+                    "cfop",
+                    "origem_mercadoria",
                     "preco_custo",
                     "preco_venda",
                     "estoque_atual",
