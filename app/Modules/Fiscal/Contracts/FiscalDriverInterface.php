@@ -16,4 +16,7 @@ interface FiscalDriverInterface
      * Transmite a NFS-e referente a uma Ordem de Serviço
      */
     public function emitirNFSeOS(OrdemServico $os): array;
+
+    public function emitirCTe(array $dadosTransporte): array;
+    public function emitirMDFe(array $dadosManifesto): array;
 }

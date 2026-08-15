@@ -9,6 +9,7 @@ use App\Modules\WMS\Controllers\WmsController;
 use App\Modules\Empresa\Controllers\UsuarioEquipeController;
 use App\Modules\Empresa\Controllers\ParametroEmpresaController;
 use App\Modules\Compras\Controllers\CompraController;
+use App\Modules\Frotas\Controllers\FrotaController;
 
 // Rotas PÚBLICAS de Autenticação
 Route::prefix('v1/auth')->group(base_path('app/Modules/Auth/Routes/api.php'));
@@ -125,4 +126,15 @@ Route::middleware(['auth:sanctum', 'role:ADMIN'])->prefix('v1/empresa')->group(f
 // 📦 Importador de XML de Compra (v4.0.0)
 Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO'])->prefix('v1/compras')->group(function () {
     Route::post('/importar-xml', [CompraController::class, 'importarXml']);
+});
+
+// 🚚 Módulo de Frotas & Transporte (v4.1.0)
+Route::middleware(['auth:sanctum', 'role:ADMIN,TECNICO,FINANCEIRO'])->prefix('v1/frotas')->group(function () {
+    Route::get('/veiculos', [FrotaController::class, 'listarVeiculos']);
+    Route::post('/veiculos', [FrotaController::class, 'criarVeiculo']);
+
+    Route::get('/abastecimentos', [FrotaController::class, 'listarAbastecimentos']);
+    Route::post('/abastecimentos', [FrotaController::class, 'registrarAbastecimento']);
+
+    Route::post('/emitir-cte', [FrotaController::class, 'emitirCTe']);
 });

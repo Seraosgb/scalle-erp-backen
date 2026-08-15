@@ -47,4 +47,33 @@ class MockFiscalDriver implements FiscalDriverInterface
             'url_xml' => "https://scalle.btec.top/docs/nfse_xml_mock_{$os->id}.xml",
         ];
     }
+    public function emitirCTe(array $dadosTransporte): array
+    {
+        $numero = (string) rand(100, 99999);
+        return [
+            'status' => 'AUTORIZADO',
+            'numero_nota' => $numero,
+            'serie' => '1',
+            'chave_acesso' => '3326' . rand(100000000, 999999999) . '57001' . $numero,
+            'protocolo' => 'CTE' . rand(100000, 999999),
+            'mensagem_sefaz' => 'CTe de Transporte Autorizado com Sucesso (Mock)',
+            'url_pdf' => "https://scalle.btec.top/docs/dacte_mock_{$numero}.pdf",
+            'url_xml' => "https://scalle.btec.top/docs/cte_mock_{$numero}.xml",
+        ];
+    }
+
+    public function emitirMDFe(array $dadosManifesto): array
+    {
+        $numero = (string) rand(100, 99999);
+        return [
+            'status' => 'AUTORIZADO',
+            'numero_nota' => $numero,
+            'serie' => '1',
+            'chave_acesso' => '3326' . rand(100000000, 999999999) . '58001' . $numero,
+            'protocolo' => 'MDF' . rand(100000, 999999),
+            'mensagem_sefaz' => 'MDF-e de Manifesto de Carga Autorizado com Sucesso (Mock)',
+            'url_pdf' => "https://scalle.btec.top/docs/damdfe_mock_{$numero}.pdf",
+            'url_xml' => "https://scalle.btec.top/docs/mdfe_mock_{$numero}.xml",
+        ];
+    }
 }
