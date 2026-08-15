@@ -5,6 +5,7 @@ namespace App\Modules\Orcamentos\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Modules\Produtos\Models\Item;
+use \App\Traits\BelongsToTenant;
 
 class OrcamentoItem extends Model
 {

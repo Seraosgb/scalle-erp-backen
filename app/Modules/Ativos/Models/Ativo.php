@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\User;
 use App\Modules\Produtos\Models\Item;
+use \App\Traits\BelongsToTenant;
 
 class Ativo extends Model
 {

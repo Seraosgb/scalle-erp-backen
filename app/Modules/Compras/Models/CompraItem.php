@@ -5,6 +5,7 @@ namespace App\Modules\Compras\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Modules\Produtos\Models\Item;
+use \App\Traits\BelongsToTenant;
 
 class CompraItem extends Model
 {

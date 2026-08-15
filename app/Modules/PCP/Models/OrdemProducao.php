@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Modules\Produtos\Models\Item;
 use App\Models\User;
+use \App\Traits\BelongsToTenant;
 
 class OrdemProducao extends Model
 {

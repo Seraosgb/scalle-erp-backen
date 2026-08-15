@@ -5,6 +5,7 @@ namespace App\Modules\RH\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\User;
+use \App\Traits\BelongsToTenant;
 
 class AvaliacaoResposta extends Model
 {

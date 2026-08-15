@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Modules\Vendas\Models\Venda;
 use App\Modules\OrdensServico\Models\OrdemServico;
+use \App\Traits\BelongsToTenant;
 
 class DocumentoFiscal extends Model
 {

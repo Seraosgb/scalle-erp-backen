@@ -3,6 +3,7 @@
 namespace App\Modules\Produtos\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use \App\Traits\BelongsToTenant;
 
 class Categoria extends Model
 {

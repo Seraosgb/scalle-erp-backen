@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Modules\Pessoas\Models\Pessoa;
 use App\Models\User;
+use \App\Traits\BelongsToTenant;
 
 class OrdemServico extends Model
 {

@@ -29,6 +29,7 @@ namespace App\Modules\RH\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use \App\Traits\BelongsToTenant;
 
 class BancoHoras extends Model
 {

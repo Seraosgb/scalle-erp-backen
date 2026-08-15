@@ -3,6 +3,7 @@
 namespace App\Modules\PCP\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use \App\Traits\BelongsToTenant;
 
 class MotivoPerda extends Model
 {

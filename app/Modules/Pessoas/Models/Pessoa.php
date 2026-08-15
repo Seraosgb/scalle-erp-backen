@@ -3,6 +3,7 @@
 namespace App\Modules\Pessoas\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use \App\Traits\BelongsToTenant;
 
 class Pessoa extends Model
 {

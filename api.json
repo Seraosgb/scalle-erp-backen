@@ -10,6 +10,382 @@
         }
     ],
     "paths": {
+        "/v1/ativos": {
+            "get": {
+                "operationId": "ativo.index",
+                "tags": [
+                    "Ativo"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Ativo"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "ativo.store",
+                "tags": [
+                    "Ativo"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nome": {
+                                        "type": "string",
+                                        "maxLength": 150
+                                    },
+                                    "categoria": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 50
+                                    },
+                                    "item_id": {
+                                        "type": [
+                                            "integer",
+                                            "null"
+                                        ]
+                                    },
+                                    "numero_serie": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 100
+                                    },
+                                    "data_aquisicao": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "format": "date-time"
+                                    },
+                                    "valor_aquisicao": {
+                                        "type": [
+                                            "number",
+                                            "null"
+                                        ],
+                                        "minimum": 0
+                                    },
+                                    "taxa_depreciacao_anual": {
+                                        "type": [
+                                            "number",
+                                            "null"
+                                        ],
+                                        "minimum": 0
+                                    },
+                                    "observacoes": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "nome"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Ativo patrimonial tombado com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Ativo"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/ativos/{id}/qrcode": {
+            "get": {
+                "operationId": "ativo.gerarQrCode",
+                "tags": [
+                    "Ativo"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "ativo_id": {
+                                                    "type": "integer"
+                                                },
+                                                "codigo_patrimonio": {
+                                                    "type": "string"
+                                                },
+                                                "payload": {
+                                                    "type": "string"
+                                                },
+                                                "qr_code_url": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "ativo_id",
+                                                "codigo_patrimonio",
+                                                "payload",
+                                                "qr_code_url"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/ativos/cautelas": {
+            "post": {
+                "operationId": "ativo.emitirCautela",
+                "tags": [
+                    "Ativo"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ativo_id": {
+                                        "type": "integer"
+                                    },
+                                    "custodiante_id": {
+                                        "type": "integer"
+                                    },
+                                    "data_devolucao_prevista": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "format": "date-time"
+                                    },
+                                    "motivo_uso": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "ativo_id",
+                                    "custodiante_id"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Termo de cautela emitido e ativo entregue ao t\u00e9cnico com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Cautela"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/ativos/cautelas/{cautelaId}/devolver": {
+            "patch": {
+                "operationId": "ativo.devolverCautela",
+                "tags": [
+                    "Ativo"
+                ],
+                "parameters": [
+                    {
+                        "name": "cautelaId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "status_devolucao": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "enum": [
+                                            "DEVOLVIDO",
+                                            "AVARIADO",
+                                            "devolvido",
+                                            "avariado",
+                                            null
+                                        ]
+                                    },
+                                    "observacoes_devolucao": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Devolu\u00e7\u00e3o do ativo conclu\u00edda com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Cautela"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
         "/v1/auth/login": {
             "post": {
                 "operationId": "auth.login",
@@ -5011,6 +5387,1413 @@
                 }
             }
         },
+        "/v1/rh/escalas": {
+            "get": {
+                "operationId": "rh.listarEscalas",
+                "tags": [
+                    "RH"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Escala"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "rh.criarEscala",
+                "tags": [
+                    "RH"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nome": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "tipo_escala": {
+                                        "type": "string",
+                                        "enum": [
+                                            "5X2",
+                                            "6X1",
+                                            "12X36",
+                                            "FLEXIVEL"
+                                        ]
+                                    },
+                                    "horas_diarias_padrao": {
+                                        "type": "number",
+                                        "minimum": 1,
+                                        "maximum": 24
+                                    },
+                                    "tolerancia_minutos": {
+                                        "type": [
+                                            "integer",
+                                            "null"
+                                        ],
+                                        "minimum": 0
+                                    },
+                                    "politica_extra": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "enum": [
+                                            "BANCO_HORAS",
+                                            "PAGAMENTO_FOLHA",
+                                            null
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "nome",
+                                    "tipo_escala",
+                                    "horas_diarias_padrao"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Escala de trabalho cadastrada com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Escala"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/rh/colaboradores": {
+            "get": {
+                "operationId": "rh.listarColaboradores",
+                "tags": [
+                    "RH"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Colaborador"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "rh.criarColaborador",
+                "tags": [
+                    "RH"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nome_completo": {
+                                        "type": "string",
+                                        "maxLength": 200
+                                    },
+                                    "cpf": {
+                                        "type": "string",
+                                        "maxLength": 14
+                                    },
+                                    "cargo": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "departamento": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 100
+                                    },
+                                    "data_admissao": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "salario_base": {
+                                        "type": "number",
+                                        "minimum": 0
+                                    },
+                                    "tipo_contrato": {
+                                        "type": "string",
+                                        "enum": [
+                                            "CLT",
+                                            "PJ",
+                                            "ESTAGIO",
+                                            "AUTONOMO"
+                                        ]
+                                    },
+                                    "escala_id": {
+                                        "type": [
+                                            "integer",
+                                            "null"
+                                        ]
+                                    },
+                                    "user_id": {
+                                        "type": [
+                                            "integer",
+                                            "null"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "nome_completo",
+                                    "cpf",
+                                    "cargo",
+                                    "data_admissao",
+                                    "salario_base",
+                                    "tipo_contrato"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Colaborador admitido com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Colaborador"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/rh/certificacoes": {
+            "post": {
+                "operationId": "rh.registrarCertificacao",
+                "tags": [
+                    "RH"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "colaborador_id": {
+                                        "type": "integer"
+                                    },
+                                    "nome_certificacao": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "numero_registro": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 100
+                                    },
+                                    "data_emissao": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "data_validade": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "orgao_emissor": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 100
+                                    }
+                                },
+                                "required": [
+                                    "colaborador_id",
+                                    "nome_certificacao",
+                                    "data_emissao",
+                                    "data_validade"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Certifica\u00e7\u00e3o registrada com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Certificacao"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/rh/ponto/bater": {
+            "post": {
+                "operationId": "rh.baterPonto",
+                "description": "\u26a0\ufe0f Cannot generate request documentation: syntax error, unexpected token \"<\", expecting end of file",
+                "tags": [
+                    "RH"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Ponto registrado com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Ponto"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/rh/folha/gerar-holerite": {
+            "post": {
+                "operationId": "rh.gerarHolerite",
+                "tags": [
+                    "RH"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "colaborador_id": {
+                                        "type": "integer"
+                                    },
+                                    "mes_ano_competencia": {
+                                        "type": "string",
+                                        "maxLength": 7
+                                    },
+                                    "proventos_adicionais": {
+                                        "type": [
+                                            "array",
+                                            "null"
+                                        ],
+                                        "description": "\"2026-08\"",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "descontos_adicionais": {
+                                        "type": [
+                                            "array",
+                                            "null"
+                                        ],
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "colaborador_id",
+                                    "mes_ano_competencia"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Holerite gerado e despesa lan\u00e7ada no Contas a Pagar com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Holerite"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/rh-estrategico/vagas": {
+            "get": {
+                "operationId": "rHEstrategico.listarVagas",
+                "tags": [
+                    "RHEstrategico"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Vaga"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "rHEstrategico.criarVaga",
+                "tags": [
+                    "RHEstrategico"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "titulo": {
+                                        "type": "string",
+                                        "maxLength": 150
+                                    },
+                                    "departamento": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "quantidade_vagas": {
+                                        "type": [
+                                            "integer",
+                                            "null"
+                                        ],
+                                        "minimum": 1
+                                    },
+                                    "salario_proposto": {
+                                        "type": [
+                                            "number",
+                                            "null"
+                                        ],
+                                        "minimum": 0
+                                    },
+                                    "regime_contratacao": {
+                                        "type": "string",
+                                        "enum": [
+                                            "CLT",
+                                            "PJ",
+                                            "ESTAGIO"
+                                        ]
+                                    },
+                                    "descricao": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    },
+                                    "requisitos": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "titulo",
+                                    "departamento",
+                                    "regime_contratacao"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Vaga aberta com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Vaga"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/rh-estrategico/candidatos": {
+            "post": {
+                "operationId": "rHEstrategico.cadastrarCandidato",
+                "tags": [
+                    "RHEstrategico"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "vaga_id": {
+                                        "type": "integer"
+                                    },
+                                    "nome_completo": {
+                                        "type": "string",
+                                        "maxLength": 200
+                                    },
+                                    "cpf": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 14
+                                    },
+                                    "email": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "format": "email",
+                                        "maxLength": 150
+                                    },
+                                    "telefone": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 30
+                                    },
+                                    "curriculo_resumo": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "vaga_id",
+                                    "nome_completo"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Candidato inscrito no funil com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Candidato"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/rh-estrategico/candidatos/{candidatoId}/kanban": {
+            "patch": {
+                "operationId": "rHEstrategico.moverEtapaKanban",
+                "tags": [
+                    "RHEstrategico"
+                ],
+                "parameters": [
+                    {
+                        "name": "candidatoId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "etapa_kanban": {
+                                        "type": "string",
+                                        "enum": [
+                                            "INSCRITO",
+                                            "TRIAGEM",
+                                            "ENTREVISTA",
+                                            "PROPOSTA",
+                                            "CONTRATADO",
+                                            "REPROVADO"
+                                        ]
+                                    },
+                                    "feedback_entrevista": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "etapa_kanban"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Candidato movimentado no Kanban com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Candidato"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/rh-estrategico/avaliacoes/ciclos": {
+            "post": {
+                "operationId": "rHEstrategico.criarCicloAvaliacao",
+                "tags": [
+                    "RHEstrategico"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "titulo": {
+                                        "type": "string",
+                                        "maxLength": 150
+                                    },
+                                    "data_inicio": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "data_fim": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "criterios": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "criterio": {
+                                                    "type": "string",
+                                                    "maxLength": 150
+                                                },
+                                                "descricao": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ],
+                                                    "maxLength": 255
+                                                },
+                                                "peso": {
+                                                    "type": [
+                                                        "number",
+                                                        "null"
+                                                    ],
+                                                    "minimum": 0.1
+                                                }
+                                            },
+                                            "required": [
+                                                "criterio"
+                                            ]
+                                        },
+                                        "minItems": 1
+                                    }
+                                },
+                                "required": [
+                                    "titulo",
+                                    "data_inicio",
+                                    "data_fim",
+                                    "criterios"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Ciclo de avalia\u00e7\u00e3o configurado!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/AvaliacaoCiclo"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/rh-estrategico/avaliacoes/responder": {
+            "post": {
+                "operationId": "rHEstrategico.responderAvaliacao",
+                "tags": [
+                    "RHEstrategico"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ciclo_id": {
+                                        "type": "integer"
+                                    },
+                                    "colaborador_avaliado_id": {
+                                        "type": "integer"
+                                    },
+                                    "avaliacoes": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "criterio_id": {
+                                                    "type": "integer"
+                                                },
+                                                "nota": {
+                                                    "type": "integer",
+                                                    "minimum": 1,
+                                                    "maximum": 5
+                                                },
+                                                "comentario": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                }
+                                            },
+                                            "required": [
+                                                "criterio_id",
+                                                "nota"
+                                            ]
+                                        },
+                                        "minItems": 1
+                                    }
+                                },
+                                "required": [
+                                    "ciclo_id",
+                                    "colaborador_avaliado_id",
+                                    "avaliacoes"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Avalia\u00e7\u00e3o de desempenho salva com sucesso!"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/rh-estrategico/treinamentos": {
+            "post": {
+                "operationId": "rHEstrategico.registrarTreinamento",
+                "tags": [
+                    "RHEstrategico"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "colaborador_id": {
+                                        "type": "integer"
+                                    },
+                                    "titulo_treinamento": {
+                                        "type": "string",
+                                        "maxLength": 150
+                                    },
+                                    "instituicao": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 100
+                                    },
+                                    "carga_horaria_horas": {
+                                        "type": [
+                                            "integer",
+                                            "null"
+                                        ],
+                                        "minimum": 0
+                                    },
+                                    "objetivo_pdi": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "colaborador_id",
+                                    "titulo_treinamento"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Plano de treinamento registrado com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/TreinamentoPdi"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/rh-estrategico/clima/responder": {
+            "post": {
+                "operationId": "rHEstrategico.responderClima",
+                "tags": [
+                    "RHEstrategico"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "pesquisa_id": {
+                                        "type": "integer"
+                                    },
+                                    "departamento": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 100
+                                    },
+                                    "nota_enps": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 10
+                                    },
+                                    "comentario_anonimo": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "pesquisa_id",
+                                    "nota_enps"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Opini\u00e3o an\u00f4nima registrada com sucesso!"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/rh-estrategico/clima/pesquisas/{pesquisaId}/enps": {
+            "get": {
+                "operationId": "rHEstrategico.consultarEnps",
+                "tags": [
+                    "RHEstrategico"
+                ],
+                "parameters": [
+                    {
+                        "name": "pesquisaId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "pesquisa": {
+                                                            "type": "string"
+                                                        },
+                                                        "total_respostas": {
+                                                            "type": "integer",
+                                                            "minimum": 0
+                                                        },
+                                                        "enps_score": {
+                                                            "type": "number"
+                                                        },
+                                                        "promotores": {
+                                                            "type": "integer",
+                                                            "minimum": 0
+                                                        },
+                                                        "neutros": {
+                                                            "type": "integer",
+                                                            "minimum": 0
+                                                        },
+                                                        "detratores": {
+                                                            "type": "integer",
+                                                            "minimum": 0
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "pesquisa",
+                                                        "total_respostas",
+                                                        "enps_score",
+                                                        "promotores",
+                                                        "neutros",
+                                                        "detratores"
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "pesquisa": {
+                                                            "type": "string"
+                                                        },
+                                                        "total_respostas": {
+                                                            "type": "integer"
+                                                        },
+                                                        "enps_score": {
+                                                            "type": "integer"
+                                                        },
+                                                        "promotores": {
+                                                            "type": "integer"
+                                                        },
+                                                        "neutros": {
+                                                            "type": "integer"
+                                                        },
+                                                        "detratores": {
+                                                            "type": "integer"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "pesquisa",
+                                                        "total_respostas",
+                                                        "enps_score",
+                                                        "promotores",
+                                                        "neutros",
+                                                        "detratores"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/rh-estrategico/clima/pesquisas": {
+            "get": {
+                "operationId": "rHEstrategico.listarPesquisasClima",
+                "tags": [
+                    "RHEstrategico"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ClimaPesquisa"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "rHEstrategico.criarPesquisaClima",
+                "tags": [
+                    "RHEstrategico"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "titulo": {
+                                        "type": "string",
+                                        "maxLength": 150
+                                    },
+                                    "data_inicio": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "data_fim": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                },
+                                "required": [
+                                    "titulo",
+                                    "data_inicio",
+                                    "data_fim"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Pesquisa de clima aberta com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/ClimaPesquisa"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
         "/v1/produtos/unidades": {
             "get": {
                 "operationId": "unidade.index",
@@ -6281,6 +8064,228 @@
                 ],
                 "title": "ApontamentoPerda"
             },
+            "Ativo": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "item_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "custodiante_atual_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "codigo_patrimonio": {
+                        "type": "string"
+                    },
+                    "nome": {
+                        "type": "string"
+                    },
+                    "categoria": {
+                        "type": "string"
+                    },
+                    "numero_serie": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "data_aquisicao": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "valor_aquisicao": {
+                        "type": "string"
+                    },
+                    "taxa_depreciacao_anual": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "observacoes": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "ativo": {
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "item_id",
+                    "custodiante_atual_id",
+                    "codigo_patrimonio",
+                    "nome",
+                    "categoria",
+                    "numero_serie",
+                    "data_aquisicao",
+                    "valor_aquisicao",
+                    "taxa_depreciacao_anual",
+                    "status",
+                    "observacoes",
+                    "ativo",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "Ativo"
+            },
+            "AvaliacaoCiclo": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "titulo": {
+                        "type": "string"
+                    },
+                    "data_inicio": {
+                        "type": "string"
+                    },
+                    "data_fim": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "titulo",
+                    "data_inicio",
+                    "data_fim",
+                    "status",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "AvaliacaoCiclo"
+            },
+            "Candidato": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "vaga_id": {
+                        "type": "integer"
+                    },
+                    "nome_completo": {
+                        "type": "string"
+                    },
+                    "cpf": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "email": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "telefone": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "etapa_kanban": {
+                        "type": "string"
+                    },
+                    "curriculo_resumo": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "feedback_entrevista": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "vaga_id",
+                    "nome_completo",
+                    "cpf",
+                    "email",
+                    "telefone",
+                    "etapa_kanban",
+                    "curriculo_resumo",
+                    "feedback_entrevista",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "Candidato"
+            },
             "Categoria": {
                 "type": "object",
                 "properties": {
@@ -6364,6 +8369,303 @@
                     "updated_at"
                 ],
                 "title": "CategoriaFinanceira"
+            },
+            "Cautela": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "ativo_id": {
+                        "type": "integer"
+                    },
+                    "responsavel_entrega_id": {
+                        "type": "integer"
+                    },
+                    "custodiante_id": {
+                        "type": "integer"
+                    },
+                    "data_retirada": {
+                        "type": "string"
+                    },
+                    "data_devolucao_prevista": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "data_devolucao_real": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "ip_assinatura": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "motivo_uso": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "observacoes_devolucao": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "ativo_id",
+                    "responsavel_entrega_id",
+                    "custodiante_id",
+                    "data_retirada",
+                    "data_devolucao_prevista",
+                    "data_devolucao_real",
+                    "status",
+                    "ip_assinatura",
+                    "motivo_uso",
+                    "observacoes_devolucao",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "Cautela"
+            },
+            "Certificacao": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "colaborador_id": {
+                        "type": "integer"
+                    },
+                    "nome_certificacao": {
+                        "type": "string"
+                    },
+                    "numero_registro": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "data_emissao": {
+                        "type": "string"
+                    },
+                    "data_validade": {
+                        "type": "string"
+                    },
+                    "orgao_emissor": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "observacoes": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "colaborador_id",
+                    "nome_certificacao",
+                    "numero_registro",
+                    "data_emissao",
+                    "data_validade",
+                    "orgao_emissor",
+                    "status",
+                    "observacoes",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "Certificacao"
+            },
+            "ClimaPesquisa": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "titulo": {
+                        "type": "string"
+                    },
+                    "data_inicio": {
+                        "type": "string"
+                    },
+                    "data_fim": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "titulo",
+                    "data_inicio",
+                    "data_fim",
+                    "status",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "ClimaPesquisa"
+            },
+            "Colaborador": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "escala_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "matricula": {
+                        "type": "string"
+                    },
+                    "nome_completo": {
+                        "type": "string"
+                    },
+                    "cpf": {
+                        "type": "string"
+                    },
+                    "cargo": {
+                        "type": "string"
+                    },
+                    "departamento": {
+                        "type": "string"
+                    },
+                    "data_admissao": {
+                        "type": "string"
+                    },
+                    "data_demissao": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "salario_base": {
+                        "type": "string"
+                    },
+                    "tipo_contrato": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "user_id",
+                    "escala_id",
+                    "matricula",
+                    "nome_completo",
+                    "cpf",
+                    "cargo",
+                    "departamento",
+                    "data_admissao",
+                    "data_demissao",
+                    "salario_base",
+                    "tipo_contrato",
+                    "status",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "Colaborador"
             },
             "Compra": {
                 "type": "object",
@@ -6714,6 +9016,62 @@
                 ],
                 "title": "Empresa"
             },
+            "Escala": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "nome": {
+                        "type": "string"
+                    },
+                    "tipo_escala": {
+                        "type": "string"
+                    },
+                    "horas_diarias_padrao": {
+                        "type": "string"
+                    },
+                    "tolerancia_minutos": {
+                        "type": "integer"
+                    },
+                    "politica_extra": {
+                        "type": "string"
+                    },
+                    "ativo": {
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "nome",
+                    "tipo_escala",
+                    "horas_diarias_padrao",
+                    "tolerancia_minutos",
+                    "politica_extra",
+                    "ativo",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "Escala"
+            },
             "EstoqueDeposito": {
                 "type": "object",
                 "properties": {
@@ -6819,6 +9177,77 @@
                     "updated_at"
                 ],
                 "title": "FichaTecnica"
+            },
+            "Holerite": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "colaborador_id": {
+                        "type": "integer"
+                    },
+                    "lancamento_financeiro_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "mes_ano_competencia": {
+                        "type": "string"
+                    },
+                    "proventos_total": {
+                        "type": "string"
+                    },
+                    "descontos_total": {
+                        "type": "string"
+                    },
+                    "valor_liquido": {
+                        "type": "string"
+                    },
+                    "itens_discriminados": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {}
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "colaborador_id",
+                    "lancamento_financeiro_id",
+                    "mes_ano_competencia",
+                    "proventos_total",
+                    "descontos_total",
+                    "valor_liquido",
+                    "itens_discriminados",
+                    "status",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "Holerite"
             },
             "Item": {
                 "type": "object",
@@ -7463,6 +9892,104 @@
                 ],
                 "title": "Pessoa"
             },
+            "Ponto": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "colaborador_id": {
+                        "type": "integer"
+                    },
+                    "data_referencia": {
+                        "type": "string"
+                    },
+                    "entrada_1": {
+                        "type": "string"
+                    },
+                    "saida_1": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "entrada_2": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "saida_2": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "total_horas_trabalhadas": {
+                        "type": "string"
+                    },
+                    "saldo_horas_dia": {
+                        "type": "string"
+                    },
+                    "latitude": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "longitude": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "ip_registro": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "status_aprovacao": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "colaborador_id",
+                    "data_referencia",
+                    "entrada_1",
+                    "saida_1",
+                    "entrada_2",
+                    "saida_2",
+                    "total_horas_trabalhadas",
+                    "saldo_horas_dia",
+                    "latitude",
+                    "longitude",
+                    "ip_registro",
+                    "status_aprovacao",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "Ponto"
+            },
             "Transferencia": {
                 "type": "object",
                 "properties": {
@@ -7542,6 +10069,82 @@
                     "updated_at"
                 ],
                 "title": "Transferencia"
+            },
+            "TreinamentoPdi": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "colaborador_id": {
+                        "type": "integer"
+                    },
+                    "titulo_treinamento": {
+                        "type": "string"
+                    },
+                    "instituicao": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "carga_horaria_horas": {
+                        "type": "integer"
+                    },
+                    "data_inicio": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "data_conclusao": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "objetivo_pdi": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "colaborador_id",
+                    "titulo_treinamento",
+                    "instituicao",
+                    "carga_horaria_horas",
+                    "data_inicio",
+                    "data_conclusao",
+                    "status",
+                    "objetivo_pdi",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "TreinamentoPdi"
             },
             "Unidade": {
                 "type": "object",
@@ -7641,6 +10244,79 @@
                     "ativo"
                 ],
                 "title": "User"
+            },
+            "Vaga": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "titulo": {
+                        "type": "string"
+                    },
+                    "departamento": {
+                        "type": "string"
+                    },
+                    "quantidade_vagas": {
+                        "type": "integer"
+                    },
+                    "salario_proposto": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "regime_contratacao": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "descricao": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "requisitos": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "titulo",
+                    "departamento",
+                    "quantidade_vagas",
+                    "salario_proposto",
+                    "regime_contratacao",
+                    "status",
+                    "descricao",
+                    "requisitos",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "Vaga"
             },
             "Veiculo": {
                 "type": "object",

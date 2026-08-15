@@ -3,6 +3,7 @@
 namespace App\Modules\Financeiro\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use \App\Traits\BelongsToTenant;
 
 class CategoriaFinanceira extends Model
 {

@@ -5,6 +5,7 @@ namespace App\Modules\RH\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Modules\Financeiro\Models\LancamentoFinanceiro;
+use \App\Traits\BelongsToTenant;
 
 class Holerite extends Model
 {

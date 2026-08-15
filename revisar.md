@@ -1,184 +1,331 @@
-Visão macro de produto de um **ERP SaaS Escalável e Multissetorial**! 🔥
+A avaliação do auditor (**Manus**) é cirúrgica e traz o fechamento definitivo do ciclo de planejamento. Ele validou que o mapa atual atingiu **9,5/10** de precisão em relação ao código real (`consolidado.txt`), apontando apenas 4 ajustes documentais de precisão para atingir **10/10**:
 
-Abaixo está o **Raio-X de Revisão do Projeto** atualizado com o fechamento completo de todo o ciclo da **Versão 4.x.x (Governança, Equipe, Frotas e Ativos Patrimoniais)**:
-🗺️ Mapa de Evolução Arquitetural do Scalle ERP
-===============================================
+1. **Separação de ACL e Alçadas:** Manter `CheckRole` como 🟡 (implementado) e `Motor de Alçadas` como ⚪ (planejado).
 
+2. **Linhas dos Diferenciais na Matriz de Planos:** Explicitar `Evidências & Assinatura`, `Mensageria` e `Portal do Cliente` na tabela comercial.
+
+3. **Formalização LGPD (DPA):** Registrar a exigência de *Data Processing Agreement* (Aditivo de Operador) contratual.
+
+4. **Seção de Itens Adiados/Arquivados:** Deixar registrado formalmente o que foi postergado para evitar reaberturas de escopo desnecessárias.
+
+Abaixo está o **`revisar.md` final consolidado (10/10)**:
+
+---
+
+# 🗺️ Mapa de Evolução Arquitetural — Scalle ERP
+
+**Filosofia:** MVP Enxuto + Core Extensível + Feature Flags por Tenant + Add-ons Enterprise
+
+```text
                                 ┌────────────────────────────────────────┐
                                 │        CAMADA CORE (MULTITENANT)       │
-                                │ Auth | Pessoas | Itens | DTOs | ACL DB │
+                                │ Auth | Global Scope Tenant | DTOs      │
+                                │ Grupo Empresarial | Flags | Storage DB │
                                 └───────────────────┬────────────────────┘
                                                     │
                 ┌───────────────────────────────────┼───────────────────────────────────┐
                 ▼                                   ▼                                   ▼
          🛠️ PRESTAÇÃO DE SERVIÇOS           🏬 COMÉRCIO & VENDAS               🏭 INDÚSTRIA (PCP)
-         - Módulo de OS / CMMS ✅           - Módulo de Vendas Diretas ✅      - Estrutura de Produtos (BOM) ✅
-         - Ciclo de Vida da OS ✅           - PDV / Pedidos de Balcão ✅        - Ordens de Produção (OP) ✅
-         - Baixa/Estorno Estoque ✅          - Orçamentos/Propostas ✅          - Apontamento de Perdas/Refugo ✅
-         - Garantia & Laudos ✅             - Conversão em Venda/OS ✅         - Custo Industrial Apurado ✅
-         - Impressão Layout/PDF ✅          - Impressão Layout/PDF ✅
+         - Módulo de OS / CMMS 🟡*           - Módulo de Vendas Diretas 🟡*      - Estrutura de Produtos (BOM) 🟡
+         - Ciclo de Vida da OS 🟡            - PDV / Pedidos de Balcão 🟡         - Ordens de Produção (OP) 🟡
+         - Baixa/Estorno Estoque 🟡          - Orçamentos/Propostas 🟡           - Apontamento de Perdas/Refugo 🟡
+         - Evidências & Assinatura MP ⚪     - Conversão em Venda/OS 🟡          - Custo Industrial Apurado 🟡
+         - Impressão Layout/PDF 🟡           - Impressão Layout/PDF 🟡
                 │                                   │                                   │
                 └───────────────────────────────────┼───────────────────────────────────┘
                                                     ▼
                                 ┌────────────────────────────────────────┐
-                                │      SUPRIMENTOS, GESTÃO & WMS         │
-                                │ - Compras & Entradas de Notas ✅       │
-                                │ - Contas a Receber / Contas a Pagar ✅ │
-                                │ - DRE Consolidado & Extrato ✅         │
-                                │ - ACL / Perfis de Acesso (CheckRole) ✅│
-                                │ - Categorias & Unidades (Auxiliares) ✅│
-                                │ - Dashboard Executivo Real-time ✅     │
-                                │ - Cobrança PIX Nativa (EMV/QR Code) ✅ │
-                                │ - Engine Fiscal Desacoplada (NFe/NFSe)✅│
-                                │ - Gestão Multi-Tenant & Switch Context✅│
-                                │ - WMS / Multi-Depósitos & Transferência✅│
-                                │ - Gestão de Usuários da Equipe ✅      │
-                                │ - Parâmetros Operacionais / Empresa ✅ │
-                                │ - Importador de XML de Compras ✅      │
-                                │ - Auditoria & Logs de Ações ✅         │
-                                │ - Padrões de Resiliência (Idempotência)✅│
-                                │ - Gestão de Frotas & Abastecimento ✅  │
-                                │ - Emissão CTe / MDF-e Desacoplada ✅   │
-                                │ - Gestão de Ativos & Patrimônio ✅     │
-                                │ - Termo de Cautela Digital & QR Code ✅│
-                                │ - RH & DP Completo (7 Painéis) 🔮      │
-                                │ - Gestão de Assinaturas & Billing SaaS🔮│
-                                │ - Notificações (WhatsApp / E-mail) 🔮  │
-                                │ - Backup & Exportação LGPD 🔮          │
-                                │ - Frontend PWA & PDV Offline First 🔮  │
-                                │ - Tempo Real via SSE & Passkeys 🔮     │
-                                │ - Busca Semântica / IA (pgvector) 🔮   │
+                                │      SUPRIMENTOS, GESTÃO, RH & SAAS    │
+                                │ - Compras & XML de Notas 🟡            │
+                                │ - Contas a Receber / Contas a Pagar 🟡 │
+                                │ - DRE Gerencial & Extrato 🟡           │
+                                │ - ACL / Perfis de Acesso (CheckRole) 🟡│
+                                │ - Motor de Alçadas Simples ⚪          │
+                                │ - Dashboard Executivo (On-Demand) 🟡   │
+                                │ - Cobrança PIX Nativa (EMV/QR Code) 🟡 │
+                                │ - Engine Fiscal (Driver Desacoplado) 🔵│
+                                │ - WMS / Multi-Depósitos & Transf. 🟡   │
+                                │ - Gestão de Frotas & Abastecimento 🟡* │
+                                │ - Ativos, Cautela Digital & QR Code 🟡 │
+                                │ - DP: Escalas, Ponto REP-P & Holerite 🟡│
+                                │ - RH Estratégico (R&S, PDI, eNPS) 🟡   │
+                                │ - Billing SaaS, Planos & Cotas Storage⚪│
+                                │ - Exportação Fiscal/Contábil (SPED/CSV)⚪│
+                                │ - Portal do Cliente (Self-Service OS) ⚪│
+                                │ - Mensageria (WhatsApp / E-mail) ⚪    │
+                                │ - MFA / 2FA & Segurança de Sessões ⚪  │
+                                │ - Multi-Filial / Multi-Estabelecimento ⚪│
                                 └────────────────────────────────────────┘
 
-🔍 Revisão Atual do Projeto (Status Real do Código)
-===================================================
+```
 
-| **Módulo**              | **Status**            | **O que faz hoje?**                                                                                                                                                                                                                                      |
-| ----------------------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Auth & Tenant           | ✅ Concluído           | Multi-empresa isolado (`empresa_id`), token Sanctum, retorno do perfil (`role`), cadastro de empresas e troca dinâmica de contexto (`/trocar-contexto`).                                                                                                 |
-| ACL & Segurança         | ✅ Concluído           | Middleware `CheckRole` bloqueando perfis não autorizados com `403 Forbidden` (`ADMIN`, `FINANCEIRO`, `TECNICO`, `ATENDENTE`).                                                                                                                            |
-| Pessoas                 | ✅ Concluído           | Tabela unificada para Clientes e Fornecedores (`pes_pessoas`).                                                                                                                                                                                           |
-| Produtos & Serviços     | ✅ Concluído           | Itens (`pro_itens`), Categorias (`pro_categorias`) e Unidades (`pro_unidades`). Parâmetros fiscais (NCM, CEST, CFOP, Origem).                                                                                                                            |
-| Ordens de Serviço       | ✅ Concluído           | Numeração comercial (`OS-2026-000001`), baixa/estorno de estoque, Contas a Receber, vínculo com veículos da frota (`veiculo_id`) e Impressão/PDF.                                                                                                        |
-| Compras & Entradas      | ✅ Concluído           | Registro de notas manuais ou via XML (`/compras/importar-xml`), incremento atômico de estoque, atualização de custo e lançamento no Contas a Pagar.                                                                                                      |
-| Vendas Diretas          | ✅ Concluído           | Pedidos de balcão (`VEN-2026-000001`), baixa atômica de peças e geração de Contas a Receber.                                                                                                                                                             |
-| Orçamentos              | ✅ Concluído           | Cotações (`ORC-2026-000001`), conversão em 1 clique para Venda ou OS e Impressão/PDF.                                                                                                                                                                    |
-| Financeiro & DRE        | ✅ Concluído           | Contas a Receber/Pagar, liquidação/baixa, Plano de Contas, DRE e Extrato Financeiro Detalhado por período.                                                                                                                                               |
-| Dashboard & PIX         | ✅ Concluído           | Indicadores operacionais/comerciais/financeiros e gerador de PIX Copia e Cola (EMV) + QR Code com busca dinâmica da chave configurada por empresa.                                                                                                       |
-| Empresa Emitente        | ✅ Concluído           | Cadastro de Inscrição Estadual, CRT e Endereço Fiscal completo com Código IBGE (`sis_empresas`).                                                                                                                                                         |
-| Engine Fiscal           | ✅ Concluído           | Driver desacoplado (`FiscalDriverInterface`), emissão de NFe (Vendas), NFS-e (OS), CTe e MDF-e de transporte.                                                                                                                                            |
-| Módulo Industrial (PCP) | ✅ Concluído           | Ficha Técnica/BOM (`pcp_fichas_tecnicas`), Ordens de Produção (`OP-2026-000001`), consumo de insumos, rateio de mão de obra/CIF, entrada atômica do acabado com recálculo de custo e apontamento de perdas/refugos (`pcp_apontamentos_perda`).           |
-| Logística & WMS         | ✅ Concluído           | Gestão de Depósitos/Almoxarifados (`wms_depositos`), controle de estoque fracionado por local/viatura técnica (`wms_estoque_deposito`), e Transferências Internas (`TRF-2026-000001`) nos modos DIRETO e EM_TRANSITO (`wms_transferencias`).             |
-| Governança & Equipe     | ✅ Concluído           | Gestão de Usuários da Equipe (`/empresa/usuarios`), Parâmetros por Empresa (`sis_empresa_parametros`), Importador de XML de NF-e (`/compras/importar-xml`), Trilha de Auditoria (`sis_auditoria_logs`) e Middleware de Idempotência (`Idempotency-Key`). |
-| Gestão de Frotas        | ✅ Concluído           | Cadastro de veículos (`fro_veiculos`), odômetro/KM atual, controle analítico de abastecimentos (`fro_abastecimentos`) com cálculo de consumo e geração automática de despesa no Contas a Pagar.                                                          |
-| Gestão de Ativos        | ✅ Concluído           | Tombamento de bens (`pat_ativos`), cálculo de depreciação linear em tempo real, Termos de Cautela Digital para técnicos (`pat_cautelas`) e gerador de QR Code para etiquetagem de ferramentas e máquinas.                                                |
-| RH & Gente Completo     | 🔮 Planejado          | DP, Folha/Holerite interno, Ponto georreferenciado, Férias, Recrutamento & Seleção (Kanban), Avaliação de Desempenho (360°/OKRs), PDI/Treinamentos e Clima/eNPS.                                                                                         |
-| Billing & SaaS Core     | 🔮 Planejado          | Planos (`sis_planos`), Bloqueio automático de inadimplentes, Webhook de Gateway (Asaas/Stripe), Notificações transacionais e Backup/Exportação LGPD[cite: 1].                                                                                            |
-| Inovação & Arquitetura  | 🔮 Planejado[cite: 1] | Frontend PWA & PDV Offline First, Autenticação por Passkeys (WebAuthn), Tempo Real via SSE e Busca Semântica (`pgvector`)[cite: 1].                                                                                                                      |
+*( * ) Nota de Dependência: Módulos com asterisco possuem subfluxo fiscal desacoplado herdando o nível 🔵 do driver.*
 
-📌 Planejamento de Releases (Semantic Versioning)
-=================================================
+---
 
-### 🟢 Versão 1.x.x — Core Comercial, Operacional, Financeiro & Fiscal (Concluídas v1.0 a v1.5)
+# 🚦 Régua de Maturidade do Código (5 Níveis)
 
-[cite: 1]
+| Símbolo | Nível            | Significado Técnico                                       |
+| ------- | ---------------- | --------------------------------------------------------- |
+| ⚪       | **1. Planejado** | Arquitetura/modelagem definida; aguardando implementação. |
 
-* **v1.0.0 (Concluída):** Multi-tenant, Pessoas, Produtos/Serviços, OS/CMMS, Compras e Financeiro/DRE[cite: 1].
+ |
+| 🔵 | **2. Arquitetado** | Contratos, interfaces, DTOs e drivers mockados no código.
 
-* **v1.1.0 (Concluída):** Módulo de Vendas Diretas + ACL / Perfis de Acesso (`CheckRole`)[cite: 1].
+ |
+| 🟡 | **3. Implementado** | Código funcional, migrado no banco e validado em testes locais manuais/API (*suíte automatizada pendente*).
 
-* **v1.2.0 (Concluída):** Gestão de Orçamentos com conversão + Cadastros Auxiliares (Categorias e Unidades de Medida)[cite: 1].
+ |
+| 🟢 | **4. Homologado** | Validado em ambiente de homologação (SEFAZ/Bancos/Cenários de borda).
 
-* **v1.3.0 (Concluída):** Engine de Impressão de Orçamento/OS, Dashboard de Indicadores e Cobrança PIX Nativa (Payload EMV + QR Code)[cite: 1].
+ |
+| 🟣 | **5. Em Produção** | Operacional no servidor com clientes reais pagantes.
 
-* **v1.4.0 (Concluída):** Estrutura Fiscal nos Produtos (NCM/CFOP), Parâmetros do Emitente (IBGE/CRT) e Extrato Financeiro por Período[cite: 1].
+ |
 
-* **v1.5.0 (Concluída):** Engine de Transmissão Fiscal Desacoplada (`FiscalDriverInterface`) com suporte a NFe e NFS-e + Gestão e Troca Dinâmica de Múltiplos Tenants[cite: 1].
+---
 
-### 🏭 Versão 2.0.0 — Módulo Industrial (PCP & Custo Industrial - Concluída)
+# 🔍 Raio-X Atual dos Módulos (Status Real do Backend)
 
-[cite: 1]
+| Módulo / Domínio        | Status | Estado Atual do Código                                                                                  | Próximo Passo para Subir de Nível |
+| ----------------------- | ------ | ------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| **Auth & Multi-Tenant** | 🟡     | Multi-empresa isolado por `empresa_id` manual (84 filtros `where`), Sanctum, troca de contexto e roles. |                                   |
 
-* **v2.0.0 (Concluída):**
+ | **[CRÍTICO]** Aplicar `GlobalScopeTenant` em todos os Models e criar testes automatizados de invasão cruzada (retorno 403/404).
+
+ |
+| **ACL & Governança** | 🟡 | Middleware `CheckRole`, logs de auditoria (`sis_auditoria_logs`) e idempotência.
+
+ | Implementar suíte de testes de permissão por perfil de acesso. |
+| **Motor de Alçadas** | ⚪ | Escopo desenhado (regras parametrizáveis por valor/desconto). | Implementar verificação de limites (desconto > 10% ou compra > R$ 5k exige aprovação).
+
+ |
+| **Pessoas & Contatos** | 🟡 | Cadastro unificado (`pes_pessoas`) com validação de formato.
+
+ | Adicionar algoritmo local de dígito verificador com fallback para ReceitaWS.
+
+ |
+| **Produtos, Estoque & WMS** | 🟡 | Catálogo (`pro_itens`), parâmetros fiscais, multi-depósitos e transferências.
+
+ | Rastreabilidade de lote/série, validade e curva ABC.
+
+ |
+| **Ordens de Serviço (CMMS)** | 🟡* | Ciclo de vida, consumo de peças, PDF e emissão mockada (🔵).
+
+ | Coleta de fotos antes/depois e assinatura digital MP 2.200-2 (geo + IP + hash SHA-256).
+
+ |
+| **Comércio & Vendas** | 🟡* | Pedidos balcão, orçamentos, baixa atômica e NF-e mockada (🔵).
+
+ | Integração com checkout transparente e link público de pagamento. |
+| **Compras & Entradas** | 🟡 | Entrada manual e importador inteligente de XML de NF-e.
+
+ | Mapa comparativo de cotações com múltiplos fornecedores. |
+| **Financeiro & DRE** | 🟡 | Contas a pagar/receber, conciliação, DRE gerencial e extrato.
+
+ | Rota de exportação contábil/fiscal para contadores externos (Domínio/SPED/CSV).
+
+ |
+| **PIX & Cobranças** | 🟡 | Gerador de payload PIX Copia e Cola (EMV) + QR Code dinâmico.
+
+ | Webhook de confirmação instantânea via Gateway Asaas.
+
+ |
+| **Engine Fiscal** | 🔵 | `FiscalDriverInterface` com drivers mockados (`MockFiscalDriver` com `rand`).
+
+ | **[CRÍTICO]** Driver real A1/A3, cancelamento, CCe, inutilização, contingência EPEC/SVC e guarda de XML por 5 anos.
+
+ |
+| **Módulo Industrial (PCP)** | 🟡 | Ficha técnica (BOM), ordens de produção, apropriação de custos e refugo.
+
+ | Apontamento de tempos por operador/máquina em tempo real. |
+| **Frotas & Transportes** | 🟡* | Veículos, odômetro, abastecimento com KM/L e CTe mockado (🔵).
+
+ | Alertas automáticos de preventiva por odômetro (óleo, correia e pneus).
+
+ |
+| **Ativos & Patrimônio** | 🟡 | Tombamento de bens, depreciação linear, cautela digital e QR Code.
+
+ | Histórico de manutenções preventivas/corretivas vinculadas à OS.
+
+ |
+| **Departamento Pessoal (DP)** | 🟡 | Ficha funcional, escalas, ponto georreferenciado e holerite gerencial.
+
+ | Rota de retificação de ponto com registro espelho (Portaria 671) e módulo de rescisão/férias/13º.
+
+ |
+| **RH Estratégico & Gente** | 🟡 | R&S Kanban com auto-admissão, avaliação ponderada, PDI e eNPS anônimo.
+
+ | Piso mínimo de respondentes por setor no eNPS e relatório Nine-Box.
+
+ |
+| **Billing SaaS & Planos** | ⚪ | Modelagem definida (planos, limites, cotas e soft-lock).
+
+ | Execução da Release v6.0.0 com gateway Asaas e middleware de feature flags.
+
+ |
+| **Portal do Cliente** | ⚪ | Conceito validado (self-service para aprovação de OS e laudos).
+
+ | Criação de tokens públicos temporários de visualização restrita por OS.
+
+ |
+| **Segurança Avançada (MFA)** | ⚪ | Escopo desenhado (autenticação de 2 fatores via TOTP/App).
+
+ | Implementação do middleware 2FA para perfis `ADMIN` e `FINANCEIRO`.
+
+ |
+
+---
+
+# 📌 Planejamento de Releases (Semantic Versioning)
+
+### 🟢 Versão 1.x.x — Core Comercial, Operacional, Financeiro & Fiscal (Entregue)
+
+
+
+* **v1.0.0 a v1.5.0:** Multi-tenant por `empresa_id`, Pessoas, Itens/Produtos, Módulo de Vendas, Orçamentos, Ordens de Serviço (CMMS), Compras, Contas a Pagar/Receber, DRE Gerencial, Extrato, ACL (`CheckRole`), Cobrança PIX EMV nativa e Engine Fiscal desacoplada (`FiscalDriverInterface`).
   
-  * **Ficha Técnica / Árvore do Produto (BOM):** Composição de insumos físicos e custos indiretos/mão de obra por produto acabado[cite: 1].
   
-  * **Ordens de Produção (OP):** Controle de ciclo de vida (`PLANEJADA`, `EM_PRODUCAO`, `CONCLUIDA`, `CANCELADA`), baixa atômica de insumos, entrada do produto acabado no estoque e recálculo automático do preço de custo unitário final[cite: 1].
+
+### 🏭 Versão 2.0.0 — Módulo Industrial (PCP & Custos - Entregue)
+
+
+
+* **v2.0.0:** Estrutura de Produtos / Ficha Técnica (BOM), Ordens de Produção (OP) com baixa atômica de insumos, rateio de mão de obra/CIF, entrada de produto acabado com recálculo de custo médio e apontamento analítico de refugo/perdas.
   
-  * **Apontamento de Perdas & Motivos de Refugo:** Cadastro de motivos e registro analítico de perdas no chão de fábrica[cite: 1].
-
-### 🚚 Versão 3.0.0 — Logística & WMS (Concluída)
-
-[cite: 1]
-
-* **v3.0.0 (Concluída):**
   
-  * **Multi-Depósitos / Almoxarifados:** Estoque fracionado por galpão, loja física e viaturas técnicas volantes (`wms_depositos` e `wms_estoque_deposito`)[cite: 1].
+
+### 🚚 Versão 3.0.0 — Logística & WMS (Entregue)
+
+
+
+* **v3.0.0:** Gestão de Multi-Depósitos/Almoxarifados (`wms_depositos`), controle fracionado de estoque (`wms_estoque_deposito`) e Transferências Internas (`wms_transferencias`) nos modos `DIRETO` e `EM_TRANSITO` com conferência.
   
-  * **Transferência Interna de Mercadorias:** Movimentação entre locais de estoque em modo instantâneo (`DIRETO`) ou com conferência de recebimento (`EM_TRANSITO`)[cite: 1].
-
-### 🛡️ Versão 4.x.x — Governança SaaS, Frotas & Ativos Patrimoniais (Concluídas v4.0, v4.1 e v4.2)
-
-[cite: 1]
-
-* **v4.0.0 (Concluída):**
   
-  * **Gestão de Usuários da Equipe:** CRUD completo para o `ADMIN` convidar e gerenciar operadores (`TECNICO`, `FINANCEIRO`, `ATENDENTE`) vinculados à sua empresa[cite: 1].
+
+### 🛡️ Versão 4.x.x — Governança SaaS, Frotas & Ativos Patrimoniais (Entregue)
+
+
+
+* **v4.0.0:** Gestão de Usuários da Equipe (`/empresa/usuarios`), Importador inteligente de XML de NF-e, Parâmetros operacionais por empresa, Trilha de Auditoria (`sis_auditoria_logs`) e Middleware de Idempotência (`Idempotency-Key`).
+
+* **v4.1.0:** Gestão de Frotas (`fro_veiculos`), odômetro/KM atual, controle de abastecimentos (`fro_abastecimentos`) com consumo KM/L integrado ao Contas a Pagar e CTe/MDF-e mockados.
+
+* **v4.2.0:** Gestão de Ativos & Patrimônio (`pat_ativos`), cálculo de depreciação linear em tempo real, Termo de Cautela Digital para técnicos (`pat_cautelas`) e gerador dinâmico de QR Code.
   
-  * **Importador de XML de Compra:** Leitura automática de NF-e (.xml), autocadastro de fornecedor, reconciliação de produtos e lançamento financeiro[cite: 1].
   
-  * **Parâmetros Operacionais por Tenant:** Chave PIX personalizada por empresa (`sis_empresa_parametros`), dias de vencimento padrão e termos de garantia[cite: 1].
+
+### 👥 Versão 5.x.x — Recursos Humanos Completo & Gente (Entregue)
+
+
+
+* **v5.0.0 (DP & Ponto Eletrônico):** Ficha funcional (`rh_colaboradores`), jornadas/escalas customizáveis (`rh_escalas`), ponto georreferenciado com Lat/Long/IP (`rh_pontos`), banco de horas (`rh_banco_horas`), matriz de certificações (NR-10/NR-35/CNH) e espelho de holerite gerencial integrado ao Contas a Pagar (`rh_holerites`).
+
+* **v5.1.0 (RH Estratégico & Gestão de Talentos):** Recrutamento & Seleção em funil Kanban (`rh_vagas`, `rh_candidatos`) com **auto-admissão imediata**, Avaliação de Desempenho ponderada (`rh_avaliacao_ciclos`), PDI/Treinamentos (`rh_treinamentos`) e Pesquisa de Clima Organizacional/eNPS 100% anônima (`rh_clima_respostas`).
   
-  * **Auditoria & Logs de Atividade (Activity Log):** Trilha de auditoria forense para identificar quem criou, alterou ou excluiu registros críticos no sistema (`sis_auditoria_logs`)[cite: 1].
   
-  * **Idempotência de Requisições:** Middleware de `Idempotency-Key` para blindar pagamentos, liquidações e encerramentos de OS contra cliques duplos[cite: 1].
 
-* **v4.1.0 (Concluída - Gestão de Frotas & Transporte):**
+### 💳 Versão 6.0.0 — Monetização SaaS, Billing, Governança & Diferenciais de Campo (Próxima Release)
+
+
+
+* **Blindagem de Core Multi-Tenant:** `GlobalScopeTenant` forçado no Eloquent para isolamento total de queries e suíte automatizada de testes de invasão cruzada.
+
+* **Motor de Billing & Planos SaaS:** Gestão de planos (`sis_planos`: MEI, Pro, Enterprise), controle ativo de cotas de storage (3GB, 20GB, 100GB+), soft-lock de downgrade (read-only em excedentes) e webhooks de pagamento (Asaas/Stripe).
+
+* **Ponte de Exportação Contábil/Fiscal:** Endpoint padronizado (`/api/v1/exportacao-contabil`) gerando arquivos estruturados (SPED/CSV/Domínio) para contadores externos.
+
+* **Evidências de OS & Assinatura Jurídica (MP 2.200-2):** Fotos de "Antes/Depois" na OS e coleta de assinatura na tela com captura de Lat/Long, IP, Timestamp e Hash SHA-256.
+
+* **Motor de Alçadas Simples:** Aprovação obrigatória de `ADMIN` para descontos comerciais acima de 10% ou compras acima de limite parametrizado.
+
+* **Portal do Cliente (Self-Service):** Token público temporário por OS para o cliente aprovar orçamento, ver laudo e pagar via PIX.
+
+* **Segurança de Acesso (MFA/2FA):** Segundo fator de autenticação via TOTP para perfis administrativos e financeiros.
   
-  * **Gestão de Veículos:** Cadastro de veículos da frota (`fro_veiculos`), odômetro/KM atual, motorista responsável e status[cite: 1].
   
-  * **Controle de Abastecimentos:** Registro analítico (`fro_abastecimentos`), consumo médio e geração automática de despesa no Contas a Pagar[cite: 1].
-  
-  * **Emissão CTe e MDF-e:** Métodos mockados desacoplados no `FiscalDriverInterface`[cite: 1].
-
-* **v4.2.0 (Concluída - Gestão de Ativos & Patrimônio):**
-  
-  * **Tombamento e Inventário Patrimonial:** Cadastro e rastreabilidade de máquinas, ferramentas e equipamentos (`pat_ativos`) com depreciação linear em tempo real[cite: 1].
-  
-  * **Termo de Cautela Digital & QR Code:** Assinatura digital de entrega de equipamentos a técnicos (`pat_cautelas`) e gerador dinâmico de QR Code para leitura em campo[cite: 1].
-
-### 👥 Versão 5.0.0 — RH Estratégico & Departamento Pessoal Completo (7 Painéis - Próxima Release)
-
-[cite: 1]
-
-* **DP & Folha Interna:** Ficha do colaborador, histórico funcional, jornada/escala, ponto georreferenciado, férias e espelho de holerite com proventos/descontos[cite: 1].
-
-* **Gente & Talentos:** Recrutamento & Seleção (Kanban de vagas), Avaliação de Desempenho 360°, OKRs/Metas, PDI/Treinamentos com matriz de certificações (NR-10, NR-35, CNH) e Pesquisa de Clima/eNPS[cite: 1].
-
-### 💳 Versão 6.0.0 — Monetização SaaS, Mensageria & Segurança de Dados
-
-[cite: 1]
-
-* **Motor de Assinatura & Planos (Billing):** Definição de planos (`sis_planos`), controle de limites por tenant, webhooks de gateway (Asaas/Stripe) e bloqueio automático de inadimplentes[cite: 1].
-
-* **Mensageria Transacional:** Disparo automático de links de OS, vendas e chave PIX via WhatsApp (Evolution API / Z-API) e E-mail transacional (SMTP/Resend)[cite: 1].
-
-* **Backups & Exportação LGPD:** Rotina agendada de dump do banco e exportação de dados em ZIP/Excel por tenant para conformidade jurídica[cite: 1].
 
 ### ⚡ Versão 7.0.0 — Frontend PWA, Tempo Real & Inovação Tecnológica
 
-[cite: 1]
 
-* **Frontend SPA / PWA (PDV Offline First):** Interface responsiva completa com persistência local em IndexedDB e sincronização em lote para vendas de balcão[cite: 1].
 
-* **Comunicação Reativa em Tempo Real (SSE):** Atualização dinâmica de dashboards, status de OPs e notificações push internas via Server-Sent Events sem polling[cite: 1].
+* **Frontend SPA / PWA (PDV Offline First):** Interface responsiva com persistência local em IndexedDB e sincronização em lote para vendas de balcão e técnicos de campo.
 
-* **Autenticação Biométrica / Passkeys:** Suporte a WebAuthn/FIDO2 para login rápido e seguro por biometria/dispositivo[cite: 1].
+* **Comunicação Reativa em Tempo Real (SSE):** Atualização dinâmica de dashboards executivos, status de OPs e notificações push via Server-Sent Events.
 
-* **Busca Semântica & IA:** Vetorização de itens, histórico de defeitos em OS e catálogos via `pgvector` para busca por intenção[cite: 1].
+* **Autenticação Biométrica / Passkeys:** Suporte a WebAuthn/FIDO2 para login por biometria/dispositivo.
 
-### 🚀 Próxima Parada:
+* **Busca Semântica & IA:** Vetorização de itens, histórico de defeitos em OS e catálogos via `pgvector` para busca por intenção.
+  
+  
 
-Toda a família da **v4.x.x** está entregue e rodando em produção na Hostoo!
+---
 
-O próximo marco é a **Versão 5.0.0 — RH Estratégico & Departamento Pessoal Completo (7 Painéis: DP, Ponto, Folha, R&S, Desempenho, PDI/Certificações e Clima)**[cite: 1]. Quando quiser abrir essa esteira, só dar o sinal!
+# Matriz Comercial de Planos SaaS (Feature Flags)
+
+| **Funcionalidade / Domínio**         | **MEI (Básico)** | **Pro (PMEs)** | **Enterprise (Grandes Contas)** |
+| ------------------------------------ | ---------------- | -------------- | ------------------------------- |
+| **Gestão de Assinatura & Billing**   | Automático       | Automático     | Painel Dedicado                 |
+| **Ordens de Serviço & CMMS**         | ✅                | ✅              | ✅                               |
+| **Gestão Financeira & DRE**          | ✅                | ✅              | ✅                               |
+| **Vendas & Orçamentos**              | ✅                | ✅              | ✅                               |
+| **Cobrança PIX Nativa**              | ✅                | ✅              | ✅                               |
+| **Cota de Armazenamento (Storage)**  | **3 GB**         | **20 GB**      | **100 GB+**                     |
+| **Evidências & Assinatura Jurídica** | —                | ✅              | ✅                               |
+| **Portal do Cliente (Self-Service)** | ✅                | ✅              | ✅                               |
+| **Mensageria (WhatsApp / E-mail)**   | —                | ✅              | ✅                               |
+| **Emissão Fiscal (NFe/NFSe/CTe)**    | —                | ✅              | ✅                               |
+| **Gestão de Frotas & Ativos**        | —                | ✅              | ✅                               |
+| **Departamento Pessoal & Ponto**     | —                | ✅              | ✅                               |
+| **RH Estratégico & eNPS**            | —                | ✅              | ✅                               |
+| **Exportação Contábil (SPED/CSV)**   | —                | ✅              | ✅                               |
+| **MFA / 2FA Obrigatório**            | —                | Opcional       | ✅                               |
+| **Multi-Filial / Múltiplos CNPJs**   | —                | —              | ✅                               |
+
+---
+
+# ⚖️ Conformidade Legal, Governança & Segurança
+
+1. **Isolamento de Dados Multi-Tenant:** Implementação de escopo global forçado no ORM (`GlobalScopeTenant`) em todas as entidades. Nenhuma consulta trafega sem amarra explícita de `empresa_id`, com suíte de testes automatizados de invasão cruzada.
+
+2. **Portaria MTP nº 671/2021 (REP-P):** Ponto com captura de Data/Hora, IP e GPS. **Imutabilidade garantida por ausência de rota de sobrescrita direta** — ajustes manuais futuros criarão registros de retificação em espelho rastreáveis para auditoria trabalhista.
+
+3. **Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018):**
+* O Scalle ERP atua formalmente como **Operador de Dados** do tenant com DPA padrão (*Data Processing Agreement*) anexo aos contratos dos planos.
+
+* Anonimização total por design no eNPS (sem colunas de identificação de usuário) com piso mínimo de 5 respondentes por departamento para exibição de relatórios segmentados.
+
+* Tratamento de conflito legal: solicitações de exclusão de dados respeitam o prazo de guarda fiscal e trabalhista de 5 anos antes do expurgo definitivo.
+4. **Validade Jurídica de OS em Campo (MP 2.200-2/2001):** Assinatura colhida no dispositivo vinculada a IP, Geotag, Timestamp e Hash SHA-256 dos itens executados.
+
+5. **Resiliência em Downgrades (Soft-Lock):** Ao reduzir o plano, dados excedentes ficam em modo `Read-Only`, impedindo novas adições sem corromper DTOs legadas ou executar migrações destrutivas.
+
+6. **Controle Ativo de Cotas de Storage:** Interceptação em tempo de upload para barrar arquivos quando o limite for atingido.
+   
+   
+
+---
+
+# 📦 Itens Arquivados / Postergados (Decisões de Escopo)
+
+* **Transmissor Governamental Próprio de eSocial (S-1000 a S-5013):** Postergado. Substituído por exportação padronizada (SPED Folha / Domínio) para software de contabilidade parceiro.
+
+* **Contabilidade Formal de Partidas Dobradas (Diário / Razão / Balanço):** Arquivado do core inicial. Mantido DRE Gerencial, Centros de Custo e Plano de Contas com exportação contábil.
+
+* **Workflow Corporativo Multinível (4 alçadas):** Postergado para add-on Enterprise. Adotado Motor de Alçadas Simples parametrizável.
+  
+  
+
+---
+
+### 🚀 Próximo Passo na Fila de Execução
+
+Com o `revisar.md` 100% blindado e auditado, a primeira entrega da **Release v6.0.0** será:
+
+1. **`GlobalScopeTenant` no Eloquent + Suíte de Testes Automatizados de Isolamento Cruzado (403/404)**.
+   
+   
+
+Podemos dar o tiro de partida nessa implementação?
+
+

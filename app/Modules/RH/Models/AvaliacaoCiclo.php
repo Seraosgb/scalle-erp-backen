@@ -4,6 +4,7 @@ namespace App\Modules\RH\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use \App\Traits\BelongsToTenant;
 
 class AvaliacaoCiclo extends Model
 {

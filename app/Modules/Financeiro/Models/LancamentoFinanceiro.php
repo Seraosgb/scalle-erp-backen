@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Modules\Pessoas\Models\Pessoa;
 use App\Modules\OrdensServico\Models\OrdemServico;
+use \App\Traits\BelongsToTenant;
 
 class LancamentoFinanceiro extends Model
 {
