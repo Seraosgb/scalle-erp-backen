@@ -12,6 +12,7 @@ use App\Modules\Compras\Controllers\CompraController;
 use App\Modules\Frotas\Controllers\FrotaController;
 use App\Modules\Ativos\Controllers\AtivoController;
 use App\Modules\RH\Controllers\RHController;
+use App\Modules\RH\Controllers\RHEstrategicoController;
 
 // Rotas PÚBLICAS de Autenticação
 Route::prefix('v1/auth')->group(base_path('app/Modules/Auth/Routes/api.php'));
@@ -167,4 +168,28 @@ Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO,TECNICO'])->prefix('v1
 
     // Folha de Pagamento & Holerite
     Route::post('/folha/gerar-holerite', [RHController::class, 'gerarHolerite']);
+});
+
+// 🎯 Módulo de RH Estratégico, R&S, Desempenho & Clima (v5.1.0)
+Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO,TECNICO'])->prefix('v1/rh-estrategico')->group(function () {
+    // Recrutamento & Seleção (Kanban)
+    Route::get('/vagas', [RHEstrategicoController::class, 'listarVagas']);
+    Route::post('/vagas', [RHEstrategicoController::class, 'criarVaga']);
+    Route::post('/candidatos', [RHEstrategicoController::class, 'cadastrarCandidato']);
+    Route::patch('/candidatos/{id}/kanban', [RHEstrategicoController::class, 'moverEtapaKanban']);
+
+    // Avaliação de Desempenho
+    Route::post('/avaliacoes/ciclos', [RHEstrategicoController::class, 'criarCicloAvaliacao']);
+    Route::post('/avaliacoes/responder', [RHEstrategicoController::class, 'responderAvaliacao']);
+
+    // PDI & Treinamentos
+    Route::post('/treinamentos', [RHEstrategicoController::class, 'registrarTreinamento']);
+
+    // Pesquisa de Clima & eNPS Anônimo
+    Route::post('/clima/responder', [RHEstrategicoController::class, 'responderClima']);
+    Route::get('/clima/pesquisas/{id}/enps', [RHEstrategicoController::class, 'consultarEnps']);
+
+    // Gestão de Pesquisas de Clima
+    Route::get('/clima/pesquisas', [RHEstrategicoController::class, 'listarPesquisasClima']);
+    Route::post('/clima/pesquisas', [RHEstrategicoController::class, 'criarPesquisaClima']);
 });
