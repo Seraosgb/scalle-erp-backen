@@ -11,6 +11,7 @@ use App\Modules\Empresa\Controllers\ParametroEmpresaController;
 use App\Modules\Compras\Controllers\CompraController;
 use App\Modules\Frotas\Controllers\FrotaController;
 use App\Modules\Ativos\Controllers\AtivoController;
+use App\Modules\RH\Controllers\RHController;
 
 // Rotas PÚBLICAS de Autenticação
 Route::prefix('v1/auth')->group(base_path('app/Modules/Auth/Routes/api.php'));
@@ -149,4 +150,21 @@ Route::middleware(['auth:sanctum', 'role:ADMIN,TECNICO,FINANCEIRO'])->prefix('v1
     // Termo de Cautela & Devolução
     Route::post('/cautelas', [AtivoController::class, 'emitirCautela']);
     Route::patch('/cautelas/{id}/devolver', [AtivoController::class, 'devolverCautela']);
+});
+// 👥 Módulo de RH, Departamento Pessoal & Ponto (v5.0.0)
+Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO,TECNICO'])->prefix('v1/rh')->group(function () {
+    // Escalas
+    Route::get('/escalas', [RHController::class, 'listarEscalas']);
+    Route::post('/escalas', [RHController::class, 'criarEscala']);
+
+    // Colaboradores & Certificações
+    Route::get('/colaboradores', [RHController::class, 'listarColaboradores']);
+    Route::post('/colaboradores', [RHController::class, 'criarColaborador']);
+    Route::post('/certificacoes', [RHController::class, 'registrarCertificacao']);
+
+    // Ponto Eletrônico
+    Route::post('/ponto/bater', [RHController::class, 'baterPonto']);
+
+    // Folha de Pagamento & Holerite
+    Route::post('/folha/gerar-holerite', [RHController::class, 'gerarHolerite']);
 });
