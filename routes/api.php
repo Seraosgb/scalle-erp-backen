@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImpressaoController;
 use App\Http\Controllers\EmpresaConfigController;
 use App\Modules\Fiscal\Controllers\FiscalController;
+use App\Modules\PCP\Controllers\PcpController;
 
 // Rotas PÚBLICAS de Autenticação
 Route::prefix('v1/auth')->group(base_path('app/Modules/Auth/Routes/api.php'));
@@ -73,4 +74,20 @@ Route::middleware(['auth:sanctum', 'role:ADMIN'])->prefix('v1/empresa')->group(f
     Route::get('/configuracao-fiscal', [EmpresaConfigController::class, 'show']);
     Route::put('/configuracao-fiscal', [EmpresaConfigController::class, 'update']);
     Route::post('/trocar-contexto/{empresaId}', [EmpresaConfigController::class, 'trocarContexto']);
+});
+// 🏭 Módulo Industrial (PCP - Planejamento e Controle da Produção)
+Route::middleware(['auth:sanctum', 'role:ADMIN,TECNICO'])->prefix('v1/pcp')->group(function () {
+    // Ficha Técnica (BOM)
+    Route::get('/produtos/{produtoId}/ficha-tecnica', [PcpController::class, 'obterFichaTecnica']);
+    Route::post('/produtos/{produtoId}/ficha-tecnica', [PcpController::class, 'salvarFichaTecnica']);
+
+    // Ordens de Produção
+    Route::get('/ordens-producao', [PcpController::class, 'listarOPs']);
+    Route::post('/ordens-producao', [PcpController::class, 'criarOP']);
+    Route::patch('/ordens-producao/{id}/status', [PcpController::class, 'atualizarStatus']);
+    Route::post('/ordens-producao/{id}/perdas', [PcpController::class, 'registrarPerda']);
+
+    // Motivos de Perda/Refugo
+    Route::get('/motivos-perda', [PcpController::class, 'listarMotivosPerda']);
+    Route::post('/motivos-perda', [PcpController::class, 'criarMotivoPerda']);
 });
