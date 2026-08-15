@@ -13,6 +13,7 @@ use App\Modules\Frotas\Controllers\FrotaController;
 use App\Modules\Ativos\Controllers\AtivoController;
 use App\Modules\RH\Controllers\RHController;
 use App\Modules\RH\Controllers\RHEstrategicoController;
+use App\Modules\Financeiro\Controllers\ExportacaoContabilController;
 
 // 🔓 Rotas PÚBLICAS de Autenticação
 Route::prefix('v1/auth')->group(base_path('app/Modules/Auth/Routes/api.php'));
@@ -186,3 +187,9 @@ Route::middleware(['auth:sanctum', 'role:ADMIN,TECNICO', 'feature:wms'])->prefix
     Route::post('/transferencias', [WmsController::class, 'criarTransferencia']);
     Route::patch('/transferencias/{id}/concluir', [WmsController::class, 'concluirTransferencia']);
 });
+// 📊 Exportação Contábil / Fiscal para Contadores (v6.0.0 - A partir do Plano PRO)
+Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO', 'feature:exportacao_contabil'])
+    ->prefix('v1/exportacao-contabil')
+    ->group(function () {
+        Route::get('/', [ExportacaoContabilController::class, 'exportar']);
+    });
