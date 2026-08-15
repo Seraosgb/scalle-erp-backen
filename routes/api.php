@@ -10,6 +10,7 @@ use App\Modules\Empresa\Controllers\UsuarioEquipeController;
 use App\Modules\Empresa\Controllers\ParametroEmpresaController;
 use App\Modules\Compras\Controllers\CompraController;
 use App\Modules\Frotas\Controllers\FrotaController;
+use App\Modules\Ativos\Controllers\AtivoController;
 
 // Rotas PÚBLICAS de Autenticação
 Route::prefix('v1/auth')->group(base_path('app/Modules/Auth/Routes/api.php'));
@@ -137,4 +138,15 @@ Route::middleware(['auth:sanctum', 'role:ADMIN,TECNICO,FINANCEIRO'])->prefix('v1
     Route::post('/abastecimentos', [FrotaController::class, 'registrarAbastecimento']);
 
     Route::post('/emitir-cte', [FrotaController::class, 'emitirCTe']);
+});
+
+// 🏷️ Módulo de Gestão de Ativos & Patrimônio (v4.2.0)
+Route::middleware(['auth:sanctum', 'role:ADMIN,TECNICO,FINANCEIRO'])->prefix('v1/ativos')->group(function () {
+    Route::get('/', [AtivoController::class, 'index']);
+    Route::post('/', [AtivoController::class, 'store']);
+    Route::get('/{id}/qrcode', [AtivoController::class, 'gerarQrCode']);
+
+    // Termo de Cautela & Devolução
+    Route::post('/cautelas', [AtivoController::class, 'emitirCautela']);
+    Route::patch('/cautelas/{id}/devolver', [AtivoController::class, 'devolverCautela']);
 });
