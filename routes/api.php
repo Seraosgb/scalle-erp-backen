@@ -6,6 +6,9 @@ use App\Http\Controllers\EmpresaConfigController;
 use App\Modules\Fiscal\Controllers\FiscalController;
 use App\Modules\PCP\Controllers\PcpController;
 use App\Modules\WMS\Controllers\WmsController;
+use App\Modules\Empresa\Controllers\UsuarioEquipeController;
+use App\Modules\Empresa\Controllers\ParametroEmpresaController;
+use App\Modules\Compras\Controllers\CompraController;
 
 // Rotas PÚBLICAS de Autenticação
 Route::prefix('v1/auth')->group(base_path('app/Modules/Auth/Routes/api.php'));
@@ -104,4 +107,22 @@ Route::middleware(['auth:sanctum', 'role:ADMIN,TECNICO'])->prefix('v1/wms')->gro
     Route::get('/transferencias', [WmsController::class, 'listarTransferencias']);
     Route::post('/transferencias', [WmsController::class, 'criarTransferencia']);
     Route::patch('/transferencias/{id}/concluir', [WmsController::class, 'concluirTransferencia']);
+});
+
+// 🛡️ Governança, Equipe & Parâmetros (v4.0.0)
+Route::middleware(['auth:sanctum', 'role:ADMIN'])->prefix('v1/empresa')->group(function () {
+    // Gestão de Usuários da Empresa
+    Route::get('/usuarios', [UsuarioEquipeController::class, 'index']);
+    Route::post('/usuarios', [UsuarioEquipeController::class, 'store']);
+    Route::put('/usuarios/{id}', [UsuarioEquipeController::class, 'update']);
+    Route::delete('/usuarios/{id}', [UsuarioEquipeController::class, 'destroy']);
+
+    // Parâmetros Operacionais
+    Route::get('/parametros', [ParametroEmpresaController::class, 'show']);
+    Route::put('/parametros', [ParametroEmpresaController::class, 'update']);
+});
+
+// 📦 Importador de XML de Compra (v4.0.0)
+Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO'])->prefix('v1/compras')->group(function () {
+    Route::post('/importar-xml', [CompraController::class, 'importarXml']);
 });

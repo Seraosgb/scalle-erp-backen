@@ -34,4 +34,25 @@ class CompraController extends Controller
 
         return response()->json(['status' => 'success', 'data' => $compra], 201);
     }
+    public function importarXml(Request $request, \App\Modules\Compras\Services\NfeXmlImportService $importService): JsonResponse
+    {
+        $request->validate([
+            'arquivo_xml' => 'required|file|mimes:xml,txt',
+        ]);
+
+        $empresaId = $request->user()->empresa_id;
+        $conteudoXml = file_get_contents($request->file('arquivo_xml')->getRealPath());
+
+        try {
+            $compra = $importService->importarXml($empresaId, $conteudoXml);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'XML de compra importado, estoque abastecido e financeiro lançado com sucesso!',
+                'data' => $compra
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 422);
+        }
+    }
 }

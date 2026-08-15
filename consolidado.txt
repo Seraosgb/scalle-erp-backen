@@ -1,7 +1,7 @@
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\api.json
-TAMANHO: 271602 bytes
+TAMANHO: 300792 bytes
 ============================================================
 
 {
@@ -4793,6 +4793,495 @@ TAMANHO: 271602 bytes
                     }
                 }
             }
+        },
+        "/v1/wms/depositos": {
+            "get": {
+                "operationId": "wms.listarDepositos",
+                "tags": [
+                    "Wms"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Deposito"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "wms.criarDeposito",
+                "tags": [
+                    "Wms"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nome": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "tipo": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "enum": [
+                                            "FISICO",
+                                            "VOLANTE_TECNICO",
+                                            "QUARENTENA_AVARIA",
+                                            null
+                                        ]
+                                    },
+                                    "responsavel_id": {
+                                        "type": [
+                                            "integer",
+                                            "null"
+                                        ]
+                                    },
+                                    "is_padrao": {
+                                        "type": [
+                                            "boolean",
+                                            "null"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "nome"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Deposito"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/wms/depositos/{depositoId}/estoque": {
+            "get": {
+                "operationId": "wms.consultarEstoquePorDeposito",
+                "tags": [
+                    "Wms"
+                ],
+                "parameters": [
+                    {
+                        "name": "depositoId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/EstoqueDeposito"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/wms/transferencias": {
+            "get": {
+                "operationId": "wms.listarTransferencias",
+                "tags": [
+                    "Wms"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "minimum": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Transferencia"
+                                                    }
+                                                },
+                                                "first_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "from": {
+                                                    "type": [
+                                                        "integer",
+                                                        "null"
+                                                    ],
+                                                    "minimum": 1
+                                                },
+                                                "last_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "minimum": 1
+                                                },
+                                                "links": {
+                                                    "type": "array",
+                                                    "description": "Generated paginator links.",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "url": {
+                                                                "type": [
+                                                                    "string",
+                                                                    "null"
+                                                                ]
+                                                            },
+                                                            "label": {
+                                                                "type": "string"
+                                                            },
+                                                            "active": {
+                                                                "type": "boolean"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "url",
+                                                            "label",
+                                                            "active"
+                                                        ]
+                                                    }
+                                                },
+                                                "next_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "path": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ],
+                                                    "description": "Base path for paginator generated URLs."
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "description": "Number of items shown per page.",
+                                                    "minimum": 0
+                                                },
+                                                "prev_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "to": {
+                                                    "type": [
+                                                        "integer",
+                                                        "null"
+                                                    ],
+                                                    "description": "Number of the last item in the slice.",
+                                                    "minimum": 1
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "description": "Total number of items being paginated.",
+                                                    "minimum": 0
+                                                }
+                                            },
+                                            "required": [
+                                                "current_page",
+                                                "data",
+                                                "first_page_url",
+                                                "from",
+                                                "last_page_url",
+                                                "last_page",
+                                                "links",
+                                                "next_page_url",
+                                                "path",
+                                                "per_page",
+                                                "prev_page_url",
+                                                "to",
+                                                "total"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "wms.criarTransferencia",
+                "tags": [
+                    "Wms"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "deposito_origem_id": {
+                                        "type": "integer"
+                                    },
+                                    "deposito_destino_id": {
+                                        "type": "integer"
+                                    },
+                                    "modo": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "enum": [
+                                            "DIRETO",
+                                            "TRANSITO",
+                                            "direto",
+                                            "transito",
+                                            null
+                                        ]
+                                    },
+                                    "itens": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "item_id": {
+                                                    "type": "integer"
+                                                },
+                                                "quantidade": {
+                                                    "type": "number",
+                                                    "minimum": 0.0001
+                                                }
+                                            },
+                                            "required": [
+                                                "item_id",
+                                                "quantidade"
+                                            ]
+                                        },
+                                        "minItems": 1
+                                    }
+                                },
+                                "required": [
+                                    "deposito_origem_id",
+                                    "deposito_destino_id",
+                                    "itens"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Transfer\u00eancia registrada com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Transferencia"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/wms/transferencias/{id}/concluir": {
+            "patch": {
+                "operationId": "wms.concluirTransferencia",
+                "tags": [
+                    "Wms"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "422": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "error"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Transfer\u00eancia conclu\u00edda e estoque recebido com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Transferencia"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -5004,6 +5493,61 @@ TAMANHO: 271602 bytes
                     "updated_at"
                 ],
                 "title": "Compra"
+            },
+            "Deposito": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "responsavel_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "nome": {
+                        "type": "string"
+                    },
+                    "tipo": {
+                        "type": "string"
+                    },
+                    "is_padrao": {
+                        "type": "integer"
+                    },
+                    "ativo": {
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "responsavel_id",
+                    "nome",
+                    "tipo",
+                    "is_padrao",
+                    "ativo",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "Deposito"
             },
             "DocumentoFiscal": {
                 "type": "object",
@@ -5236,6 +5780,50 @@ TAMANHO: 271602 bytes
                     "updated_at"
                 ],
                 "title": "Empresa"
+            },
+            "EstoqueDeposito": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "deposito_id": {
+                        "type": "integer"
+                    },
+                    "item_id": {
+                        "type": "integer"
+                    },
+                    "quantidade": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "deposito_id",
+                    "item_id",
+                    "quantidade",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "EstoqueDeposito"
             },
             "FichaTecnica": {
                 "type": "object",
@@ -5934,6 +6522,86 @@ TAMANHO: 271602 bytes
                     "updated_at"
                 ],
                 "title": "Pessoa"
+            },
+            "Transferencia": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "deposito_origem_id": {
+                        "type": "integer"
+                    },
+                    "deposito_destino_id": {
+                        "type": "integer"
+                    },
+                    "solicitante_id": {
+                        "type": "integer"
+                    },
+                    "recebedor_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "numero_transferencia": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "observacoes": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "data_envio": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "data_recebimento": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "deposito_origem_id",
+                    "deposito_destino_id",
+                    "solicitante_id",
+                    "recebedor_id",
+                    "numero_transferencia",
+                    "status",
+                    "observacoes",
+                    "data_envio",
+                    "data_recebimento",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "Transferencia"
             },
             "Unidade": {
                 "type": "object",
@@ -9975,6 +10643,453 @@ class VendaService
 }
 
 ============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\WMS\Controllers\WmsController.php
+TAMANHO: 4292 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\WMS\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Modules\WMS\Services\WmsService;
+use App\Modules\WMS\Models\Deposito;
+use App\Modules\WMS\Models\EstoqueDeposito;
+use App\Modules\WMS\Models\Transferencia;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+
+class WmsController extends Controller
+{
+    public function __construct(private WmsService $wmsService) {}
+
+    // --- Depósitos ---
+    public function listarDepositos(Request $request): JsonResponse
+    {
+        $depositos = Deposito::with('responsavel')
+            ->where('empresa_id', $request->user()->empresa_id)
+            ->where('ativo', true)
+            ->orderBy('nome')
+            ->get();
+
+        return response()->json(['status' => 'success', 'data' => $depositos]);
+    }
+
+    public function criarDeposito(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'nome' => 'required|string|max:100',
+            'tipo' => 'nullable|in:FISICO,VOLANTE_TECNICO,QUARENTENA_AVARIA',
+            'responsavel_id' => 'nullable|exists:users,id',
+            'is_padrao' => 'nullable|boolean',
+        ]);
+
+        $empresaId = $request->user()->empresa_id;
+
+        if (!empty($validated['is_padrao']) && $validated['is_padrao']) {
+            Deposito::where('empresa_id', $empresaId)->update(['is_padrao' => false]);
+        }
+
+        $deposito = Deposito::create(array_merge($validated, ['empresa_id' => $empresaId, 'ativo' => true]));
+
+        return response()->json(['status' => 'success', 'data' => $deposito], 201);
+    }
+
+    public function consultarEstoquePorDeposito(Request $request, int $depositoId): JsonResponse
+    {
+        $empresaId = $request->user()->empresa_id;
+
+        $estoque = EstoqueDeposito::with('item')
+            ->where('empresa_id', $empresaId)
+            ->where('deposito_id', $depositoId)
+            ->get();
+
+        return response()->json(['status' => 'success', 'data' => $estoque]);
+    }
+
+    // --- Transferências ---
+    public function listarTransferencias(Request $request): JsonResponse
+    {
+        $transferencias = Transferencia::with(['depositoOrigem', 'depositoDestino', 'solicitante', 'itens.item'])
+            ->where('empresa_id', $request->user()->empresa_id)
+            ->orderBy('id', 'desc')
+            ->paginate(15);
+
+        return response()->json(['status' => 'success', 'data' => $transferencias]);
+    }
+
+    public function criarTransferencia(Request $request): JsonResponse
+    {
+        $request->validate([
+            'deposito_origem_id' => 'required|exists:wms_depositos,id',
+            'deposito_destino_id' => 'required|exists:wms_depositos,id',
+            'modo' => 'nullable|in:DIRETO,TRANSITO,direto,transito',
+            'itens' => 'required|array|min:1',
+            'itens.*.item_id' => 'required|exists:pro_itens,id',
+            'itens.*.quantidade' => 'required|numeric|min:0.0001',
+        ]);
+
+        $empresaId = $request->user()->empresa_id;
+        $solicitanteId = $request->user()->id;
+
+        try {
+            $trf = $this->wmsService->criarTransferencia($empresaId, $solicitanteId, $request->all());
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Transferência registrada com sucesso!',
+                'data' => $trf
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 422);
+        }
+    }
+
+    public function concluirTransferencia(Request $request, int $id): JsonResponse
+    {
+        $empresaId = $request->user()->empresa_id;
+        $recebedorId = $request->user()->id;
+
+        try {
+            $trf = $this->wmsService->concluirTransferencia($id, $empresaId, $recebedorId);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Transferência concluída e estoque recebido com sucesso!',
+                'data' => $trf
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 422);
+        }
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\WMS\Models\Deposito.php
+TAMANHO: 712 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\WMS\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\User;
+
+class Deposito extends Model
+{
+    protected $table = 'wms_depositos';
+
+    protected $fillable = [
+        'empresa_id',
+        'responsavel_id',
+        'nome',
+        'tipo',
+        'is_padrao',
+        'ativo',
+    ];
+
+    public function responsavel(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'responsavel_id');
+    }
+
+    public function estoques(): HasMany
+    {
+        return $this->hasMany(EstoqueDeposito::class, 'deposito_id');
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\WMS\Models\EstoqueDeposito.php
+TAMANHO: 639 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\WMS\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Modules\Produtos\Models\Item;
+
+class EstoqueDeposito extends Model
+{
+    protected $table = 'wms_estoque_deposito';
+
+    protected $fillable = [
+        'empresa_id',
+        'deposito_id',
+        'item_id',
+        'quantidade',
+    ];
+
+    public function deposito(): BelongsTo
+    {
+        return $this->belongsTo(Deposito::class, 'deposito_id');
+    }
+
+    public function item(): BelongsTo
+    {
+        return $this->belongsTo(Item::class, 'item_id');
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\WMS\Models\Transferencia.php
+TAMANHO: 1146 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\WMS\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\User;
+
+class Transferencia extends Model
+{
+    protected $table = 'wms_transferencias';
+
+    protected $fillable = [
+        'empresa_id',
+        'deposito_origem_id',
+        'deposito_destino_id',
+        'solicitante_id',
+        'recebedor_id',
+        'numero_transferencia',
+        'status',
+        'observacoes',
+        'data_envio',
+        'data_recebimento',
+    ];
+
+    public function depositoOrigem(): BelongsTo
+    {
+        return $this->belongsTo(Deposito::class, 'deposito_origem_id');
+    }
+
+    public function depositoDestino(): BelongsTo
+    {
+        return $this->belongsTo(Deposito::class, 'deposito_destino_id');
+    }
+
+    public function solicitante(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'solicitante_id');
+    }
+
+    public function itens(): HasMany
+    {
+        return $this->hasMany(TransferenciaItem::class, 'transferencia_id');
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\WMS\Models\TransferenciaItem.php
+TAMANHO: 501 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\WMS\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Modules\Produtos\Models\Item;
+
+class TransferenciaItem extends Model
+{
+    protected $table = 'wms_transferencia_itens';
+
+    protected $fillable = [
+        'transferencia_id',
+        'item_id',
+        'quantidade',
+    ];
+
+    public function item(): BelongsTo
+    {
+        return $this->belongsTo(Item::class, 'item_id');
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\WMS\Services\TransferenciaNumeroService.php
+TAMANHO: 783 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\WMS\Services;
+
+use App\Modules\WMS\Models\Transferencia;
+
+class TransferenciaNumeroService
+{
+    public static function gerarProximoNumero(int $empresaId): string
+    {
+        $anoAtual = date('Y');
+        $prefixo = "TRF-{$anoAtual}-";
+
+        $ultima = Transferencia::where('empresa_id', $empresaId)
+            ->where('numero_transferencia', 'like', "{$prefixo}%")
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if (! $ultima) {
+            return "{$prefixo}000001";
+        }
+
+        $partes = explode('-', $ultima->numero_transferencia);
+        $sequencial = (int) end($partes);
+        $proximo = str_pad($sequencial + 1, 6, '0', STR_PAD_LEFT);
+
+        return "{$prefixo}{$proximo}";
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\WMS\Services\WmsService.php
+TAMANHO: 5328 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\WMS\Services;
+
+use App\Modules\WMS\Models\Deposito;
+use App\Modules\WMS\Models\EstoqueDeposito;
+use App\Modules\WMS\Models\Transferencia;
+use App\Modules\WMS\Models\TransferenciaItem;
+use App\Modules\Produtos\Models\Item;
+use Illuminate\Support\Facades\DB;
+
+class WmsService
+{
+    /**
+     * Movimenta estoque em um depósito específico
+     */
+    public function movimentarEstoqueDeposito(int $empresaId, int $depositoId, int $itemId, float $quantidade, string $operacao): void
+    {
+        $item = Item::where('id', $itemId)->where('empresa_id', $empresaId)->first();
+        if (! $item || $item->tipo === 'S') {
+            return;
+        }
+
+        $registro = EstoqueDeposito::firstOrCreate(
+            ['empresa_id' => $empresaId, 'deposito_id' => $depositoId, 'item_id' => $itemId],
+            ['quantidade' => 0.0000]
+        );
+
+        if ($operacao === 'SUBTRAIR') {
+            $registro->decrement('quantidade', $quantidade);
+            $item->decrement('estoque_atual', $quantidade);
+        } elseif ($operacao === 'SOMAR') {
+            $registro->increment('quantidade', $quantidade);
+            $item->increment('estoque_atual', $quantidade);
+        }
+    }
+
+    /**
+     * Executa Transferência Interna (Suporta modo DIRETO ou EM_TRANSITO)
+     */
+    public function criarTransferencia(int $empresaId, int $solicitanteId, array $data): Transferencia
+    {
+        return DB::transaction(function () use ($empresaId, $solicitanteId, $data) {
+            $origemId = $data['deposito_origem_id'];
+            $destinoId = $data['deposito_destino_id'];
+
+            if ($origemId === $destinoId) {
+                throw new \Exception('O depósito de origem e destino não podem ser iguais.');
+            }
+
+            $numero = TransferenciaNumeroService::gerarProximoNumero($empresaId);
+            $modo = strtoupper($data['modo'] ?? 'DIRETO'); // DIRETO ou TRANSITO
+
+            $transferencia = Transferencia::create([
+                'empresa_id' => $empresaId,
+                'deposito_origem_id' => $origemId,
+                'deposito_destino_id' => $destinoId,
+                'solicitante_id' => $solicitanteId,
+                'numero_transferencia' => $numero,
+                'status' => $modo === 'DIRETO' ? 'CONCLUIDA' : 'EM_TRANSITO',
+                'observacoes' => $data['observacoes'] ?? null,
+                'data_envio' => now(),
+                'data_recebimento' => $modo === 'DIRETO' ? now() : null,
+            ]);
+
+            foreach ($data['itens'] as $itemTrf) {
+                $itemId = $itemTrf['item_id'];
+                $qtd = (float) $itemTrf['quantidade'];
+
+                TransferenciaItem::create([
+                    'transferencia_id' => $transferencia->id,
+                    'item_id' => $itemId,
+                    'quantidade' => $qtd,
+                ]);
+
+                // 📦 1. Sempre subtrai da origem no envio
+                $estoqueOrigem = EstoqueDeposito::firstOrCreate(
+                    ['empresa_id' => $empresaId, 'deposito_id' => $origemId, 'item_id' => $itemId],
+                    ['quantidade' => 0.0000]
+                );
+                $estoqueOrigem->decrement('quantidade', $qtd);
+
+                // 📦 2. Se for modo DIRETO, já incrementa no destino
+                if ($modo === 'DIRETO') {
+                    $estoqueDestino = EstoqueDeposito::firstOrCreate(
+                        ['empresa_id' => $empresaId, 'deposito_id' => $destinoId, 'item_id' => $itemId],
+                        ['quantidade' => 0.0000]
+                    );
+                    $estoqueDestino->increment('quantidade', $qtd);
+                }
+            }
+
+            return $transferencia->load(['depositoOrigem', 'depositoDestino', 'itens.item']);
+        });
+    }
+
+    /**
+     * Recebimento e conclusão de carga que estava EM_TRANSITO
+     */
+    public function concluirTransferencia(int $transferenciaId, int $empresaId, int $recebedorId): Transferencia
+    {
+        return DB::transaction(function () use ($transferenciaId, $empresaId, $recebedorId) {
+            $transferencia = Transferencia::with('itens')
+                ->where('id', $transferenciaId)
+                ->where('empresa_id', $empresaId)
+                ->firstOrFail();
+
+            if ($transferencia->status !== 'EM_TRANSITO') {
+                throw new \Exception('Esta transferência não está em trânsito.');
+            }
+
+            // Incrementa no destino
+            foreach ($transferencia->itens as $itemTrf) {
+                $estoqueDestino = EstoqueDeposito::firstOrCreate(
+                    ['empresa_id' => $empresaId, 'deposito_id' => $transferencia->deposito_destino_id, 'item_id' => $itemTrf->item_id],
+                    ['quantidade' => 0.0000]
+                );
+                $estoqueDestino->increment('quantidade', $itemTrf->quantidade);
+            }
+
+            $transferencia->update([
+                'status' => 'CONCLUIDA',
+                'recebedor_id' => $recebedorId,
+                'data_recebimento' => now(),
+            ]);
+
+            return $transferencia->load(['depositoOrigem', 'depositoDestino', 'itens.item']);
+        });
+    }
+}
+
+============================================================
 ARQUIVO: C:\Projetos\scalle-erp\app\Providers\AppServiceProvider.php
 TAMANHO: 594 bytes
 ============================================================
@@ -13092,6 +14207,110 @@ return new class extends Migration
 };
 
 ============================================================
+ARQUIVO: C:\Projetos\scalle-erp\database\migrations\2026_08_15_010335_create_wms_modulo_logistica_tables.php
+TAMANHO: 4439 bytes
+============================================================
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        // 1. Tabela de Depósitos / Almoxarifados
+        Schema::create('wms_depositos', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('empresa_id')->constrained('sis_empresas')->onDelete('cascade');
+            $table->foreignId('responsavel_id')->nullable()->constrained('users')->onDelete('set null'); // Técnico / Almoxarife
+            
+            $table->string('nome', 100);
+            $table->enum('tipo', ['FISICO', 'VOLANTE_TECNICO', 'QUARENTENA_AVARIA'])->default('FISICO');
+            $table->boolean('is_padrao')->default(false);
+            $table->boolean('ativo')->default(true);
+            $table->timestamps();
+        });
+
+        // 2. Tabela de Saldo Fracionado por Depósito
+        Schema::create('wms_estoque_deposito', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('empresa_id')->constrained('sis_empresas')->onDelete('cascade');
+            $table->foreignId('deposito_id')->constrained('wms_depositos')->onDelete('cascade');
+            $table->foreignId('item_id')->constrained('pro_itens')->onDelete('cascade');
+            
+            $table->decimal('quantidade', 12, 4)->default(0.0000);
+            $table->timestamps();
+
+            $table->unique(['deposito_id', 'item_id']);
+        });
+
+        // 3. Tabela de Transferências Internas
+        Schema::create('wms_transferencias', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('empresa_id')->constrained('sis_empresas')->onDelete('cascade');
+            $table->foreignId('deposito_origem_id')->constrained('wms_depositos')->onDelete('cascade');
+            $table->foreignId('deposito_destino_id')->constrained('wms_depositos')->onDelete('cascade');
+            $table->foreignId('solicitante_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('recebedor_id')->nullable()->constrained('users')->onDelete('set null');
+
+            $table->string('numero_transferencia', 30)->unique();
+            $table->enum('status', ['SOLICITADA', 'EM_TRANSITO', 'CONCLUIDA', 'CANCELADA'])->default('CONCLUIDA');
+            $table->text('observacoes')->nullable();
+            $table->dateTime('data_envio')->nullable();
+            $table->dateTime('data_recebimento')->nullable();
+            $table->timestamps();
+        });
+
+        // 4. Itens da Transferência
+        Schema::create('wms_transferencia_itens', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('transferencia_id')->constrained('wms_transferencias')->onDelete('cascade');
+            $table->foreignId('item_id')->constrained('pro_itens')->onDelete('cascade');
+            $table->decimal('quantidade', 12, 4);
+            $table->timestamps();
+        });
+
+        // 🔄 POPULAÇÃO RETROCOMPATÍVEL: Cria depósito padrão para as empresas existentes e aloca estoques atuais
+        $empresas = DB::table('sis_empresas')->get();
+        foreach ($empresas as $empresa) {
+            $depositoId = DB::table('wms_depositos')->insertGetId([
+                'empresa_id' => $empresa->id,
+                'nome' => 'Almoxarifado Principal',
+                'tipo' => 'FISICO',
+                'is_padrao' => true,
+                'ativo' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            $itens = DB::table('pro_itens')->where('empresa_id', $empresa->id)->where('tipo', 'P')->get();
+            foreach ($itens as $item) {
+                DB::table('wms_estoque_deposito')->insert([
+                    'empresa_id' => $empresa->id,
+                    'deposito_id' => $depositoId,
+                    'item_id' => $item->id,
+                    'quantidade' => $item->estoque_atual ?? 0.0000,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+        }
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('wms_transferencia_itens');
+        Schema::dropIfExists('wms_transferencias');
+        Schema::dropIfExists('wms_estoque_deposito');
+        Schema::dropIfExists('wms_depositos');
+    }
+};
+
+============================================================
 ARQUIVO: C:\Projetos\scalle-erp\database\seeders\DatabaseSeeder.php
 TAMANHO: 703 bytes
 ============================================================
@@ -13833,14 +15052,14 @@ TAMANHO: 72302 bytes
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\revisar.md
-TAMANHO: 7669 bytes
+TAMANHO: 10409 bytes
 ============================================================
 
 Visão macro de produto de um **ERP SaaS Escalável e Multissetorial**! 🔥
 
-Abaixo está o **Raio-X de Revisão do Projeto**, refletindo os módulos ativos no código e no contrato da API (`document.json`), além do roadmap alinhado por versão.
 
-Visão macro de produto de um **ERP SaaS Escalável e Multissetorial**! 🔥
+
+Abaixo está o **Raio-X de Revisão do Projeto**, refletindo os módulos ativos no código e no contrato da API (`document.json`), além do roadmap alinhado por versão.
 
 🗺️ Mapa de Evolução Arquitetural do Scalle ERP
 ===============================================
@@ -13853,10 +15072,10 @@ Visão macro de produto de um **ERP SaaS Escalável e Multissetorial**! 🔥
                 ┌───────────────────────────────────┼───────────────────────────────────┐
                 ▼                                   ▼                                   ▼
          🛠️ PRESTAÇÃO DE SERVIÇOS           🏬 COMÉRCIO & VENDAS               🏭 INDÚSTRIA (PCP)
-         - Módulo de OS / CMMS ✅           - Módulo de Vendas Diretas ✅      - Estrutura de Produtos (BOM) 🔮
-         - Ciclo de Vida da OS ✅           - PDV / Pedidos de Balcão ✅        - Ordens de Produção (OP) 🔮
-         - Baixa/Estorno Estoque ✅          - Orçamentos/Propostas ✅          - Apontamento de Perdas 🔮
-         - Garantia & Laudos ✅             - Conversão em Venda/OS ✅         - Custo Industrial Apurado 🔮
+         - Módulo de OS / CMMS ✅           - Módulo de Vendas Diretas ✅      - Estrutura de Produtos (BOM) ✅
+         - Ciclo de Vida da OS ✅           - PDV / Pedidos de Balcão ✅        - Ordens de Produção (OP) ✅
+         - Baixa/Estorno Estoque ✅          - Orçamentos/Propostas ✅          - Apontamento de Perdas/Refugo ✅
+         - Garantia & Laudos ✅             - Conversão em Venda/OS ✅         - Custo Industrial Apurado ✅
          - Impressão Layout/PDF ✅          - Impressão Layout/PDF ✅
                 │                                   │                                   │
                 └───────────────────────────────────┼───────────────────────────────────┘
@@ -13871,64 +15090,122 @@ Visão macro de produto de um **ERP SaaS Escalável e Multissetorial**! 🔥
                                 │ - Dashboard Executivo Real-time ✅     │
                                 │ - Cobrança PIX Nativa (EMV/QR Code) ✅ │
                                 │ - Engine Fiscal Desacoplada (NFe/NFSe)✅│
+                                │ - Gestão Multi-Tenant & Switch Context✅│
                                 │ - WMS / Logística / Frotas 🔮           │
                                 └────────────────────────────────────────┘
 
 🔍 Revisão Atual do Projeto (Status Real do Código)
 ===================================================
 
-| **Módulo**          | **Status**  | **O que faz hoje?**                                                                                                               |
-| ------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| Auth & Tenant       | ✅ Concluído | Multi-empresa isolado (`empresa_id`), token Sanctum e retorno do perfil (`role`).                                                 |
-| ACL & Segurança     | ✅ Concluído | Middleware `CheckRole` bloqueando perfis não autorizados com `403 Forbidden` (`ADMIN`, `FINANCEIRO`, `TECNICO`, `ATENDENTE`).     |
-| Pessoas             | ✅ Concluído | Tabela unificada para Clientes e Fornecedores (`pes_pessoas`).                                                                    |
-| Produtos & Serviços | ✅ Concluído | Itens (`pro_itens`), Categorias (`pro_categorias`) e Unidades (`pro_unidades`). Parâmetros fiscais (NCM, CEST, CFOP, Origem).     |
-| Ordens de Serviço   | ✅ Concluído | Numeração comercial (`OS-2026-000001`), baixa/estorno de estoque, Contas a Receber e Impressão/PDF.                               |
-| Compras & Entradas  | ✅ Concluído | Registro de notas, incremento atômico de estoque, atualização do preço de custo e lançamento no Contas a Pagar.                   |
-| Vendas Diretas      | ✅ Concluído | Pedidos de balcão (`VEN-2026-000001`), baixa atômica de peças e geração de Contas a Receber.                                      |
-| Orçamentos          | ✅ Concluído | Cotações (`ORC-2026-000001`), conversão em 1 clique para Venda ou OS e Impressão/PDF.                                             |
-| Financeiro & DRE    | ✅ Concluído | Contas a Receber/Pagar, liquidação/baixa, Plano de Contas, DRE e Extrato Financeiro Detalhado por período.                        |
-| Dashboard & PIX     | ✅ Concluído | Indicadores operacionais/comerciais/financeiros e gerador de PIX Copia e Cola (EMV) + QR Code.                                    |
-| Empresa Emitente    | ✅ Concluído | Cadastro de Inscrição Estadual, CRT e Endereço Fiscal completo com Código IBGE (`sis_empresas`).                                  |
-| Engine Fiscal       | ✅ Concluído | Driver desacoplado (`FiscalDriverInterface`), emissão de NFe (Vendas) e NFS-e (OS) com chave de 44 dígitos, protocolo, XML e PDF. |
+| **Módulo**              | **Status**  | **O que faz hoje?**                                                                                                                                                                                                                                        |
+| ----------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Auth & Tenant           | ✅ Concluído | Multi-empresa isolado (`empresa_id`), token Sanctum, retorno do perfil (`role`), cadastro de empresas e troca dinâmica de contexto (`/trocar-contexto`).<br><br><br>                                                                                       |
+| ACL & Segurança         | ✅ Concluído | Middleware `CheckRole` bloqueando perfis não autorizados com `403 Forbidden` (`ADMIN`, `FINANCEIRO`, `TECNICO`, `ATENDENTE`).<br><br><br>                                                                                                                  |
+| Pessoas                 | ✅ Concluído | Tabela unificada para Clientes e Fornecedores (`pes_pessoas`).<br><br><br>                                                                                                                                                                                 |
+| Produtos & Serviços     | ✅ Concluído | Itens (`pro_itens`), Categorias (`pro_categorias`) e Unidades (`pro_unidades`). Parâmetros fiscais (NCM, CEST, CFOP, Origem).<br><br><br>                                                                                                                  |
+| Ordens de Serviço       | ✅ Concluído | Numeração comercial (`OS-2026-000001`), baixa/estorno de estoque, Contas a Receber e Impressão/PDF.<br><br><br>                                                                                                                                            |
+| Compras & Entradas      | ✅ Concluído | Registro de notas, incremento atômico de estoque, atualização do preço de custo e lançamento no Contas a Pagar.<br><br><br>                                                                                                                                |
+| Vendas Diretas          | ✅ Concluído | Pedidos de balcão (`VEN-2026-000001`), baixa atômica de peças e geração de Contas a Receber.<br><br><br>                                                                                                                                                   |
+| Orçamentos              | ✅ Concluído | Cotações (`ORC-2026-000001`), conversão em 1 clique para Venda ou OS e Impressão/PDF.<br><br><br>                                                                                                                                                          |
+| Financeiro & DRE        | ✅ Concluído | Contas a Receber/Pagar, liquidação/baixa, Plano de Contas, DRE e Extrato Financeiro Detalhado por período.<br><br><br>                                                                                                                                     |
+| Dashboard & PIX         | ✅ Concluído | Indicadores operacionais/comerciais/financeiros e gerador de PIX Copia e Cola (EMV) + QR Code.<br><br><br>                                                                                                                                                 |
+| Empresa Emitente        | ✅ Concluído | Cadastro de Inscrição Estadual, CRT e Endereço Fiscal completo com Código IBGE (`sis_empresas`).<br><br><br>                                                                                                                                               |
+| Engine Fiscal           | ✅ Concluído | Driver desacoplado (`FiscalDriverInterface`), emissão de NFe (Vendas) e NFS-e (OS) com chave de 44 dígitos, protocolo, XML e PDF.<br><br><br>                                                                                                              |
+| Módulo Industrial (PCP) | ✅ Concluído | Ficha Técnica/BOM (`pcp_fichas_tecnicas`), Ordens de Produção (`OP-2026-000001`), consumo de insumos, rateio de mão de obra/CIF, entrada atômica do acabado com recálculo de custo e apontamento de perdas/refugos (`pcp_apontamentos_perda`).<br><br><br> |
 
 📌 Planejamento de Releases (Semantic Versioning)
 =================================================
 
+
+
+
+
 ### 🟢 Versão 1.x.x — Core Comercial, Operacional, Financeiro & Fiscal (Concluídas v1.0 a v1.5)
 
-* **v1.0.0 (Concluída):** Multi-tenant, Pessoas, Produtos/Serviços, OS/CMMS, Compras e Financeiro/DRE.
 
-* **v1.1.0 (Concluída):** Módulo de Vendas Diretas + ACL / Perfis de Acesso (`CheckRole`).
 
-* **v1.2.0 (Concluída):** Gestão de Orçamentos com conversão + Cadastros Auxiliares (Categorias e Unidades de Medida).
 
-* **v1.3.0 (Concluída):** Engine de Impressão de Orçamento/OS, Dashboard de Indicadores e Cobrança PIX Nativa (Payload EMV + QR Code).
 
-* **v1.4.0 (Concluída):** Estrutura Fiscal nos Produtos (NCM/CFOP), Parâmetros do Emitente (IBGE/CRT) e Extrato Financeiro por Período.
+* **v1.0.0 (Concluída):** Multi-tenant, Pessoas, Produtos/Serviços, OS/CMMS, Compras e Financeiro/DRE[cite: 4].
+  
+  
 
-* **v1.5.0 (Concluída/Em Andamento):** Engine de Transmissão Fiscal Desacoplada (`FiscalDriverInterface`) com suporte a NFe e NFS-e + Gestão de Múltiplos Tenants.
+* **v1.1.0 (Concluída):** Módulo de Vendas Diretas + ACL / Perfis de Acesso (`CheckRole`)[cite: 4].
+  
+  
 
-### 🏭 Versão 2.0.0 — Módulo Industrial (PCP & Custo Industrial)
+* **v1.2.0 (Concluída):** Gestão de Orçamentos com conversão + Cadastros Auxiliares (Categorias e Unidades de Medida)[cite: 4].
+  
+  
 
-* **Ficha Técnica / Árvore do Produto (BOM):** Composição de insumos por produto final.
+* **v1.3.0 (Concluída):** Engine de Impressão de Orçamento/OS, Dashboard de Indicadores e Cobrança PIX Nativa (Payload EMV + QR Code)[cite: 4].
+  
+  
 
-* **Ordens de Produção (OP):** Baixa atômica de insumos/matéria-prima e entrada do produto acabado no estoque.
+* **v1.4.0 (Concluída):** Estrutura Fiscal nos Produtos (NCM/CFOP), Parâmetros do Emitente (IBGE/CRT) e Extrato Financeiro por Período[cite: 4].
+  
+  
 
-* **Apontamento de Horas e CIF:** Custo Indireto de Fabricação e horas de máquina.
+* **v1.5.0 (Concluída):** Engine de Transmissão Fiscal Desacoplada (`FiscalDriverInterface`) com suporte a NFe e NFS-e + Gestão e Troca Dinâmica de Múltiplos Tenants.
+  
+  
+  
+  
+  
+  
 
-### 🚚 Versão 3.0.0 — Logística, WMS & Multi-Depósitos
+### 🏭 Versão 2.0.0 — Módulo Industrial (PCP & Custo Industrial - Concluída)
 
-* **Multi-Depósitos:** Estoque fracionado por galpão, loja física e van do técnico.
+[cite: 4]
 
-* **Gestão de Frotas:** Manutenções preventivas dos veículos (utilizando o módulo CMMS).
 
-* **Emissão de CTe e MDF-e:** Documentos fiscais de transporte.
+
+
+
+* **v2.0.0 (Concluída):**
+
+* **Ficha Técnica / Árvore do Produto (BOM):** Composição de insumos físicos e custos indiretos/mão de obra por produto acabado.
+  
+  
+
+* **Ordens de Produção (OP):** Controle de ciclo de vida (`PLANEJADA`, `EM_PRODUCAO`, `CONCLUIDA`, `CANCELADA`), baixa atômica de insumos, entrada do produto acabado no estoque e recálculo automático do preço de custo unitário final.
+  
+  
+
+* **Apontamento de Perdas & Motivos de Refugo:** Cadastro de motivos e registro analítico de perdas no chão de fábrica.
+  
+  
+  
+  
+  
+  
+
+### 🚚 Versão 3.0.0 — Logística, WMS & Multi-Depósitos (Próxima Release)
+
+[cite: 4]
+
+
+
+
+
+* **Multi-Depósitos / Almoxarifados:** Estoque fracionado por galpão, loja física e van de técnicos[cite: 4].
+  
+  
+
+* **Transferência Interna de Mercadorias:** Movimentação entre estoques/locais com conferência e tracking.
+  
+  
+
+* **Gestão de Frotas:** Controle de abastecimento e manutenções preventivas dos veículos de serviço (integrado ao módulo de OS/CMMS)[cite: 4].
+  
+  
+
+* **Emissão de CTe e MDF-e:** Documentos fiscais eletrônicos de transporte de cargas[cite: 4].
 
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\routes\api.php
-TAMANHO: 4862 bytes
+TAMANHO: 5663 bytes
 ============================================================
 
 <?php
@@ -13938,6 +15215,7 @@ use App\Http\Controllers\ImpressaoController;
 use App\Http\Controllers\EmpresaConfigController;
 use App\Modules\Fiscal\Controllers\FiscalController;
 use App\Modules\PCP\Controllers\PcpController;
+use App\Modules\WMS\Controllers\WmsController;
 
 // Rotas PÚBLICAS de Autenticação
 Route::prefix('v1/auth')->group(base_path('app/Modules/Auth/Routes/api.php'));
@@ -14023,6 +15301,19 @@ Route::middleware(['auth:sanctum', 'role:ADMIN,TECNICO'])->prefix('v1/pcp')->gro
     // Motivos de Perda/Refugo
     Route::get('/motivos-perda', [PcpController::class, 'listarMotivosPerda']);
     Route::post('/motivos-perda', [PcpController::class, 'criarMotivoPerda']);
+});
+
+// 📦 Módulo Logística, WMS & Multi-Depósitos (v3.0.0)
+Route::middleware(['auth:sanctum', 'role:ADMIN,TECNICO'])->prefix('v1/wms')->group(function () {
+    // Gestão de Depósitos & Saldo Local
+    Route::get('/depositos', [WmsController::class, 'listarDepositos']);
+    Route::post('/depositos', [WmsController::class, 'criarDeposito']);
+    Route::get('/depositos/{depositoId}/estoque', [WmsController::class, 'consultarEstoquePorDeposito']);
+
+    // Transferências Internas
+    Route::get('/transferencias', [WmsController::class, 'listarTransferencias']);
+    Route::post('/transferencias', [WmsController::class, 'criarTransferencia']);
+    Route::patch('/transferencias/{id}/concluir', [WmsController::class, 'concluirTransferencia']);
 });
 
 ============================================================
