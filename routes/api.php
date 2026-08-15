@@ -5,6 +5,7 @@ use App\Http\Controllers\ImpressaoController;
 use App\Http\Controllers\EmpresaConfigController;
 use App\Modules\Fiscal\Controllers\FiscalController;
 use App\Modules\PCP\Controllers\PcpController;
+use App\Modules\WMS\Controllers\WmsController;
 
 // Rotas PÚBLICAS de Autenticação
 Route::prefix('v1/auth')->group(base_path('app/Modules/Auth/Routes/api.php'));
@@ -90,4 +91,17 @@ Route::middleware(['auth:sanctum', 'role:ADMIN,TECNICO'])->prefix('v1/pcp')->gro
     // Motivos de Perda/Refugo
     Route::get('/motivos-perda', [PcpController::class, 'listarMotivosPerda']);
     Route::post('/motivos-perda', [PcpController::class, 'criarMotivoPerda']);
+});
+
+// 📦 Módulo Logística, WMS & Multi-Depósitos (v3.0.0)
+Route::middleware(['auth:sanctum', 'role:ADMIN,TECNICO'])->prefix('v1/wms')->group(function () {
+    // Gestão de Depósitos & Saldo Local
+    Route::get('/depositos', [WmsController::class, 'listarDepositos']);
+    Route::post('/depositos', [WmsController::class, 'criarDeposito']);
+    Route::get('/depositos/{depositoId}/estoque', [WmsController::class, 'consultarEstoquePorDeposito']);
+
+    // Transferências Internas
+    Route::get('/transferencias', [WmsController::class, 'listarTransferencias']);
+    Route::post('/transferencias', [WmsController::class, 'criarTransferencia']);
+    Route::patch('/transferencias/{id}/concluir', [WmsController::class, 'concluirTransferencia']);
 });

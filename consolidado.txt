@@ -1,7 +1,7 @@
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\api.json
-TAMANHO: 219854 bytes
+TAMANHO: 271602 bytes
 ============================================================
 
 {
@@ -991,6 +991,308 @@ TAMANHO: 219854 bytes
                     },
                     "422": {
                         "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/empresa": {
+            "get": {
+                "operationId": "empresaConfig.index",
+                "tags": [
+                    "EmpresaConfig"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Empresa"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "empresaConfig.store",
+                "tags": [
+                    "EmpresaConfig"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "razao_social": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "nome_fantasia": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 255
+                                    },
+                                    "cpf_cnpj": {
+                                        "type": "string",
+                                        "maxLength": 18
+                                    },
+                                    "inscricao_estadual": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 20
+                                    },
+                                    "inscricao_municipal": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 20
+                                    },
+                                    "crt": {
+                                        "type": "integer",
+                                        "enum": [
+                                            "1",
+                                            "2",
+                                            "3"
+                                        ]
+                                    },
+                                    "cep": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 10
+                                    },
+                                    "logradouro": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 255
+                                    },
+                                    "numero": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 20
+                                    },
+                                    "complemento": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 100
+                                    },
+                                    "bairro": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 100
+                                    },
+                                    "cidade": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 100
+                                    },
+                                    "uf": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "minLength": 2,
+                                        "maxLength": 2
+                                    },
+                                    "codigo_ibge": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "minLength": 7,
+                                        "maxLength": 7
+                                    }
+                                },
+                                "required": [
+                                    "razao_social",
+                                    "cpf_cnpj",
+                                    "crt"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Nova empresa cadastrada com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Empresa"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/empresa/trocar-contexto/{empresaId}": {
+            "post": {
+                "operationId": "empresaConfig.trocarContexto",
+                "tags": [
+                    "EmpresaConfig"
+                ],
+                "parameters": [
+                    {
+                        "name": "empresaId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "user_id": {
+                                                    "type": "integer"
+                                                },
+                                                "empresa_ativa": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer"
+                                                        },
+                                                        "razao_social": {
+                                                            "type": "string"
+                                                        },
+                                                        "nome_fantasia": {
+                                                            "type": [
+                                                                "string",
+                                                                "null"
+                                                            ]
+                                                        },
+                                                        "cpf_cnpj": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "id",
+                                                        "razao_social",
+                                                        "nome_fantasia",
+                                                        "cpf_cnpj"
+                                                    ]
+                                                }
+                                            },
+                                            "required": [
+                                                "user_id",
+                                                "empresa_ativa"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Empresa destino n\u00e3o encontrada ou inativa."
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "$ref": "#/components/responses/AuthenticationException"
@@ -3032,6 +3334,624 @@ TAMANHO: 219854 bytes
                 }
             }
         },
+        "/v1/pcp/produtos/{produtoId}/ficha-tecnica": {
+            "get": {
+                "operationId": "pcp.obterFichaTecnica",
+                "tags": [
+                    "Pcp"
+                ],
+                "parameters": [
+                    {
+                        "name": "produtoId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/FichaTecnica"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "pcp.salvarFichaTecnica",
+                "tags": [
+                    "Pcp"
+                ],
+                "parameters": [
+                    {
+                        "name": "produtoId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "componentes": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "quantidade_necessaria": {
+                                                    "type": "number",
+                                                    "minimum": 0.0001
+                                                },
+                                                "tipo_componente": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ],
+                                                    "enum": [
+                                                        "INSUMO",
+                                                        "MAO_DE_OBRA",
+                                                        "CUSTO_INDIRETO",
+                                                        null
+                                                    ]
+                                                }
+                                            },
+                                            "required": [
+                                                "quantidade_necessaria"
+                                            ]
+                                        },
+                                        "minItems": 1
+                                    }
+                                },
+                                "required": [
+                                    "componentes"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Ficha t\u00e9cnica (BOM) atualizada com sucesso!"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/FichaTecnica"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/pcp/ordens-producao": {
+            "get": {
+                "operationId": "pcp.listarOPs",
+                "tags": [
+                    "Pcp"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "minimum": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/OrdemProducao"
+                                                    }
+                                                },
+                                                "first_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "from": {
+                                                    "type": [
+                                                        "integer",
+                                                        "null"
+                                                    ],
+                                                    "minimum": 1
+                                                },
+                                                "last_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "minimum": 1
+                                                },
+                                                "links": {
+                                                    "type": "array",
+                                                    "description": "Generated paginator links.",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "url": {
+                                                                "type": [
+                                                                    "string",
+                                                                    "null"
+                                                                ]
+                                                            },
+                                                            "label": {
+                                                                "type": "string"
+                                                            },
+                                                            "active": {
+                                                                "type": "boolean"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "url",
+                                                            "label",
+                                                            "active"
+                                                        ]
+                                                    }
+                                                },
+                                                "next_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "path": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ],
+                                                    "description": "Base path for paginator generated URLs."
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "description": "Number of items shown per page.",
+                                                    "minimum": 0
+                                                },
+                                                "prev_page_url": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "to": {
+                                                    "type": [
+                                                        "integer",
+                                                        "null"
+                                                    ],
+                                                    "description": "Number of the last item in the slice.",
+                                                    "minimum": 1
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "description": "Total number of items being paginated.",
+                                                    "minimum": 0
+                                                }
+                                            },
+                                            "required": [
+                                                "current_page",
+                                                "data",
+                                                "first_page_url",
+                                                "from",
+                                                "last_page_url",
+                                                "last_page",
+                                                "links",
+                                                "next_page_url",
+                                                "path",
+                                                "per_page",
+                                                "prev_page_url",
+                                                "to",
+                                                "total"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "pcp.criarOP",
+                "tags": [
+                    "Pcp"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "produto_acabado_id": {
+                                        "type": "integer"
+                                    },
+                                    "quantidade_planejada": {
+                                        "type": "number",
+                                        "minimum": 0.0001
+                                    }
+                                },
+                                "required": [
+                                    "produto_acabado_id",
+                                    "quantidade_planejada"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/OrdemProducao"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/pcp/ordens-producao/{id}/status": {
+            "patch": {
+                "operationId": "pcp.atualizarStatus",
+                "tags": [
+                    "Pcp"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "PLANEJADA",
+                                            "EM_PRODUCAO",
+                                            "CONCLUIDA",
+                                            "CANCELADA"
+                                        ]
+                                    },
+                                    "quantidade_produzida": {
+                                        "type": [
+                                            "number",
+                                            "null"
+                                        ],
+                                        "minimum": 0.0001
+                                    }
+                                },
+                                "required": [
+                                    "status"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/OrdemProducao"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/pcp/ordens-producao/{opId}/perdas": {
+            "post": {
+                "operationId": "pcp.registrarPerda",
+                "tags": [
+                    "Pcp"
+                ],
+                "parameters": [
+                    {
+                        "name": "opId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "insumo_id": {
+                                        "type": "integer"
+                                    },
+                                    "quantidade_perdida": {
+                                        "type": "number",
+                                        "minimum": 0.0001
+                                    },
+                                    "motivo_perda_id": {
+                                        "type": [
+                                            "integer",
+                                            "null"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "insumo_id",
+                                    "quantidade_perdida"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Apontamento de refugo/perda registrado com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/ApontamentoPerda"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "message",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/pcp/motivos-perda": {
+            "get": {
+                "operationId": "pcp.listarMotivosPerda",
+                "tags": [
+                    "Pcp"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/MotivoPerda"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "pcp.criarMotivoPerda",
+                "tags": [
+                    "Pcp"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nome": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    }
+                                },
+                                "required": [
+                                    "nome"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "const": "success"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/MotivoPerda"
+                                        }
+                                    },
+                                    "required": [
+                                        "status",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
         "/v1/pessoas": {
             "get": {
                 "operationId": "pessoa.index",
@@ -3877,6 +4797,68 @@ TAMANHO: 219854 bytes
     },
     "components": {
         "schemas": {
+            "ApontamentoPerda": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "ordem_producao_id": {
+                        "type": "integer"
+                    },
+                    "insumo_id": {
+                        "type": "integer"
+                    },
+                    "motivo_perda_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "quantidade_perdida": {
+                        "type": "string"
+                    },
+                    "custo_perda": {
+                        "type": "string"
+                    },
+                    "observacoes": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "ordem_producao_id",
+                    "insumo_id",
+                    "motivo_perda_id",
+                    "quantidade_perdida",
+                    "custo_perda",
+                    "observacoes",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "ApontamentoPerda"
+            },
             "Categoria": {
                 "type": "object",
                 "properties": {
@@ -4255,6 +5237,68 @@ TAMANHO: 219854 bytes
                 ],
                 "title": "Empresa"
             },
+            "FichaTecnica": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "produto_pai_id": {
+                        "type": "integer"
+                    },
+                    "insumo_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "tipo_componente": {
+                        "type": "string"
+                    },
+                    "descricao_custo": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "quantidade_necessaria": {
+                        "type": "string"
+                    },
+                    "custo_estimado": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "produto_pai_id",
+                    "insumo_id",
+                    "tipo_componente",
+                    "descricao_custo",
+                    "quantidade_necessaria",
+                    "custo_estimado",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "FichaTecnica"
+            },
             "Item": {
                 "type": "object",
                 "properties": {
@@ -4473,6 +5517,46 @@ TAMANHO: 219854 bytes
                 ],
                 "title": "LancamentoFinanceiro"
             },
+            "MotivoPerda": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "nome": {
+                        "type": "string"
+                    },
+                    "ativo": {
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "nome",
+                    "ativo",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "MotivoPerda"
+            },
             "Orcamento": {
                 "type": "object",
                 "properties": {
@@ -4550,6 +5634,116 @@ TAMANHO: 219854 bytes
                     "updated_at"
                 ],
                 "title": "Orcamento"
+            },
+            "OrdemProducao": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "empresa_id": {
+                        "type": "integer"
+                    },
+                    "produto_acabado_id": {
+                        "type": "integer"
+                    },
+                    "responsavel_id": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "numero_op": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "quantidade_planejada": {
+                        "type": "string"
+                    },
+                    "quantidade_produzida": {
+                        "type": "string"
+                    },
+                    "custo_total_insumos": {
+                        "type": "string"
+                    },
+                    "custo_total_adicional": {
+                        "type": "string"
+                    },
+                    "custo_total_producao": {
+                        "type": "string"
+                    },
+                    "custo_unitario_final": {
+                        "type": "string"
+                    },
+                    "data_inicio_prevista": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "data_conclusao_prevista": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "data_inicio_real": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "data_conclusao_real": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "observacoes": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "empresa_id",
+                    "produto_acabado_id",
+                    "responsavel_id",
+                    "numero_op",
+                    "status",
+                    "quantidade_planejada",
+                    "quantidade_produzida",
+                    "custo_total_insumos",
+                    "custo_total_adicional",
+                    "custo_total_producao",
+                    "custo_unitario_final",
+                    "data_inicio_prevista",
+                    "data_conclusao_prevista",
+                    "data_inicio_real",
+                    "data_conclusao_real",
+                    "observacoes",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "OrdemProducao"
             },
             "OrdemServico": {
                 "type": "object",
@@ -4916,10 +6110,10 @@ TAMANHO: 219854 bytes
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\api-docs.json
-TAMANHO: 40 bytes
+TAMANHO: 128 bytes
 ============================================================
 
-OpenAPI document exported to api.json.
+[WARNING] OpenAPI document exported to api.json with 2 warnings. Run this command with -v/--verbose to print full diagnostics.
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\app\Http\Controllers\Controller.php
@@ -4938,13 +6132,14 @@ abstract class Controller
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\app\Http\Controllers\EmpresaConfigController.php
-TAMANHO: 1598 bytes
+TAMANHO: 4210 bytes
 ============================================================
 
 <?php
 
 namespace App\Http\Controllers;
 
+use App\Models\Empresa;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -4960,6 +6155,44 @@ class EmpresaConfigController extends Controller
         ]);
     }
 
+    public function index(Request $request): JsonResponse
+    {
+        $empresas = Empresa::where('ativo', true)->orderBy('razao_social')->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $empresas
+        ]);
+    }
+
+    public function store(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'razao_social' => 'required|string|max:255',
+            'nome_fantasia' => 'nullable|string|max:255',
+            'cpf_cnpj' => 'required|string|max:18|unique:sis_empresas,cpf_cnpj',
+            'inscricao_estadual' => 'nullable|string|max:20',
+            'inscricao_municipal' => 'nullable|string|max:20',
+            'crt' => 'required|integer|in:1,2,3',
+            'cep' => 'nullable|string|max:10',
+            'logradouro' => 'nullable|string|max:255',
+            'numero' => 'nullable|string|max:20',
+            'complemento' => 'nullable|string|max:100',
+            'bairro' => 'nullable|string|max:100',
+            'cidade' => 'nullable|string|max:100',
+            'uf' => 'nullable|string|size:2',
+            'codigo_ibge' => 'nullable|string|size:7',
+        ]);
+
+        $empresa = Empresa::create(array_merge($validated, ['ativo' => true]));
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Nova empresa cadastrada com sucesso!',
+            'data' => $empresa
+        ], 201);
+    }
+
     public function update(Request $request): JsonResponse
     {
         $empresa = $request->user()->empresa;
@@ -4967,7 +6200,7 @@ class EmpresaConfigController extends Controller
         $validated = $request->validate([
             'razao_social' => 'required|string|max:255',
             'nome_fantasia' => 'nullable|string|max:255',
-            'cpf_cnpj' => 'required|string|max:18',
+            'cpf_cnpj' => 'required|string|max:18|unique:sis_empresas,cpf_cnpj,' . $empresa->id,
             'inscricao_estadual' => 'nullable|string|max:20',
             'inscricao_municipal' => 'nullable|string|max:20',
             'crt' => 'required|integer|in:1,2,3',
@@ -4987,6 +6220,36 @@ class EmpresaConfigController extends Controller
             'status' => 'success',
             'message' => 'Configurações fiscais da empresa atualizadas com sucesso!',
             'data' => $empresa
+        ]);
+    }
+
+    public function trocarContexto(Request $request, int $empresaId): JsonResponse
+    {
+        $user = $request->user();
+
+        $empresaAlvo = Empresa::where('id', $empresaId)->where('ativo', true)->first();
+
+        if (! $empresaAlvo) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Empresa destino não encontrada ou inativa.'
+            ], 404);
+        }
+
+        $user->update(['empresa_id' => $empresaAlvo->id]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => "Contexto alterado para a empresa: {$empresaAlvo->razao_social}",
+            'data' => [
+                'user_id' => $user->id,
+                'empresa_ativa' => [
+                    'id' => $empresaAlvo->id,
+                    'razao_social' => $empresaAlvo->razao_social,
+                    'nome_fantasia' => $empresaAlvo->nome_fantasia,
+                    'cpf_cnpj' => $empresaAlvo->cpf_cnpj,
+                ]
+            ]
         ]);
     }
 }
@@ -7127,6 +8390,516 @@ class OsNumeroService
         $proximoSequencial = str_pad($sequencial + 1, 6, '0', STR_PAD_LEFT);
 
         return "{$prefixo}{$proximoSequencial}";
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\PCP\Controllers\PcpController.php
+TAMANHO: 5035 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\PCP\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Modules\PCP\Services\PcpService;
+use App\Modules\PCP\Models\OrdemProducao;
+use App\Modules\PCP\Models\FichaTecnica;
+use App\Modules\PCP\Models\MotivoPerda;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+
+class PcpController extends Controller
+{
+    public function __construct(private PcpService $pcpService) {}
+
+    // --- Ficha Técnica (BOM) ---
+    public function obterFichaTecnica(Request $request, int $produtoId): JsonResponse
+    {
+        $fichas = FichaTecnica::with('insumo')
+            ->where('empresa_id', $request->user()->empresa_id)
+            ->where('produto_pai_id', $produtoId)
+            ->get();
+
+        return response()->json(['status' => 'success', 'data' => $fichas]);
+    }
+
+    public function salvarFichaTecnica(Request $request, int $produtoId): JsonResponse
+    {
+        $request->validate([
+            'componentes' => 'required|array|min:1',
+            'componentes.*.quantidade_necessaria' => 'required|numeric|min:0.0001',
+            'componentes.*.tipo_componente' => 'nullable|in:INSUMO,MAO_DE_OBRA,CUSTO_INDIRETO',
+        ]);
+
+        $empresaId = $request->user()->empresa_id;
+        $fichas = $this->pcpService->salvarFichaTecnica($empresaId, $produtoId, $request->componentes);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Ficha técnica (BOM) atualizada com sucesso!',
+            'data' => $fichas
+        ]);
+    }
+
+    // --- Ordens de Produção (OP) ---
+    public function listarOPs(Request $request): JsonResponse
+    {
+        $ops = OrdemProducao::with(['produtoAcabado', 'responsavel', 'perdas.motivo'])
+            ->where('empresa_id', $request->user()->empresa_id)
+            ->orderBy('id', 'desc')
+            ->paginate(15);
+
+        return response()->json(['status' => 'success', 'data' => $ops]);
+    }
+
+    public function criarOP(Request $request): JsonResponse
+    {
+        $request->validate([
+            'produto_acabado_id' => 'required|exists:pro_itens,id',
+            'quantidade_planejada' => 'required|numeric|min:0.0001',
+        ]);
+
+        $empresaId = $request->user()->empresa_id;
+        $responsavelId = $request->user()->id;
+
+        $op = $this->pcpService->criarOP($empresaId, $responsavelId, $request->all());
+
+        return response()->json(['status' => 'success', 'data' => $op], 201);
+    }
+
+    public function atualizarStatus(Request $request, int $id): JsonResponse
+    {
+        $request->validate([
+            'status' => 'required|in:PLANEJADA,EM_PRODUCAO,CONCLUIDA,CANCELADA',
+            'quantidade_produzida' => 'nullable|numeric|min:0.0001',
+        ]);
+
+        $empresaId = $request->user()->empresa_id;
+
+        try {
+            $op = $this->pcpService->atualizarStatusOP(
+                $id,
+                $empresaId,
+                strtoupper($request->status),
+                $request->quantidade_produzida ? (float) $request->quantidade_produzida : null
+            );
+
+            return response()->json([
+                'status' => 'success',
+                'message' => "Status da OP alterado para {$request->status} com sucesso.",
+                'data' => $op
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 422);
+        }
+    }
+
+    // --- Apontamento de Perdas ---
+    public function registrarPerda(Request $request, int $opId): JsonResponse
+    {
+        $request->validate([
+            'insumo_id' => 'required|exists:pro_itens,id',
+            'quantidade_perdida' => 'required|numeric|min:0.0001',
+            'motivo_perda_id' => 'nullable|exists:pcp_motivos_perda,id',
+        ]);
+
+        $empresaId = $request->user()->empresa_id;
+        $perda = $this->pcpService->registrarPerda($empresaId, $opId, $request->all());
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Apontamento de refugo/perda registrado com sucesso!',
+            'data' => $perda
+        ], 201);
+    }
+
+    // --- Motivos de Perda ---
+    public function listarMotivosPerda(Request $request): JsonResponse
+    {
+        $motivos = MotivoPerda::where('empresa_id', $request->user()->empresa_id)
+            ->where('ativo', true)
+            ->orderBy('nome')
+            ->get();
+
+        return response()->json(['status' => 'success', 'data' => $motivos]);
+    }
+
+    public function criarMotivoPerda(Request $request): JsonResponse
+    {
+        $request->validate(['nome' => 'required|string|max:100']);
+
+        $motivo = MotivoPerda::create([
+            'empresa_id' => $request->user()->empresa_id,
+            'nome' => $request->nome,
+            'ativo' => true,
+        ]);
+
+        return response()->json(['status' => 'success', 'data' => $motivo], 201);
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\PCP\Models\ApontamentoPerda.php
+TAMANHO: 743 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\PCP\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Modules\Produtos\Models\Item;
+
+class ApontamentoPerda extends Model
+{
+    protected $table = 'pcp_apontamentos_perda';
+
+    protected $fillable = [
+        'empresa_id',
+        'ordem_producao_id',
+        'insumo_id',
+        'motivo_perda_id',
+        'quantidade_perdida',
+        'custo_perda',
+        'observacoes',
+    ];
+
+    public function insumo(): BelongsTo
+    {
+        return $this->belongsTo(Item::class, 'insumo_id');
+    }
+
+    public function motivo(): BelongsTo
+    {
+        return $this->belongsTo(MotivoPerda::class, 'motivo_perda_id');
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\PCP\Models\FichaTecnica.php
+TAMANHO: 739 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\PCP\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Modules\Produtos\Models\Item;
+
+class FichaTecnica extends Model
+{
+    protected $table = 'pcp_fichas_tecnicas';
+
+    protected $fillable = [
+        'empresa_id',
+        'produto_pai_id',
+        'insumo_id',
+        'tipo_componente',
+        'descricao_custo',
+        'quantidade_necessaria',
+        'custo_estimado',
+    ];
+
+    public function insumo(): BelongsTo
+    {
+        return $this->belongsTo(Item::class, 'insumo_id');
+    }
+
+    public function produtoPai(): BelongsTo
+    {
+        return $this->belongsTo(Item::class, 'produto_pai_id');
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\PCP\Models\MotivoPerda.php
+TAMANHO: 231 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\PCP\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class MotivoPerda extends Model
+{
+    protected $table = 'pcp_motivos_perda';
+    protected $fillable = ['empresa_id', 'nome', 'ativo'];
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\PCP\Models\OrdemProducao.php
+TAMANHO: 1251 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\PCP\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Modules\Produtos\Models\Item;
+use App\Models\User;
+
+class OrdemProducao extends Model
+{
+    protected $table = 'pcp_ordens_producao';
+
+    protected $fillable = [
+        'empresa_id',
+        'produto_acabado_id',
+        'responsavel_id',
+        'numero_op',
+        'status',
+        'quantidade_planejada',
+        'quantidade_produzida',
+        'custo_total_insumos',
+        'custo_total_adicional',
+        'custo_total_producao',
+        'custo_unitario_final',
+        'data_inicio_prevista',
+        'data_conclusao_prevista',
+        'data_inicio_real',
+        'data_conclusao_real',
+        'observacoes',
+    ];
+
+    public function produtoAcabado(): BelongsTo
+    {
+        return $this->belongsTo(Item::class, 'produto_acabado_id');
+    }
+
+    public function responsavel(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'responsavel_id');
+    }
+
+    public function perdas(): HasMany
+    {
+        return $this->hasMany(ApontamentoPerda::class, 'ordem_producao_id');
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\PCP\Services\OpNumeroService.php
+TAMANHO: 775 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\PCP\Services;
+
+use App\Modules\PCP\Models\OrdemProducao;
+
+class OpNumeroService
+{
+    public static function gerarProximoNumero(int $empresaId): string
+    {
+        $anoAtual = date('Y');
+        $prefixo = "OP-{$anoAtual}-";
+
+        $ultimaOp = OrdemProducao::where('empresa_id', $empresaId)
+            ->where('numero_op', 'like', "{$prefixo}%")
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if (! $ultimaOp) {
+            return "{$prefixo}000001";
+        }
+
+        $partes = explode('-', $ultimaOp->numero_op);
+        $sequencial = (int) end($partes);
+        $proximoSequencial = str_pad($sequencial + 1, 6, '0', STR_PAD_LEFT);
+
+        return "{$prefixo}{$proximoSequencial}";
+    }
+}
+
+============================================================
+ARQUIVO: C:\Projetos\scalle-erp\app\Modules\PCP\Services\PcpService.php
+TAMANHO: 7327 bytes
+============================================================
+
+<?php
+
+namespace App\Modules\PCP\Services;
+
+use App\Modules\PCP\Models\FichaTecnica;
+use App\Modules\PCP\Models\OrdemProducao;
+use App\Modules\PCP\Models\ApontamentoPerda;
+use App\Modules\Produtos\Models\Item;
+use App\Modules\Produtos\Services\ItemService;
+use Illuminate\Support\Facades\DB;
+
+class PcpService
+{
+    public function __construct(private ItemService $itemService) {}
+
+    /**
+     * Salva ou atualiza a Ficha Técnica (BOM) do Produto
+     */
+    public function salvarFichaTecnica(int $empresaId, int $produtoPaiId, array $componentes): array
+    {
+        return DB::transaction(function () use ($empresaId, $produtoPaiId, $componentes) {
+            FichaTecnica::where('empresa_id', $empresaId)
+                ->where('produto_pai_id', $produtoPaiId)
+                ->delete();
+
+            $fichas = [];
+            foreach ($componentes as $comp) {
+                $fichas[] = FichaTecnica::create([
+                    'empresa_id' => $empresaId,
+                    'produto_pai_id' => $produtoPaiId,
+                    'insumo_id' => $comp['insumo_id'] ?? null,
+                    'tipo_componente' => strtoupper($comp['tipo_componente'] ?? 'INSUMO'),
+                    'descricao_custo' => $comp['descricao_custo'] ?? null,
+                    'quantidade_necessaria' => (float) $comp['quantidade_necessaria'],
+                    'custo_estimado' => (float) ($comp['custo_estimado'] ?? 0),
+                ]);
+            }
+
+            return $fichas;
+        });
+    }
+
+    /**
+     * Cria a Ordem de Produção (Status: PLANEJADA)
+     */
+    public function criarOP(int $empresaId, int $responsavelId, array $data): OrdemProducao
+    {
+        $numeroOp = OpNumeroService::gerarProximoNumero($empresaId);
+
+        return OrdemProducao::create([
+            'empresa_id' => $empresaId,
+            'produto_acabado_id' => $data['produto_acabado_id'],
+            'responsavel_id' => $responsavelId,
+            'numero_op' => $numeroOp,
+            'status' => 'PLANEJADA',
+            'quantidade_planejada' => (float) $data['quantidade_planejada'],
+            'data_inicio_prevista' => $data['data_inicio_prevista'] ?? now(),
+            'data_conclusao_prevista' => $data['data_conclusao_prevista'] ?? now()->addDays(2),
+            'observacoes' => $data['observacoes'] ?? null,
+        ]);
+    }
+
+    /**
+     * Altera o status da OP e executa baixa/entrada atômica de estoque na conclusão
+     */
+    public function atualizarStatusOP(int $opId, int $empresaId, string $novoStatus, ?float $qtdProduzida = null): OrdemProducao
+    {
+        return DB::transaction(function () use ($opId, $empresaId, $novoStatus, $qtdProduzida) {
+            $op = OrdemProducao::where('id', $opId)
+                ->where('empresa_id', $empresaId)
+                ->firstOrFail();
+
+            if ($op->status === 'CONCLUIDA') {
+                throw new \Exception('Esta Ordem de Produção já foi finalizada anteriormente.');
+            }
+
+            if ($novoStatus === 'EM_PRODUCAO' && $op->status === 'PLANEJADA') {
+                $op->data_inicio_real = now();
+            }
+
+            if ($novoStatus === 'CONCLUIDA') {
+                $quantidadeFinal = $qtdProduzida ?? $op->quantidade_planejada;
+                $fichas = FichaTecnica::with('insumo')
+                    ->where('empresa_id', $empresaId)
+                    ->where('produto_pai_id', $op->produto_acabado_id)
+                    ->get();
+
+                if ($fichas->isEmpty()) {
+                    throw new \Exception('Não é possível concluir a OP sem uma Ficha Técnica (BOM) cadastrada para o produto.');
+                }
+
+                $custoInsumos = 0.00;
+                $custoAdicional = 0.00;
+
+                // 📦 1. Baixa Atômica dos Insumos Consumidos
+                foreach ($fichas as $itemBOM) {
+                    if ($itemBOM->tipo_componente === 'INSUMO' && $itemBOM->insumo_id) {
+                        $qtdConsumida = $itemBOM->quantidade_necessaria * $quantidadeFinal;
+                        $precoCustoUnit = (float) $itemBOM->insumo->preco_custo;
+                        $custoInsumos += ($qtdConsumida * $precoCustoUnit);
+
+                        $this->itemService->movimentarEstoque(
+                            itemId: $itemBOM->insumo_id,
+                            empresaId: $empresaId,
+                            quantidade: $qtdConsumida,
+                            operacao: 'SUBTRAIR'
+                        );
+                    } else {
+                        // Custo de mão de obra / máquinas (CIF)
+                        $custoAdicional += ($itemBOM->custo_estimado * $quantidadeFinal);
+                    }
+                }
+
+                // 📦 2. Entrada Atômica do Produto Acabado no Estoque
+                $this->itemService->movimentarEstoque(
+                    itemId: $op->produto_acabado_id,
+                    empresaId: $empresaId,
+                    quantidade: $quantidadeFinal,
+                    operacao: 'SOMAR'
+                );
+
+                $custoTotal = $custoInsumos + $custoAdicional;
+                $custoUnitario = $quantidadeFinal > 0 ? ($custoTotal / $quantidadeFinal) : 0;
+
+                // Atualiza o Preço de Custo apurado do Produto Acabado
+                Item::where('id', $op->produto_acabado_id)->update(['preco_custo' => $custoUnitario]);
+
+                $op->quantidade_produzida = $quantidadeFinal;
+                $op->custo_total_insumos = $custoInsumos;
+                $op->custo_total_adicional = $custoAdicional;
+                $op->custo_total_producao = $custoTotal;
+                $op->custo_unitario_final = $custoUnitario;
+                $op->data_conclusao_real = now();
+            }
+
+            $op->status = $novoStatus;
+            $op->save();
+
+            return $op->load(['produtoAcabado', 'responsavel', 'perdas']);
+        });
+    }
+
+    /**
+     * Registra o apontamento de refugo/perda durante a produção
+     */
+    public function registrarPerda(int $empresaId, int $opId, array $data): ApontamentoPerda
+    {
+        return DB::transaction(function () use ($empresaId, $opId, $data) {
+            $insumo = Item::where('id', $data['insumo_id'])
+                ->where('empresa_id', $empresaId)
+                ->firstOrFail();
+
+            $qtdPerdida = (float) $data['quantidade_perdida'];
+            $custoPerda = $qtdPerdida * (float) $insumo->preco_custo;
+
+            // Baixa do saldo que foi perdido/avariado
+            $this->itemService->movimentarEstoque(
+                itemId: $insumo->id,
+                empresaId: $empresaId,
+                quantidade: $qtdPerdida,
+                operacao: 'SUBTRAIR'
+            );
+
+            return ApontamentoPerda::create([
+                'empresa_id' => $empresaId,
+                'ordem_producao_id' => $opId,
+                'insumo_id' => $insumo->id,
+                'motivo_perda_id' => $data['motivo_perda_id'] ?? null,
+                'quantidade_perdida' => $qtdPerdida,
+                'custo_perda' => $custoPerda,
+                'observacoes' => $data['observacoes'] ?? null,
+            ]);
+        });
     }
 }
 
@@ -11231,6 +13004,94 @@ return new class extends Migration
 };
 
 ============================================================
+ARQUIVO: C:\Projetos\scalle-erp\database\migrations\2026_08_15_000612_create_pcp_modulo_industrial_tables.php
+TAMANHO: 4003 bytes
+============================================================
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        // 1. Tabela Auxiliar de Motivos de Perda/Refugo
+        Schema::create('pcp_motivos_perda', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('empresa_id')->constrained('sis_empresas')->onDelete('cascade');
+            $table->string('nome', 100);
+            $table->boolean('ativo')->default(true);
+            $table->timestamps();
+        });
+
+        // 2. Ficha Técnica / Estrutura do Produto (BOM)
+        Schema::create('pcp_fichas_tecnicas', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('empresa_id')->constrained('sis_empresas')->onDelete('cascade');
+            $table->foreignId('produto_pai_id')->constrained('pro_itens')->onDelete('cascade'); // Produto Acabado
+            $table->foreignId('insumo_id')->nullable()->constrained('pro_itens')->onDelete('set null'); // Matéria-Prima
+            $table->enum('tipo_componente', ['INSUMO', 'MAO_DE_OBRA', 'CUSTO_INDIRETO'])->default('INSUMO');
+            $table->string('descricao_custo')->nullable(); // Para custos indiretos sem item cadastrado
+            $table->decimal('quantidade_necessaria', 12, 4)->default(1.0000);
+            $table->decimal('custo_estimado', 12, 4)->default(0.0000);
+            $table->timestamps();
+        });
+
+        // 3. Ordens de Produção (OP)
+        Schema::create('pcp_ordens_producao', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('empresa_id')->constrained('sis_empresas')->onDelete('cascade');
+            $table->foreignId('produto_acabado_id')->constrained('pro_itens')->onDelete('cascade');
+            $table->foreignId('responsavel_id')->nullable()->constrained('users')->onDelete('set null');
+
+            $table->string('numero_op', 30)->unique();
+            $table->enum('status', ['PLANEJADA', 'EM_PRODUCAO', 'CONCLUIDA', 'CANCELADA'])->default('PLANEJADA');
+
+            $table->decimal('quantidade_planejada', 12, 4);
+            $table->decimal('quantidade_produzida', 12, 4)->default(0.0000);
+
+            $table->decimal('custo_total_insumos', 12, 2)->default(0.00);
+            $table->decimal('custo_total_adicional', 12, 2)->default(0.00); // Mão de obra / CIF
+            $table->decimal('custo_total_producao', 12, 2)->default(0.00);
+            $table->decimal('custo_unitario_final', 12, 4)->default(0.0000);
+
+            $table->dateTime('data_inicio_prevista')->nullable();
+            $table->dateTime('data_conclusao_prevista')->nullable();
+            $table->dateTime('data_inicio_real')->nullable();
+            $table->dateTime('data_conclusao_real')->nullable();
+
+            $table->text('observacoes')->nullable();
+            $table->timestamps();
+        });
+
+        // 4. Apontamento de Perdas & Refugos da OP
+        Schema::create('pcp_apontamentos_perda', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('empresa_id')->constrained('sis_empresas')->onDelete('cascade');
+            $table->foreignId('ordem_producao_id')->constrained('pcp_ordens_producao')->onDelete('cascade');
+            $table->foreignId('insumo_id')->constrained('pro_itens')->onDelete('cascade');
+            $table->foreignId('motivo_perda_id')->nullable()->constrained('pcp_motivos_perda')->onDelete('set null');
+
+            $table->decimal('quantidade_perdida', 12, 4);
+            $table->decimal('custo_perda', 12, 2)->default(0.00);
+            $table->text('observacoes')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('pcp_apontamentos_perda');
+        Schema::dropIfExists('pcp_ordens_producao');
+        Schema::dropIfExists('pcp_fichas_tecnicas');
+        Schema::dropIfExists('pcp_motivos_perda');
+    }
+};
+
+============================================================
 ARQUIVO: C:\Projetos\scalle-erp\database\seeders\DatabaseSeeder.php
 TAMANHO: 703 bytes
 ============================================================
@@ -11972,62 +13833,69 @@ TAMANHO: 72302 bytes
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\revisar.md
-TAMANHO: 6724 bytes
+TAMANHO: 7669 bytes
 ============================================================
 
 Visão macro de produto de um **ERP SaaS Escalável e Multissetorial**! 🔥
 
-Com o fechamento da **v1.2.0**, consolidamos a camada comercial (Orçamentos com Conversão) e a camada de Parametrização/Segurança (ACL e Cadastros Auxiliares) no **Scalle ERP**.
-
 Abaixo está o **Raio-X de Revisão do Projeto**, refletindo os módulos ativos no código e no contrato da API (`document.json`), além do roadmap alinhado por versão.
-🗺️ Mapa de Evolução Arquitetural do Scalle ERP
------------------------------------------------
 
-                            ┌────────────────────────────────────────┐  
-                            │        CAMADA CORE (MULTITENANT)       │  
-                            │ Auth | Pessoas | Itens | DTOs | ACL DB │  
-                            └───────────────────┬────────────────────┘  
-                                                │  
-            ┌───────────────────────────────────┼───────────────────────────────────┐  
-            ▼                                   ▼                                   ▼  
-     🛠️ PRESTAÇÃO DE SERVIÇOS           🏬 COMÉRCIO & VENDAS               🏭 INDÚSTRIA (PCP)  
-     - Módulo de OS / CMMS ✅           - Módulo de Vendas Diretas ✅      - Estrutura de Produtos (BOM) 🔮  
-     - Ciclo de Vida da OS ✅           - PDV / Pedidos de Balcão ✅        - Ordens de Produção (OP) 🔮  
-     - Baixa/Estorno Estoque ✅          - Orçamentos/Propostas ✅          - Apontamento de Perdas 🔮  
-     - Garantia & Laudos ✅             - Conversão em Venda/OS ✅         - Custo Industrial Apurado 🔮  
-            │                                   │                                   │  
-            └───────────────────────────────────┼───────────────────────────────────┘  
-                                                ▼  
-                            ┌────────────────────────────────────────┐  
-                            │      SUPRIMENTOS, GESTÃO & FINANCEIRO  │  
-                            │ - Compras & Entradas de Notas ✅       │  
-                            │ - Contas a Receber / Contas a Pagar ✅ │  
-                            │ - DRE Consolidado & Fluxo de Caixa ✅   │  
-                            │ - ACL / Perfis de Acesso (CheckRole) ✅│  
-                            │ - Categorias & Unidades (Auxiliares) ✅│  
-                            │ - Fiscal (NFe / NFSe / CTM) 🔮         │  
-                            │ - WMS / Logística / Frotas 🔮           │  
-                            └────────────────────────────────────────┘
+Visão macro de produto de um **ERP SaaS Escalável e Multissetorial**! 🔥
+
+🗺️ Mapa de Evolução Arquitetural do Scalle ERP
+===============================================
+
+                                ┌────────────────────────────────────────┐
+                                │        CAMADA CORE (MULTITENANT)       │
+                                │ Auth | Pessoas | Itens | DTOs | ACL DB │
+                                └───────────────────┬────────────────────┘
+                                                    │
+                ┌───────────────────────────────────┼───────────────────────────────────┐
+                ▼                                   ▼                                   ▼
+         🛠️ PRESTAÇÃO DE SERVIÇOS           🏬 COMÉRCIO & VENDAS               🏭 INDÚSTRIA (PCP)
+         - Módulo de OS / CMMS ✅           - Módulo de Vendas Diretas ✅      - Estrutura de Produtos (BOM) 🔮
+         - Ciclo de Vida da OS ✅           - PDV / Pedidos de Balcão ✅        - Ordens de Produção (OP) 🔮
+         - Baixa/Estorno Estoque ✅          - Orçamentos/Propostas ✅          - Apontamento de Perdas 🔮
+         - Garantia & Laudos ✅             - Conversão em Venda/OS ✅         - Custo Industrial Apurado 🔮
+         - Impressão Layout/PDF ✅          - Impressão Layout/PDF ✅
+                │                                   │                                   │
+                └───────────────────────────────────┼───────────────────────────────────┘
+                                                    ▼
+                                ┌────────────────────────────────────────┐
+                                │      SUPRIMENTOS, GESTÃO & FINANCEIRO  │
+                                │ - Compras & Entradas de Notas ✅       │
+                                │ - Contas a Receber / Contas a Pagar ✅ │
+                                │ - DRE Consolidado & Extrato ✅         │
+                                │ - ACL / Perfis de Acesso (CheckRole) ✅│
+                                │ - Categorias & Unidades (Auxiliares) ✅│
+                                │ - Dashboard Executivo Real-time ✅     │
+                                │ - Cobrança PIX Nativa (EMV/QR Code) ✅ │
+                                │ - Engine Fiscal Desacoplada (NFe/NFSe)✅│
+                                │ - WMS / Logística / Frotas 🔮           │
+                                └────────────────────────────────────────┘
 
 🔍 Revisão Atual do Projeto (Status Real do Código)
----------------------------------------------------
+===================================================
 
-| **Módulo**              | **Status**  | **O que faz hoje?**                                                                                                                 |
-| ----------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| **Auth & Tenant**       | ✅ Concluído | Multi-empresa isolado (`empresa_id`), token Sanctum e retorno do perfil (`role`).                                                   |
-| **ACL & Segurança**     | ✅ Concluído | Middleware `CheckRole` bloqueando perfis não autorizados com `403 Forbidden` (`ADMIN`, `FINANCEIRO`, `TECNICO`, `ATENDENTE`).       |
-| **Pessoas**             | ✅ Concluído | Tabela unificada para Clientes e Fornecedores (`pes_pessoas`).                                                                      |
-| **Produtos & Serviços** | ✅ Concluído | Itens (`pro_itens`), Categorias (`pro_categorias`) e Unidades de Medida (`pro_unidades`). DTOs blindados mantendo saldo de estoque. |
-| **Ordens de Serviço**   | ✅ Concluído | Numeração comercial (`OS-2026-000001`), ciclo de vida, baixa atômica de estoque na conclusão e lançamento no Contas a Receber.      |
-| **Compras & Entradas**  | ✅ Concluído | Registro de notas, incremento atômico de estoque, atualização do preço de custo e lançamento no Contas a Pagar.                     |
-| **Vendas Diretas**      | ✅ Concluído | Pedidos de balcão (`VEN-2026-000001`), baixa atômica de peças e geração de Contas a Receber.                                        |
-| **Orçamentos**          | ✅ Concluído | Cotações (`ORC-2026-000001`), controle de validade e conversão em 1 clique para Venda ou OS.                                        |
-| **Financeiro & DRE**    | ✅ Concluído | Contas a Receber/Pagar, liquidação/baixa com meio de pagamento, Plano de Contas (`fin_categorias`) e DRE do período (`Y-m-d`).      |
+| **Módulo**          | **Status**  | **O que faz hoje?**                                                                                                               |
+| ------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Auth & Tenant       | ✅ Concluído | Multi-empresa isolado (`empresa_id`), token Sanctum e retorno do perfil (`role`).                                                 |
+| ACL & Segurança     | ✅ Concluído | Middleware `CheckRole` bloqueando perfis não autorizados com `403 Forbidden` (`ADMIN`, `FINANCEIRO`, `TECNICO`, `ATENDENTE`).     |
+| Pessoas             | ✅ Concluído | Tabela unificada para Clientes e Fornecedores (`pes_pessoas`).                                                                    |
+| Produtos & Serviços | ✅ Concluído | Itens (`pro_itens`), Categorias (`pro_categorias`) e Unidades (`pro_unidades`). Parâmetros fiscais (NCM, CEST, CFOP, Origem).     |
+| Ordens de Serviço   | ✅ Concluído | Numeração comercial (`OS-2026-000001`), baixa/estorno de estoque, Contas a Receber e Impressão/PDF.                               |
+| Compras & Entradas  | ✅ Concluído | Registro de notas, incremento atômico de estoque, atualização do preço de custo e lançamento no Contas a Pagar.                   |
+| Vendas Diretas      | ✅ Concluído | Pedidos de balcão (`VEN-2026-000001`), baixa atômica de peças e geração de Contas a Receber.                                      |
+| Orçamentos          | ✅ Concluído | Cotações (`ORC-2026-000001`), conversão em 1 clique para Venda ou OS e Impressão/PDF.                                             |
+| Financeiro & DRE    | ✅ Concluído | Contas a Receber/Pagar, liquidação/baixa, Plano de Contas, DRE e Extrato Financeiro Detalhado por período.                        |
+| Dashboard & PIX     | ✅ Concluído | Indicadores operacionais/comerciais/financeiros e gerador de PIX Copia e Cola (EMV) + QR Code.                                    |
+| Empresa Emitente    | ✅ Concluído | Cadastro de Inscrição Estadual, CRT e Endereço Fiscal completo com Código IBGE (`sis_empresas`).                                  |
+| Engine Fiscal       | ✅ Concluído | Driver desacoplado (`FiscalDriverInterface`), emissão de NFe (Vendas) e NFS-e (OS) com chave de 44 dígitos, protocolo, XML e PDF. |
 
 📌 Planejamento de Releases (Semantic Versioning)
--------------------------------------------------
+=================================================
 
-### 🟢 Versão 1.x.x — Core Comercial, Operacional & Segurança (Concluídas v1.0 a v1.2)
+### 🟢 Versão 1.x.x — Core Comercial, Operacional, Financeiro & Fiscal (Concluídas v1.0 a v1.5)
 
 * **v1.0.0 (Concluída):** Multi-tenant, Pessoas, Produtos/Serviços, OS/CMMS, Compras e Financeiro/DRE.
 
@@ -12035,7 +13903,11 @@ Abaixo está o **Raio-X de Revisão do Projeto**, refletindo os módulos ativos 
 
 * **v1.2.0 (Concluída):** Gestão de Orçamentos com conversão + Cadastros Auxiliares (Categorias e Unidades de Medida).
 
-* **v1.3.0 (Próxima Release):** Módulo Fiscal (NFe / NFS-e) + Cobranças Automáticas (PIX / Boleto Asaas/Mercado Pago) + Dashboard de Indicadores.
+* **v1.3.0 (Concluída):** Engine de Impressão de Orçamento/OS, Dashboard de Indicadores e Cobrança PIX Nativa (Payload EMV + QR Code).
+
+* **v1.4.0 (Concluída):** Estrutura Fiscal nos Produtos (NCM/CFOP), Parâmetros do Emitente (IBGE/CRT) e Extrato Financeiro por Período.
+
+* **v1.5.0 (Concluída/Em Andamento):** Engine de Transmissão Fiscal Desacoplada (`FiscalDriverInterface`) com suporte a NFe e NFS-e + Gestão de Múltiplos Tenants.
 
 ### 🏭 Versão 2.0.0 — Módulo Industrial (PCP & Custo Industrial)
 
@@ -12056,7 +13928,7 @@ Abaixo está o **Raio-X de Revisão do Projeto**, refletindo os módulos ativos 
 
 ============================================================
 ARQUIVO: C:\Projetos\scalle-erp\routes\api.php
-TAMANHO: 3300 bytes
+TAMANHO: 4862 bytes
 ============================================================
 
 <?php
@@ -12065,6 +13937,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImpressaoController;
 use App\Http\Controllers\EmpresaConfigController;
 use App\Modules\Fiscal\Controllers\FiscalController;
+use App\Modules\PCP\Controllers\PcpController;
 
 // Rotas PÚBLICAS de Autenticação
 Route::prefix('v1/auth')->group(base_path('app/Modules/Auth/Routes/api.php'));
@@ -12125,6 +13998,31 @@ Route::middleware(['auth:sanctum', 'role:ADMIN'])->prefix('v1/empresa')->group(f
 Route::middleware(['auth:sanctum', 'role:ADMIN,FINANCEIRO'])->prefix('v1/fiscal')->group(function () {
     Route::post('/vendas/{vendaId}/emitir-nfe', [FiscalController::class, 'emitirNFe']);
     Route::post('/ordens-servico/{osId}/emitir-nfse', [FiscalController::class, 'emitirNFSe']);
+});
+
+// 🏢 Gestão de Empresas e Contexto Multi-Tenant (Somente ADMIN)
+Route::middleware(['auth:sanctum', 'role:ADMIN'])->prefix('v1/empresa')->group(function () {
+    Route::get('/', [EmpresaConfigController::class, 'index']);
+    Route::post('/', [EmpresaConfigController::class, 'store']);
+    Route::get('/configuracao-fiscal', [EmpresaConfigController::class, 'show']);
+    Route::put('/configuracao-fiscal', [EmpresaConfigController::class, 'update']);
+    Route::post('/trocar-contexto/{empresaId}', [EmpresaConfigController::class, 'trocarContexto']);
+});
+// 🏭 Módulo Industrial (PCP - Planejamento e Controle da Produção)
+Route::middleware(['auth:sanctum', 'role:ADMIN,TECNICO'])->prefix('v1/pcp')->group(function () {
+    // Ficha Técnica (BOM)
+    Route::get('/produtos/{produtoId}/ficha-tecnica', [PcpController::class, 'obterFichaTecnica']);
+    Route::post('/produtos/{produtoId}/ficha-tecnica', [PcpController::class, 'salvarFichaTecnica']);
+
+    // Ordens de Produção
+    Route::get('/ordens-producao', [PcpController::class, 'listarOPs']);
+    Route::post('/ordens-producao', [PcpController::class, 'criarOP']);
+    Route::patch('/ordens-producao/{id}/status', [PcpController::class, 'atualizarStatus']);
+    Route::post('/ordens-producao/{id}/perdas', [PcpController::class, 'registrarPerda']);
+
+    // Motivos de Perda/Refugo
+    Route::get('/motivos-perda', [PcpController::class, 'listarMotivosPerda']);
+    Route::post('/motivos-perda', [PcpController::class, 'criarMotivoPerda']);
 });
 
 ============================================================
